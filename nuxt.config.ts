@@ -23,23 +23,6 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2025-05-15',
 
-  nitro: {
-    preset: 'cloudflare_module',
-    cloudflare: {
-      deployConfig: true,
-      nodeCompat: true,
-      wrangler: {
-        d1_databases: [
-          {
-            binding: 'DB',
-            database_name: 'moderation-fyi',
-            database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
-          },
-        ],
-      },
-    },
-  },
-
   eslint: {
     config: {
       stylistic: true,
