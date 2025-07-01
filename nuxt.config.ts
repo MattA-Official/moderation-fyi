@@ -23,10 +23,17 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2025-05-15',
 
+  nitro: {
+    cloudflare: {
+      wrangler: {
+        name: 'moderation-fyi',
+      },
+    },
+  },
+
   eslint: {
     config: {
       stylistic: true,
     },
   },
-
 })
