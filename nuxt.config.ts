@@ -11,6 +11,13 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  content: {
+    database: {
+      type: 'd1',
+      bindingName: 'DB',
+    },
+  },
+
   future: {
     compatibilityVersion: 4,
   },
@@ -21,6 +28,15 @@ export default defineNuxtConfig({
     cloudflare: {
       deployConfig: true,
       nodeCompat: true,
+      wrangler: {
+        d1_databases: [
+          {
+            binding: 'DB',
+            database_name: 'moderation-fyi',
+            database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
+          },
+        ],
+      },
     },
   },
 
@@ -29,4 +45,5 @@ export default defineNuxtConfig({
       stylistic: true,
     },
   },
+
 })
