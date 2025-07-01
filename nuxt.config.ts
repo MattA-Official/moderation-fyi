@@ -57,6 +57,9 @@ export default defineNuxtConfig({
         ],
       },
     },
+    externals: {
+      external: ['@resvg/resvg-js'],
+    },
   },
 
   eslint: {
