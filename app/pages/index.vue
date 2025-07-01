@@ -31,6 +31,27 @@
             >GitHub</NuxtLink>.
           </p>
         </div>
+
+        <div>
+          <NuxtLink
+            to="/guides"
+            class="button"
+          >
+            Explore Guides
+          </NuxtLink>
+          <NuxtLink
+            to="/articles"
+            class="button"
+          >
+            Read Articles
+          </NuxtLink>
+          <NuxtLink
+            to="/templates"
+            class="button"
+          >
+            Browse Templates
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </main>
@@ -41,6 +62,11 @@
 </script>
 
 <style scoped>
+body {
+  max-height: 100vh;
+  overflow: hidden;
+}
+
 .page-container {
   min-height: 100vh;
   display: flex;

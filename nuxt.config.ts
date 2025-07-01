@@ -102,6 +102,5 @@ export default defineNuxtConfig({
   sitemap: {
     enabled: true,
     autoLastmod: true,
-    strictNuxtContentPaths: true,
   },
 })
