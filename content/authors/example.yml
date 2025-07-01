@@ -1,0 +1,7 @@
+name: John Doe
+bio: "John Doe is a fictional author for this example. He is a seasoned expert in online community management and content moderation, with over a decade of experience building and nurturing safe and engaging online spaces."
+image: "/images/authors/john-doe.jpg"
+social:
+  twitter: "johndoe"
+  github: "johndoe"
+  website: "https://johndoe.com"
