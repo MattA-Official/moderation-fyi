@@ -57,9 +57,6 @@ export default defineNuxtConfig({
         ],
       },
     },
-    externals: {
-      external: ['@resvg/resvg-js'],
-    },
   },
 
   eslint: {
@@ -73,13 +70,13 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    enabled: true,
-    defaults: {
-      component: 'OgImageDefault',
-      width: 1200,
-      height: 630,
-      alt: 'moderation.fyi - Practical moderation guides for volunteer community moderators. Open-source and community-driven.',
-    },
+    enabled: false,
+    // defaults: {
+    //   component: 'OgImageDefault',
+    //   width: 1200,
+    //   height: 630,
+    //   alt: 'moderation.fyi - Practical moderation guides for volunteer community moderators. Open-source and community-driven.',
+    // },
   },
 
   robots: {
