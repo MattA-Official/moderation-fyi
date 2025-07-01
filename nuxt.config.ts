@@ -27,6 +27,12 @@ export default defineNuxtConfig({
     cloudflare: {
       wrangler: {
         name: 'moderation-fyi',
+        routes: [
+          {
+            pattern: 'moderation.fyi',
+            custom_domain: true,
+          },
+        ],
       },
     },
   },
