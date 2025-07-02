@@ -20,6 +20,36 @@
         Browse Templates
       </NuxtLink>
     </div>
+
+    <hr>
+
+    <h1>Heading 1</h1>
+    <h2>Heading 2</h2>
+    <h3>Heading 3</h3>
+    <h4>Heading 4</h4>
+    <h5>Heading 5</h5>
+    <h6>Heading 6</h6>
+    <p>This is a paragraph with <a href="#">a link</a> and some <strong>bold text</strong>.</p>
+    <p>Another paragraph with <em>italic text</em> and a <code>code snippet</code>.</p>
+    <ul>
+      <li>List item 1</li>
+      <li>List item 2</li>
+      <li>List item 3</li>
+    </ul>
+    <ol>
+      <li>Ordered item 1</li>
+      <li>Ordered item 2</li>
+      <li>Ordered item 3</li>
+    </ol>
+    <blockquote>
+      This is a blockquote. It can contain multiple lines of text.
+    </blockquote>
+    <pre><code>console.log('This is a code block');</code></pre>
+    <img
+      src="https://placehold.co/300"
+      alt="Example Image"
+      width="300"
+    >
   </main>
 </template>
 
