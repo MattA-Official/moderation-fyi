@@ -1,28 +1,5 @@
 <template>
   <main>
-    <div>
-      <NuxtLink
-        to="/guides"
-        class="button"
-      >
-        Explore Guides
-      </NuxtLink>
-      <NuxtLink
-        to="/articles"
-        class="button"
-      >
-        Read Articles
-      </NuxtLink>
-      <NuxtLink
-        to="/templates"
-        class="button"
-      >
-        Browse Templates
-      </NuxtLink>
-    </div>
-
-    <hr>
-
     <h1>Heading 1</h1>
     <h2>Heading 2</h2>
     <h3>Heading 3</h3>

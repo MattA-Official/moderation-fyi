@@ -11,4 +11,8 @@ const route = useRoute()
 const { data: page } = await useAsyncData(route.path, () => {
   return queryCollection('articles').path(route.path).first()
 })
+
+definePageMeta({
+  layout: 'article',
+})
 </script>

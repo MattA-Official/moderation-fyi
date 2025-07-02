@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.css', '~/assets/css/layout.css'],
 
   // SEO Configuration
   site: {
@@ -37,6 +37,20 @@ export default defineNuxtConfig({
     database: {
       type: 'd1',
       bindingName: 'DB',
+    },
+    renderer: {
+      anchorLinks: false,
+    },
+    build: {
+      markdown: {
+        highlight: {
+          theme: {
+            default: 'github-dark',
+            light: 'github-light', // TODO: Not currently used because I haven't add light mode support yet
+            dark: 'github-dark',
+          },
+        },
+      },
     },
   },
 

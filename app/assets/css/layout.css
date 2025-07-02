@@ -1,0 +1,13 @@
+main {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--lg) var(--md);
+}
+
+article {
+  max-width: var(--article-width);
+  margin: 0 auto;
+}
