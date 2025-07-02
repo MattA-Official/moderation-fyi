@@ -1,58 +1,24 @@
 <template>
-  <main class="page-container">
-    <div class="content-card">
-      <div class="inner-content">
-        <div>
-          <span class="badge">Coming Soon</span>
-        </div>
-
-        <h1 class="title">
-          moderation.fyi
-        </h1>
-
-        <p class="tagline">
-          Practical moderation guides for volunteer community moderators. Open-source and community-driven.
-        </p>
-
-        <div class="description">
-          <p>
-            Our mission is to build a community-driven knowledge base to help moderators on platforms like Discord,
-            Reddit, and Twitch to manage safer and more engaging communities. This project will be fully
-            open-source.
-          </p>
-        </div>
-
-        <div class="github-callout">
-          <p>
-            Stay tuned for our launch and consider contributing on <NuxtLink
-              to="https://github.com/MattA-Official/moderation-fyi"
-              target="_blank"
-              class="link"
-            >GitHub</NuxtLink>.
-          </p>
-        </div>
-
-        <div>
-          <NuxtLink
-            to="/guides"
-            class="button"
-          >
-            Explore Guides
-          </NuxtLink>
-          <NuxtLink
-            to="/articles"
-            class="button"
-          >
-            Read Articles
-          </NuxtLink>
-          <NuxtLink
-            to="/templates"
-            class="button"
-          >
-            Browse Templates
-          </NuxtLink>
-        </div>
-      </div>
+  <main>
+    <div>
+      <NuxtLink
+        to="/guides"
+        class="button"
+      >
+        Explore Guides
+      </NuxtLink>
+      <NuxtLink
+        to="/articles"
+        class="button"
+      >
+        Read Articles
+      </NuxtLink>
+      <NuxtLink
+        to="/templates"
+        class="button"
+      >
+        Browse Templates
+      </NuxtLink>
     </div>
   </main>
 </template>
@@ -62,7 +28,7 @@
 </script>
 
 <style scoped>
-body {
+/* body {
   max-height: 100vh;
   overflow: hidden;
 }
@@ -144,5 +110,5 @@ body {
   .tagline {
     font-size: var(--font-size-xl);
   }
-}
+} */
 </style>
