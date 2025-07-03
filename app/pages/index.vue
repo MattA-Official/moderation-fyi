@@ -31,7 +31,11 @@
 </template>
 
 <script lang="ts" setup>
+defineOgImageComponent('Default')
 
+useSeoMeta({
+  title: 'Home',
+})
 </script>
 
 <style scoped>

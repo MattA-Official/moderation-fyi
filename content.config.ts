@@ -1,8 +1,9 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
+import { asSeoCollection } from '@nuxtjs/seo/content'
 
 export default defineContentConfig({
   collections: {
-    articles: defineCollection({
+    articles: defineCollection(asSeoCollection({
       source: 'articles/*.md',
       type: 'page',
       schema: z.object({
@@ -28,8 +29,8 @@ export default defineContentConfig({
         }).optional(),
         relatedArticles: z.array(z.string()).optional(),
       }),
-    }),
-    guides: defineCollection({
+    })),
+    guides: defineCollection(asSeoCollection({
       source: 'guides/*.md',
       type: 'page',
       schema: z.object({
@@ -65,8 +66,8 @@ export default defineContentConfig({
         })).optional(),
         featured: z.boolean().default(false),
       }),
-    }),
-    templates: defineCollection({
+    })),
+    templates: defineCollection(asSeoCollection({
       source: 'templates/*.md',
       type: 'page',
       schema: z.object({
@@ -100,7 +101,7 @@ export default defineContentConfig({
         }).optional(),
         featured: z.boolean().default(false),
       }),
-    }),
+    })),
     authors: defineCollection({
       source: 'authors/*.yml',
       type: 'data',

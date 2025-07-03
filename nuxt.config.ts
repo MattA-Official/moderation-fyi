@@ -84,13 +84,18 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    enabled: false,
-    // defaults: {
-    //   component: 'OgImageDefault',
-    //   width: 1200,
-    //   height: 630,
-    //   alt: 'moderation.fyi - Practical moderation guides for volunteer community moderators. Open-source and community-driven.',
-    // },
+    enabled: true,
+    defaults: {
+      component: 'OgImageDefault',
+      width: 1200,
+      height: 630,
+      alt: 'moderation.fyi - Practical moderation guides for volunteer community moderators. Open-source and community-driven.',
+    },
+    compatibility: {
+      prerender: {
+        resvg: 'wasm', // Should fix a compatibility issue with Cloudflare Workers
+      },
+    },
   },
 
   robots: {
@@ -109,7 +114,7 @@ export default defineNuxtConfig({
   },
 
   seo: {
-    redirectToCanonicalSiteUrl: true,
+    // redirectToCanonicalSiteUrl: true,
     automaticDefaults: true,
   },
 
