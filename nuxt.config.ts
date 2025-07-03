@@ -71,10 +71,6 @@ export default defineNuxtConfig({
         ],
       },
     },
-    externals: {
-      inline: ['#internal/nitro/utils'],
-      external: ['@resvg/resvg-js'],
-    },
   },
 
   eslint: {
@@ -97,7 +93,7 @@ export default defineNuxtConfig({
     },
     compatibility: {
       prerender: {
-        resvg: 'wasm-fs', // Should fix a compatibility issue with Cloudflare Workers
+        resvg: false, // Should fix a compatibility issue with Cloudflare Workers
       },
     },
   },
