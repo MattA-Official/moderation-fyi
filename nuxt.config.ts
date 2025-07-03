@@ -71,6 +71,10 @@ export default defineNuxtConfig({
         ],
       },
     },
+    externals: {
+      inline: ['#internal/nitro/utils'],
+      external: ['@resvg/resvg-js'],
+    },
   },
 
   eslint: {
