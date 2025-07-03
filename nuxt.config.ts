@@ -97,7 +97,7 @@ export default defineNuxtConfig({
     },
     compatibility: {
       prerender: {
-        resvg: 'wasm', // Should fix a compatibility issue with Cloudflare Workers
+        resvg: 'wasm-fs', // Should fix a compatibility issue with Cloudflare Workers
       },
     },
   },
