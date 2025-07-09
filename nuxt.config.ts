@@ -84,7 +84,7 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    enabled: true,
+    enabled: false, // Disabled because it's being problematic while deploying
     defaults: {
       component: 'OgImageDefault',
       width: 1200,
