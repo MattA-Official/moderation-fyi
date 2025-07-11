@@ -76,7 +76,7 @@
         </p>
 
         <!-- Icon if provided -->
-        <div
+        <!-- <div
           v-if="icon"
           style="
             margin: 24px 0;
@@ -84,14 +84,14 @@
             align-self: flex-start;
           "
         >
-          <IconComponent
+          <Icon
             :name="icon"
             style="
               width: 120px;
               height: 120px;
             "
           />
-        </div>
+        </div> -->
 
         <!-- Footer with logo or site name -->
         <div
@@ -130,25 +130,24 @@
 </template>
 
 <script lang="ts" setup>
-import { resolveComponent } from 'vue'
-import { useOgImageRuntimeConfig } from '#og-image/app/utils'
+// import { useOgImageRuntimeConfig } from '#og-image/app/utils'
 import { useSiteConfig } from '#site-config/app/composables'
 
 const props = defineProps({
   title: { type: String, required: false, default: 'moderation.fyi' },
   description: { type: String, required: false },
-  icon: { type: String, required: false },
+  // icon: { type: String, required: false },
   siteName: { type: String, required: false },
   siteLogo: { type: String, required: false },
 })
 
-const runtimeConfig = useOgImageRuntimeConfig()
+// const runtimeConfig = useOgImageRuntimeConfig()
 const siteConfig = useSiteConfig()
 
 const siteName = props.siteName || siteConfig.name
 const siteLogo = props.siteLogo || siteConfig.logo
 
-const IconComponent = runtimeConfig.hasNuxtIcon
-  ? resolveComponent('Icon')
-  : { render: () => 'Missing @nuxt/icon' }
+// const IconComponent = runtimeConfig.hasNuxtIcon
+//   ? resolveComponent('Icon')
+//   : { render: () => 'Missing @nuxt/icon' }
 </script>
