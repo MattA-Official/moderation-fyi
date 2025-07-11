@@ -69,6 +69,13 @@ export default defineNuxtConfig({
             custom_domain: true,
           },
         ],
+        d1_databases: [
+          {
+            binding: 'DB',
+            database_name: 'moderation-fyi',
+            database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
+          },
+        ],
       },
     },
   },
