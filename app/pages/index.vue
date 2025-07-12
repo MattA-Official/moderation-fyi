@@ -31,13 +31,96 @@
             >GitHub</NuxtLink>.
           </p>
         </div>
+
+        <div class="newsletter-signup">
+          <h2 class="signup-title">
+            Stay Updated
+          </h2>
+          <p class="signup-description">
+            Sign up to receive updates when we launch
+          </p>
+
+          <form
+            class="signup-form"
+            @submit.prevent="subscribeToNewsletter"
+          >
+            <div class="form-group">
+              <input
+                v-model="email"
+                type="email"
+                placeholder="Your email address"
+                required
+                class="email-input"
+                aria-label="Email address"
+              >
+              <button
+                type="submit"
+                class="submit-button"
+                :disabled="isSubmitting"
+              >
+                {{ isSubmitting ? 'Signing up...' : 'Sign up' }}
+              </button>
+            </div>
+
+            <div
+              v-if="formMessage"
+              class="form-message"
+              :class="formMessage.type"
+            >
+              {{ formMessage.text }}
+            </div>
+
+            <div class="privacy-notice">
+              <p>
+                We respect your privacy. The email address you provide will be used solely for the purpose of sending you our newsletter and updates. We will not share, sell, rent, or trade your email address with any third parties for their promotional purposes. You can unsubscribe at any time by clicking the "unsubscribe" link in any of our emails.
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </main>
 </template>
 
 <script lang="ts" setup>
+const email = ref('')
+const isSubmitting = ref(false)
+const formMessage = ref<{ text: string, type: 'success' | 'error' } | null>(null)
 
+async function subscribeToNewsletter() {
+  if (!email.value) return
+
+  isSubmitting.value = true
+  formMessage.value = null
+
+  try {
+    const { error } = await useFetch('/api/subscribe', {
+      method: 'POST',
+      body: { email: email.value },
+    })
+
+    if (error.value) {
+      throw new Error(error.value.statusMessage || 'Failed to subscribe')
+    }
+
+    // Success
+    formMessage.value = {
+      text: 'Thanks for signing up! We\'ll keep you updated.',
+      type: 'success',
+    }
+    email.value = ''
+  }
+  catch (error: unknown) {
+    // Handle error
+    formMessage.value = {
+      text: error instanceof Error ? error.message : 'Something went wrong. Please try again later.',
+      type: 'error',
+    }
+  }
+  finally {
+    isSubmitting.value = false
+  }
+}
 </script>
 
 <style scoped>
@@ -106,6 +189,102 @@
   color: var(--color-text-tertiary);
 }
 
+.newsletter-signup {
+  margin-top: 2rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 1.5rem;
+}
+
+.signup-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.signup-description {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.email-input {
+  padding: 0.75rem 1rem;
+  background-color: rgba(17, 24, 39, 0.7);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.email-input:focus {
+  outline: none;
+  border-color: var(--color-text-accent);
+}
+
+.submit-button {
+  background-image: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));
+  color: #111827;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.submit-button:hover {
+  opacity: 0.9;
+}
+
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-message {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: var(--font-size-sm);
+}
+
+.form-message.success {
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.form-message.error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.privacy-notice {
+  margin-top: 1.5rem;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  padding: 1rem;
+  background-color: rgba(17, 24, 39, 0.3);
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
 @media (min-width: 768px) {
   .content-card {
     padding: 3rem;
@@ -117,6 +296,18 @@
 
   .tagline {
     font-size: var(--font-size-xl);
+  }
+
+  .form-group {
+    flex-direction: row;
+  }
+
+  .email-input {
+    flex: 1;
+  }
+
+  .submit-button {
+    white-space: nowrap;
   }
 }
 </style>

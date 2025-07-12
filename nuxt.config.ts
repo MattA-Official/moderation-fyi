@@ -55,6 +55,24 @@ export default defineNuxtConfig({
             custom_domain: true,
           },
         ],
+        d1_databases: [
+          {
+            binding: 'DB',
+            database_name: 'moderation-fyi',
+            database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
+          },
+        ],
+      },
+    },
+    experimental: {
+      database: true,
+    },
+    database: {
+      default: {
+        connector: 'cloudflare-d1',
+        options: {
+          bindingName: 'DB',
+        },
       },
     },
   },
@@ -95,13 +113,12 @@ export default defineNuxtConfig({
   },
 
   seo: {
-    redirectToCanonicalSiteUrl: true,
+    // redirectToCanonicalSiteUrl: true,
     automaticDefaults: true,
   },
 
   sitemap: {
     enabled: true,
     autoLastmod: true,
-    strictNuxtContentPaths: true,
   },
 })
