@@ -130,6 +130,8 @@ async function subscribeToNewsletter() {
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  overflow-y: auto; /* Allow scrolling on small screens */
+  padding-bottom: calc(1rem + var(--safe-area-inset-bottom)); /* Account for bottom safe area on iOS */
 }
 
 .content-card {
@@ -140,7 +142,7 @@ async function subscribeToNewsletter() {
   border-radius: 1rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 15px rgba(23, 59, 115, 0.2);
   border: 1px solid var(--color-border);
-  padding: 2rem;
+  padding: 1.5rem; /* Smaller padding on mobile */
   text-align: center;
 }
 
@@ -160,17 +162,18 @@ async function subscribeToNewsletter() {
 }
 
 .title {
-  font-size: var(--font-size-4xl);
+  font-size: calc(var(--font-size-4xl) * 0.8); /* Slightly smaller on mobile */
   font-weight: 800;
   letter-spacing: -0.025em;
   color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
   background-image: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));
+  word-break: break-word; /* Prevent overflow on small screens */
 }
 
 .tagline {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base); /* Smaller on mobile */
   color: var(--color-text-primary);
   max-width: 36rem;
   margin-left: auto;
@@ -217,6 +220,7 @@ async function subscribeToNewsletter() {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  width: 100%;
 }
 
 .email-input {
@@ -228,6 +232,7 @@ async function subscribeToNewsletter() {
   font-size: var(--font-size-base);
   transition: border-color 0.2s ease;
   width: 100%;
+  box-sizing: border-box; /* Ensure padding doesn't break layout */
 }
 
 .email-input:focus {
@@ -244,6 +249,7 @@ async function subscribeToNewsletter() {
   border-radius: 0.5rem;
   cursor: pointer;
   transition: opacity 0.2s ease;
+  width: 100%; /* Full width on mobile */
 }
 
 .submit-button:hover {
@@ -260,6 +266,7 @@ async function subscribeToNewsletter() {
   padding: 0.75rem;
   border-radius: 0.5rem;
   font-size: var(--font-size-sm);
+  word-break: break-word; /* Prevent overflow of error messages */
 }
 
 .form-message.success {
@@ -278,7 +285,7 @@ async function subscribeToNewsletter() {
   margin-top: 1.5rem;
   font-size: var(--font-size-sm);
   color: var(--color-text-tertiary);
-  padding: 1rem;
+  padding: 0.75rem; /* Smaller padding on mobile */
   background-color: rgba(17, 24, 39, 0.3);
   border-radius: 0.5rem;
   border: 1px solid var(--color-border);
@@ -308,6 +315,11 @@ async function subscribeToNewsletter() {
 
   .submit-button {
     white-space: nowrap;
+    width: auto; /* Reset width on larger screens */
+  }
+
+  .privacy-notice {
+    padding: 1rem;
   }
 }
 </style>

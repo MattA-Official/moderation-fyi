@@ -20,6 +20,9 @@
   --font-size-xl: 1.25rem;
   --font-size-4xl: 2.25rem;
   --font-size-5xl: 3rem;
+
+  /* Viewport adjustments */
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 body {
@@ -27,8 +30,9 @@ body {
   background-color: var(--color-bg-dark);
   color: var(--color-text-primary);
   margin: 0;
-  max-height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 a {
