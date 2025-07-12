@@ -19,6 +19,8 @@ export default defineEventHandler(async (event) => {
       ON CONFLICT (email) DO NOTHING
     `
 
+    console.log('Insert result:', result)
+
     // Check if insertion was successful
     if (result.rows?.length === 0) {
       throw createError({
