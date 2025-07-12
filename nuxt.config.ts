@@ -62,6 +62,11 @@ export default defineNuxtConfig({
             database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
           },
         ],
+        observability: {
+          logs: {
+            enabled: true,
+          },
+        },
       },
     },
     experimental: {
