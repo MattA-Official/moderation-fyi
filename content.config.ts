@@ -1,36 +1,18 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
-import { asSeoCollection } from '@nuxtjs/seo/content'
 
 export default defineContentConfig({
   collections: {
-    articles: defineCollection(asSeoCollection({
-      source: 'articles/*.md',
+    articles: defineCollection({
+      source: 'articles/**/*',
       type: 'page',
       schema: z.object({
-        title: z.string(),
-        description: z.string(),
-        author: z.string(),
-        publishedAt: z.date(),
-        updatedAt: z.date().optional(),
-        tags: z.array(z.string()).default([]),
-        category: z.enum(['moderation', 'policy', 'technology', 'trends', 'case-study']),
-        featured: z.boolean().default(false),
-        readingTime: z.number().optional(),
-        difficulty: z.enum(['beginner', 'intermediate', 'advanced']).default('beginner'),
-        image: z.object({
-          src: z.string(),
-          alt: z.string(),
-          caption: z.string().optional(),
-        }).optional(),
-        seo: z.object({
-          title: z.string().optional(),
-          description: z.string().optional(),
-          keywords: z.array(z.string()).optional(),
-        }).optional(),
-        relatedArticles: z.array(z.string()).optional(),
+        image: z.object({ src: z.string().nonempty().editor({ input: 'media' }) }),
+        authors: z.array(z.string()), // Array of author IDs that reference the authors collection
+        date: z.date(),
+        badge: z.object({ label: z.string().nonempty() }),
       }),
-    })),
-    guides: defineCollection(asSeoCollection({
+    }),
+    guides: defineCollection({
       source: 'guides/*.md',
       type: 'page',
       schema: z.object({
@@ -66,8 +48,8 @@ export default defineContentConfig({
         })).optional(),
         featured: z.boolean().default(false),
       }),
-    })),
-    templates: defineCollection(asSeoCollection({
+    }),
+    templates: defineCollection({
       source: 'templates/*.md',
       type: 'page',
       schema: z.object({
@@ -101,19 +83,19 @@ export default defineContentConfig({
         }).optional(),
         featured: z.boolean().default(false),
       }),
-    })),
+    }),
     authors: defineCollection({
       source: 'authors/*.yml',
       type: 'data',
       schema: z.object({
-        name: z.string(),
-        bio: z.string(),
-        image: z.string().optional(),
-        social: z.object({
-          twitter: z.string().optional(),
-          github: z.string().optional(),
-          website: z.string().optional(),
-        }).optional(),
+        name: z.string().nonempty(),
+        description: z.string().nonempty(),
+        avatar: z.object({
+          src: z.string().nonempty(),
+          alt: z.string().optional(),
+        }),
+        to: z.string().optional(),
+        target: z.string().optional(),
       }),
     }),
   },
