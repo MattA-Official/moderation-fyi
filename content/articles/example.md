@@ -1,14 +1,13 @@
 ---
 title: Example Article
-description: "An example article about content moderation."
-author: moderation-team
-publishedAt: 2025-07-01
-tags:
-  - example
-  - moderation
-category: case-study
-featured: true
-difficulty: beginner
+description: An example article about content moderation
+image:
+  src: https://picsum.photos/1048/640
+authors:
+  - moderation-team
+date: 2025-07-01
+badge:
+  label: Case Study
 ---
 
 # Example Article
