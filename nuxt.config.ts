@@ -1,13 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: [
-    '@nuxt/content',
-    '@nuxt/eslint',
-    '@nuxt/fonts',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@nuxtjs/seo',
-  ],
+  modules: ['@nuxt/content', '@nuxt/eslint', '@nuxt/fonts', '@nuxt/icon', '@nuxt/image', '@nuxtjs/seo', '@nuxt/ui', 'nuxt-studio'],
 
   devtools: { enabled: true },
 
@@ -23,7 +16,7 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ['~/assets/css/main.css', '~/assets/css/layout.css'],
+  css: ['~/assets/css/main.css'],
 
   // SEO Configuration
   site: {
@@ -125,5 +118,17 @@ export default defineNuxtConfig({
   sitemap: {
     enabled: true,
     autoLastmod: true,
+  },
+
+  studio: {
+    // Studio admin route (default: '/_studio')
+    route: '/_studio',
+
+    repository: {
+      provider: 'github',
+      owner: 'Matta-Official',
+      repo: 'moderation-fyi',
+      branch: 'dev',
+    },
   },
 })
