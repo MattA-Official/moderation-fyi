@@ -1,11 +1,15 @@
 <template>
   <div>
     <AppHeader />
-    <main>
-      <article>
-        <slot />
-      </article>
-    </main>
+
+    <UMain>
+      <UContainer>
+        <UPage>
+          <slot />
+        </UPage>
+      </UContainer>
+    </UMain>
+
     <AppFooter />
   </div>
 </template>

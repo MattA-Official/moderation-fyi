@@ -1,13 +1,9 @@
 <template>
-  <NuxtLayout class="site-wrapper">
-    <NuxtPage />
-  </NuxtLayout>
-</template>
+  <UApp>
+    <NuxtLoadingIndicator />
 
-<style scoped>
-.site-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-</style>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </UApp>
+</template>
