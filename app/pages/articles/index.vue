@@ -4,6 +4,8 @@ const route = useRoute()
 const { data: articles } = await useAsyncData(route.path, () => queryCollection('articles').all())
 const { data: authors } = await useAsyncData('authors', () => queryCollection('authors').all())
 
+type Author = NonNullable<typeof authors.value>[number]
+
 // Create a map of author IDs to author objects for easy lookup
 const authorMap = computed(() => {
   if (!authors.value) return {}
@@ -14,7 +16,7 @@ const authorMap = computed(() => {
       map[authorId] = author
     }
     return map
-  }, {} as Record<string, typeof authors.value[0]>)
+  }, {} as Record<string, Author>)
 })
 
 // Transform articles to include resolved author data
@@ -22,10 +24,10 @@ const enrichedArticles = computed(() => {
   if (!articles.value) return []
 
   return articles.value.map((article) => {
-    // Map author IDs to full author objects (already in correct format)
-    const authorsData = article.authors?.map((authorId: string) => {
+    // Map author IDs to full author objects
+    const authorsData = (article.authors as string[] | undefined)?.map((authorId: string) => {
       return authorMap.value[authorId]
-    }).filter(Boolean) || []
+    }).filter((author): author is Author => author !== undefined) || []
 
     return {
       ...article,
