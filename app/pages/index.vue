@@ -1,39 +1,50 @@
 <template>
-  <UContainer>
-    <ProseH1>Heading 1</ProseH1>
-    <ProseH2>Heading 2</ProseH2>
-    <ProseH3>Heading 3</ProseH3>
-    <ProseH4>Heading 4</ProseH4>
-    <ProseH5>Heading 5</ProseH5>
-    <ProseH6>Heading 6</ProseH6>
-    <ProseP>
-      This is a paragraph with <ProseA href="#">
-        a link
-      </ProseA> and some <ProseStrong>bold text</ProseStrong>.
-    </ProseP>
-    <ProseP>Another paragraph with <ProseEm>italic text</ProseEm> and a <ProseCode>code snippet</ProseCode>.</ProseP>
-    <ProseUl>
-      <ProseLi>List item 1</ProseLi>
-      <ProseLi>List item 2</ProseLi>
-      <ProseLi>List item 3</ProseLi>
-    </ProseUl>
-    <ProseOl>
-      <ProseLi>Ordered item 1</ProseLi>
-      <ProseLi>Ordered item 2</ProseLi>
-      <ProseLi>Ordered item 3</ProseLi>
-    </ProseOl>
-    <ProseBlockquote>
-      This is a blockquote. It can contain multiple lines of text.
-    </ProseBlockquote>
-    <ProsePre>
-      <ProseCode>console.log('This is a code block');</ProseCode>
-    </ProsePre>
-    <img
-      src="https://placehold.co/300"
-      alt="Example Image"
-      width="300"
+  <UPage>
+    <UPageHero
+      title="Practical moderation guides for volunteer community moderators"
+      description="Open-source and community-driven resources to help you build and maintain healthy online communities."
+      :links="[
+        { label: 'Read the Guides', to: '/guides', icon: 'i-heroicons-book-open', size: 'lg' },
+        { label: 'Browse Templates', to: '/templates', icon: 'i-heroicons-document-duplicate', color: 'neutral', variant: 'outline', size: 'lg' }
+      ]"
+    />
+
+    <!-- <UPageLogos
+      title="Trusted by communities using our resources"
+      :items="['i-simple-icons-discord', 'i-simple-icons-reddit', 'i-simple-icons-slack', 'i-simple-icons-discourse', 'i-simple-icons-github']"
+    /> -->
+
+    <UPageSection
+      title="What Moderators Say"
+      description="Hear from community leaders who have used our resources to improve their moderation practices."
+      class="bg-gray-50 dark:bg-gray-900/50"
     >
-  </UContainer>
+      <UPageGrid>
+        <UPageCard
+          icon="i-heroicons-chat-bubble-left-right"
+          title="Invaluable Resource"
+          description="The conflict resolution guide helped us de-escalate a major situation in our Discord server. Highly recommended!"
+        />
+        <UPageCard
+          icon="i-heroicons-document-text"
+          title="Saved Me Hours"
+          description="I used the removal reason templates to set up our auto-mod responses. It saved me so much time and effort."
+        />
+        <UPageCard
+          icon="i-heroicons-user-group"
+          title="Better Community"
+          description="Implementing the rule-setting guidelines transformed our community culture for the better."
+        />
+      </UPageGrid>
+    </UPageSection>
+
+    <UPageCTA
+      title="Join the Community"
+      description="moderation.fyi is built by moderators, for moderators. Contribute your own knowledge and help the community grow."
+      :links="[{ label: 'About Us', to: '/about', color: 'neutral', variant: 'outline', size: 'lg' }]"
+      class="bg-primary-50 dark:bg-primary-900/10"
+    />
+  </UPage>
 </template>
 
 <script lang="ts" setup>
@@ -44,6 +55,4 @@ useSeoMeta({
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
