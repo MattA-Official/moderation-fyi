@@ -1,13 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: [
-    '@nuxt/content',
-    '@nuxt/eslint',
-    '@nuxt/fonts',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@nuxtjs/seo',
-  ],
+  modules: ['@nuxt/ui', '@nuxt/content', '@nuxt/eslint', '@nuxt/fonts', '@nuxt/icon', '@nuxt/image', '@nuxtjs/seo', 'nuxt-studio'],
 
   devtools: { enabled: true },
 
@@ -38,12 +31,23 @@ export default defineNuxtConfig({
       type: 'd1',
       bindingName: 'DB',
     },
+    renderer: {
+      anchorLinks: false,
+    },
+    build: {
+      markdown: {
+        highlight: {
+          theme: {
+            default: 'github-dark',
+            light: 'github-light', // TODO: Not currently used because I haven't add light mode support yet
+            dark: 'github-dark',
+          },
+        },
+      },
+    },
   },
 
-  future: {
-    compatibilityVersion: 4,
-  },
-  compatibilityDate: '2025-05-15',
+  compatibilityDate: '2025-11-04',
 
   nitro: {
     cloudflare: {
@@ -53,6 +57,13 @@ export default defineNuxtConfig({
           {
             pattern: 'moderation.fyi',
             custom_domain: true,
+          },
+        ],
+        d1_databases: [
+          {
+            binding: 'DB',
+            database_name: 'moderation-fyi',
+            database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
           },
         ],
       },
@@ -70,13 +81,18 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    enabled: false,
-    // defaults: {
-    //   component: 'OgImageDefault',
-    //   width: 1200,
-    //   height: 630,
-    //   alt: 'moderation.fyi - Practical moderation guides for volunteer community moderators. Open-source and community-driven.',
-    // },
+    enabled: false, // Disabled because it's being problematic while deploying
+    defaults: {
+      component: 'OgImageDefault',
+      width: 1200,
+      height: 630,
+      alt: 'moderation.fyi - Practical moderation guides for volunteer community moderators. Open-source and community-driven.',
+    },
+    compatibility: {
+      prerender: {
+        resvg: false, // Should fix a compatibility issue with Cloudflare Workers
+      },
+    },
   },
 
   robots: {
@@ -95,13 +111,24 @@ export default defineNuxtConfig({
   },
 
   seo: {
-    redirectToCanonicalSiteUrl: true,
+    // redirectToCanonicalSiteUrl: true,
     automaticDefaults: true,
   },
 
   sitemap: {
     enabled: true,
     autoLastmod: true,
-    strictNuxtContentPaths: true,
+  },
+
+  studio: {
+    // Studio admin route (default: '/_studio')
+    route: '/_studio',
+
+    repository: {
+      provider: 'github',
+      owner: 'Matta-Official',
+      repo: 'moderation-fyi',
+      branch: 'dev',
+    },
   },
 })

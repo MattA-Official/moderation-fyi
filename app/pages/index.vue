@@ -1,122 +1,58 @@
 <template>
-  <main class="page-container">
-    <div class="content-card">
-      <div class="inner-content">
-        <div>
-          <span class="badge">Coming Soon</span>
-        </div>
+  <UPage>
+    <UPageHero
+      title="Practical moderation guides for volunteer community moderators"
+      description="Open-source and community-driven resources to help you build and maintain healthy online communities."
+      :links="[
+        { label: 'Read the Guides', to: '/guides', icon: 'i-heroicons-book-open', size: 'lg' },
+        { label: 'Browse Templates', to: '/templates', icon: 'i-heroicons-document-duplicate', color: 'neutral', variant: 'outline', size: 'lg' }
+      ]"
+    />
 
-        <h1 class="title">
-          moderation.fyi
-        </h1>
+    <!-- <UPageLogos
+      title="Trusted by communities using our resources"
+      :items="['i-simple-icons-discord', 'i-simple-icons-reddit', 'i-simple-icons-slack', 'i-simple-icons-discourse', 'i-simple-icons-github']"
+    /> -->
 
-        <p class="tagline">
-          Practical moderation guides for volunteer community moderators. Open-source and community-driven.
-        </p>
+    <UPageSection
+      title="What Moderators Say"
+      description="Hear from community leaders who have used our resources to improve their moderation practices."
+      class="bg-gray-50 dark:bg-gray-900/50"
+    >
+      <UPageGrid>
+        <UPageCard
+          icon="i-heroicons-chat-bubble-left-right"
+          title="Invaluable Resource"
+          description="The conflict resolution guide helped us de-escalate a major situation in our Discord server. Highly recommended!"
+        />
+        <UPageCard
+          icon="i-heroicons-document-text"
+          title="Saved Me Hours"
+          description="I used the removal reason templates to set up our auto-mod responses. It saved me so much time and effort."
+        />
+        <UPageCard
+          icon="i-heroicons-user-group"
+          title="Better Community"
+          description="Implementing the rule-setting guidelines transformed our community culture for the better."
+        />
+      </UPageGrid>
+    </UPageSection>
 
-        <div class="description">
-          <p>
-            Our mission is to build a community-driven knowledge base to help moderators on platforms like Discord,
-            Reddit, and Twitch to manage safer and more engaging communities. This project will be fully
-            open-source.
-          </p>
-        </div>
-
-        <div class="github-callout">
-          <p>
-            Stay tuned for our launch and consider contributing on <NuxtLink
-              to="https://github.com/MattA-Official/moderation-fyi"
-              target="_blank"
-              class="link"
-            >GitHub</NuxtLink>.
-          </p>
-        </div>
-      </div>
-    </div>
-  </main>
+    <UPageCTA
+      title="Join the Community"
+      description="moderation.fyi is built by moderators, for moderators. Contribute your own knowledge and help the community grow."
+      :links="[{ label: 'About Us', to: '/about', color: 'neutral', variant: 'outline', size: 'lg' }]"
+      class="bg-primary-50 dark:bg-primary-900/10"
+    />
+  </UPage>
 </template>
 
 <script lang="ts" setup>
+defineOgImageComponent('Default')
 
+useSeoMeta({
+  title: 'Home',
+})
 </script>
 
-<style scoped>
-.page-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.content-card {
-  width: 100%;
-  max-width: 42rem;
-  background-color: var(--color-bg-card);
-  backdrop-filter: blur(4px);
-  border-radius: 1rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 15px rgba(23, 59, 115, 0.2);
-  border: 1px solid var(--color-border);
-  padding: 2rem;
-  text-align: center;
-}
-
-.content-card>.inner-content>*+* {
-  margin-top: 1.5rem;
-}
-
-.badge {
-  display: inline-block;
-  background-color: var(--color-accent-bg-light);
-  color: var(--color-text-accent);
-  border: 1px solid var(--color-accent-border-light);
-  border-radius: 9999px;
-  padding: 0.25rem 1rem;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-}
-
-.title {
-  font-size: var(--font-size-4xl);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  background-image: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));
-}
-
-.tagline {
-  font-size: var(--font-size-lg);
-  color: var(--color-text-primary);
-  max-width: 36rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.description {
-  color: var(--color-text-secondary);
-  border-top: 1px solid var(--color-border);
-  padding-top: 1.5rem;
-}
-
-.github-callout {
-  padding-top: 1rem;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-tertiary);
-}
-
-@media (min-width: 768px) {
-  .content-card {
-    padding: 3rem;
-  }
-
-  .title {
-    font-size: var(--font-size-5xl);
-  }
-
-  .tagline {
-    font-size: var(--font-size-xl);
-  }
-}
-</style>
+<style scoped></style>

@@ -1,42 +1,73 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+/* Tailwind Theme Configuration */
+@theme {
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Lora', serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+/* CSS Variables for Nuxt UI Dark Theme */
 :root {
-  /* Colour Palette */
-  --color-bg-dark: #111827;
-  --color-bg-card: rgba(31, 41, 55, 0.5);
-  --color-border: #374151;
-  --color-text-primary: #d1d5db;
-  --color-text-secondary: #9ca3af;
-  --color-text-tertiary: #6b7280;
-  --color-text-accent: #93c5fd;
-  --color-accent-bg-light: rgba(59, 130, 246, 0.1);
-  --color-accent-border-light: rgba(59, 130, 246, 0.2);
-  --color-gradient-start: #60a5fa;
-  --color-gradient-end: #5eead4;
+  /* Dark theme background */
+  --ui-bg: #111827;
 
-  /* Typography */
-  --font-family-main: 'Inter', sans-serif;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-4xl: 2.25rem;
-  --font-size-5xl: 3rem;
+  /* Card/Surface background */
+  --ui-bg-muted: rgba(31, 41, 55, 0.5);
+  --ui-bg-elevated: rgba(31, 41, 55, 0.7);
+  --ui-bg-accented: #374151;
+
+  /* Border colors (matching legacy.css --colour-border) */
+  --ui-border: #374151;
+  --ui-border-muted: #374151;
+  --ui-border-accented: #4b5563;
+
+  /* Text colors (matching legacy.css text colors) */
+  --ui-text-dimmed: #6b7280;
+  --ui-text-muted: #9ca3af;
+  --ui-text-toned: #d1d5db;
+  --ui-text: #d1d5db;
+  --ui-text-highlighted: #ffffff;
+
+  /* Primary color */
+  --ui-primary: #60a5fa;
+
+  /* Border radius */
+  --ui-radius: 0.5rem;
+
+  /* Container width */
+  --ui-container: 1400px;
 }
 
-body {
-  font-family: var(--font-family-main);
-  background-color: var(--color-bg-dark);
-  color: var(--color-text-primary);
-  margin: 0;
-  max-height: 100vh;
-  overflow: hidden;
+/* Since the legacy design is dark-first, we apply similar styling for light mode */
+/* Light mode would need adjustment if you want to support it */
+.light {
+  --ui-bg: #ffffff;
+  --ui-bg-muted: #f9fafb;
+  --ui-bg-elevated: #f3f4f6;
+  --ui-bg-accented: #e5e7eb;
+
+  --ui-border: #e5e7eb;
+  --ui-border-muted: #e5e7eb;
+  --ui-border-accented: #d1d5db;
+
+  --ui-text-dimmed: #9ca3af;
+  --ui-text-muted: #6b7280;
+  --ui-text-toned: #4b5563;
+  --ui-text: #1f2937;
+  --ui-text-highlighted: #111827;
+
+  --ui-primary: #3b82f6;
 }
 
-a {
-  color: var(--color-text-accent);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--color-text-secondary);
+/* Typography - Apply serif font to headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-serif);
 }
