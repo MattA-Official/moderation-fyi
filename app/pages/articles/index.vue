@@ -47,7 +47,7 @@ const enrichedArticles = computed(() => {
 </script>
 
 <template>
-  <UContainer>
+  <UPage>
     <UPageHeader
       title="Articles"
       description="Stay updated with the latest news, insights, and trends in content moderation and online safety."
@@ -74,5 +74,5 @@ const enrichedArticles = computed(() => {
         />
       </UBlogPosts>
     </UPageBody>
-  </UContainer>
+  </UPage>
 </template>
