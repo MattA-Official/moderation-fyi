@@ -38,8 +38,7 @@
   --ui-radius: 0.5rem;
 
   /* Container width */
-  --ui-container: 100rem;
-  /* 1600px */
+  --ui-container: 1400px;
 }
 
 /* Since the legacy design is dark-first, we apply similar styling for light mode */
