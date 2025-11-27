@@ -3,7 +3,9 @@
     <AppHeader />
 
     <UMain>
-      <slot />
+      <UContainer>
+        <slot />
+      </UContainer>
     </UMain>
 
     <AppFooter />
