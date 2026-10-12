@@ -51,6 +51,7 @@ The front matter fields for each collection are defined in `content.config.ts`, 
 
 - **Social links, repository and "edit this page" branch:** `app/app.config.ts`
 - **Newsletter:** `POST /api/subscribe` stores sign-ups in the `subscribers` table of the `DB` D1 database (the table is created automatically). In development it uses a local SQLite file in `.data/`.
+- **Branch previews:** pushes to any branch other than the production branch are deployed as [Worker Previews](https://developers.cloudflare.com/workers/previews/) at `<branch>.preview.moderation.fyi` (for example `dev.preview.moderation.fyi`). Previews use a separate D1 database (`previews` in the Wrangler config in `nuxt.config.ts`) and are hidden from search engines.
 - **Nuxt Studio:** production editing requires the Studio GitHub OAuth environment variables. See the [Studio docs](https://content.nuxt.com/docs/studio/setup).
 
 ## Contact

@@ -1,4 +1,54 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+// Cloudflare Workers config, written to the generated wrangler.json. Kept out of
+// the config literal because Nitro's bundled Wrangler types don't know about
+// Worker Previews (`previews`, `previews_enabled`) yet.
+const wrangler = {
+  name: 'moderation-fyi',
+  routes: [
+    {
+      pattern: 'moderation.fyi',
+      custom_domain: true,
+    },
+    // Preview-only domain: each branch is served at <branch>.preview.moderation.fyi
+    {
+      pattern: 'preview.moderation.fyi',
+      custom_domain: true,
+      previews_enabled: true,
+      enabled: false,
+    },
+  ],
+  d1_databases: [
+    {
+      binding: 'DB',
+      database_name: 'moderation-fyi',
+      database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
+    },
+  ],
+  observability: {
+    logs: {
+      enabled: true,
+    },
+  },
+  // Settings for branch Previews (`wrangler preview`). Previews don't inherit
+  // production bindings, and must not share the production database: Nuxt
+  // Content rewrites its tables to match each deployment's content.
+  previews: {
+    d1_databases: [
+      {
+        binding: 'DB',
+        database_name: 'moderation-fyi-preview',
+        database_id: 'REPLACE_WITH_PREVIEW_DATABASE_ID',
+      },
+    ],
+    observability: {
+      logs: {
+        enabled: true,
+      },
+    },
+  },
+}
+
 export default defineNuxtConfig({
   modules: ['@nuxt/ui', '@nuxt/content', '@nuxt/eslint', '@nuxt/icon', '@nuxt/image', '@nuxtjs/seo', 'nuxt-studio'],
 
@@ -65,27 +115,7 @@ export default defineNuxtConfig({
 
   nitro: {
     cloudflare: {
-      wrangler: {
-        name: 'moderation-fyi',
-        routes: [
-          {
-            pattern: 'moderation.fyi',
-            custom_domain: true,
-          },
-        ],
-        d1_databases: [
-          {
-            binding: 'DB',
-            database_name: 'moderation-fyi',
-            database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
-          },
-        ],
-        observability: {
-          logs: {
-            enabled: true,
-          },
-        },
-      },
+      wrangler,
     },
     experimental: {
       database: true,
@@ -118,12 +148,17 @@ export default defineNuxtConfig({
   },
 
   icon: {
-    // Serve every icon from the bundled collections, never the public Iconify API
+    // Brand icons (simple-icons) are picked up by the client bundle scan; the
+    // server bundle only carries lucide to keep the Worker small. Never fall
+    // back to the public Iconify API.
     serverBundle: {
-      collections: ['lucide', 'simple-icons'],
+      collections: ['lucide'],
     },
     clientBundle: {
       scan: true,
+      // Platform icons are looked up dynamically (see `platformIcons` in app/utils/format.ts)
+      icons: ['discord', 'reddit', 'twitch', 'youtube', 'kick', 'slack', 'discourse', 'telegram', 'matrix', 'mastodon', 'bluesky', 'facebook', 'github', 'x']
+        .map(name => `simple-icons:${name}`),
     },
     fallbackToApi: false,
   },
