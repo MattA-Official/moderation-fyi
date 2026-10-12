@@ -6,9 +6,13 @@ updatedAt: 2026-10-12
 
 ## Using our content
 
-The guides, templates and articles on moderation.fyi are free to use. Unless a page says otherwise, written content is licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0). This means that you can copy, adapt and share it, including commercially, as long as you give appropriate credit.
+The guides, templates and articles on moderation.fyi are free to use. Unless a page says otherwise, written content is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) (CC BY-NC-SA 4.0). This means that you can copy, adapt and share it as long as you:
 
-Templates are designed to be copied into your own community's rules and documents. You don't need to credit us inside your server rules or policies, but a link back is always appreciated.
+- **give appropriate credit** to moderation.fyi and link to the licence
+- **don't use it for commercial purposes**
+- **share any adapted versions under the same licence**
+
+Templates are designed to be copied into your own community's rules and documents. As an exception to the licence, you can use our templates in your community's own rules, policies and moderation messages without crediting us and without sharing your version under CC BY-NC-SA. A link back is always appreciated.
 
 ## No professional advice
 

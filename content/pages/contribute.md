@@ -64,5 +64,5 @@ Open a pull request against the `dev` branch. A maintainer will review it, sugge
 - **Be respectful.** Never include identifying details of real users or communities without permission.
 
 ::note
-By contributing, you agree that your contribution will be published under the licence shown on the content (CC BY 4.0 unless stated otherwise).
+By contributing, you agree that your contribution will be published under the licence shown on the content (CC BY-NC-SA 4.0 unless stated otherwise).
 ::

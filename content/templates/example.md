@@ -14,7 +14,7 @@ platforms:
 compliance:
   - GDPR
 downloadable: true
-license: cc-by
+license: cc-by-nc-sa
 featured: true
 customization:
   difficulty: easy

@@ -65,7 +65,7 @@ export default defineContentConfig({
         platforms: z.array(z.string()).default([]), // e.g. ['discord', 'reddit', 'twitch']
         compliance: z.array(z.string()).default([]), // e.g. ['GDPR', 'COPPA', 'DSA']
         downloadable: z.boolean().default(true),
-        license: z.enum(['cc0', 'cc-by', 'cc-by-sa']).default('cc-by'),
+        license: z.enum(['cc-by-nc-sa', 'cc0', 'cc-by', 'cc-by-sa']).default('cc-by-nc-sa'),
         customization: z.object({
           difficulty: z.enum(['easy', 'moderate', 'complex']).default('easy'),
           estimatedTime: z.string().optional(),

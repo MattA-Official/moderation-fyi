@@ -16,6 +16,7 @@ export const difficultyColours = {
 } as const
 
 export const licences = {
+  'cc-by-nc-sa': { label: 'CC BY-NC-SA 4.0', to: 'https://creativecommons.org/licenses/by-nc-sa/4.0/' },
   'cc0': { label: 'CC0 1.0', to: 'https://creativecommons.org/publicdomain/zero/1.0/' },
   'cc-by': { label: 'CC BY 4.0', to: 'https://creativecommons.org/licenses/by/4.0/' },
   'cc-by-sa': { label: 'CC BY-SA 4.0', to: 'https://creativecommons.org/licenses/by-sa/4.0/' },
