@@ -1,11 +1,17 @@
 <template>
   <div>
+    <UBanner
+      id="moderation-fyi-preview"
+      icon="i-lucide-construction"
+      title="moderation.fyi is in early development. New guides and templates are on the way!"
+      color="primary"
+      close
+    />
+
     <AppHeader />
 
     <UMain>
-      <UContainer>
-        <slot />
-      </UContainer>
+      <slot />
     </UMain>
 
     <AppFooter />

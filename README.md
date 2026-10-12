@@ -20,77 +20,38 @@ Our mission is to build a community-driven knowledge base to help moderators on 
 
 We welcome contributions from the community! Whether you're a seasoned moderator with insights to share or a developer looking to improve the website, there are many ways to get involved. Fork the repository to get started!
 
-## Setup
+## Development
 
-Make sure to install dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+The site is built with [Nuxt 4](https://nuxt.com), [Nuxt UI](https://ui.nuxt.com) and [Nuxt Content](https://content.nuxt.com), and is deployed to Cloudflare Workers. We use [Bun](https://bun.sh):
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+bun install      # install dependencies
+bun run dev      # start the dev server on http://localhost:3000
+bun run lint     # lint (add :fix to autofix)
+bun run typecheck
+bun run build    # production build
+bun run preview  # preview the production build
 ```
 
-## Production
+## Writing content
 
-Build the application for production:
+All content lives in `content/` as Markdown, and can also be edited visually through Nuxt Studio at `/_studio`.
 
-```bash
-# npm
-npm run build
+| Folder               | What goes there                                        | URL               |
+| -------------------- | ------------------------------------------------------ | ----------------- |
+| `content/guides/`    | Step-by-step guides                                    | `/guides/<file>`    |
+| `content/templates/` | Copy-and-paste templates (copy and download buttons)   | `/templates/<file>` |
+| `content/articles/`  | Articles, case studies and opinion (also in `/rss.xml`) | `/articles/<file>`  |
+| `content/pages/`     | Standalone pages: about, contribute, privacy, terms    | `/<file>`           |
+| `content/authors/`   | One YAML file per author, referenced by file name      | n/a                 |
 
-# pnpm
-pnpm build
+The front matter fields for each collection are defined in `content.config.ts`, and the `example.md` file in each folder shows them all in use.
 
-# yarn
-yarn build
+## Configuration
 
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- **Social links, repository and "edit this page" branch:** `app/app.config.ts`
+- **Newsletter:** `POST /api/subscribe` stores sign-ups in the `subscribers` table of the `DB` D1 database (the table is created automatically). In development it uses a local SQLite file in `.data/`.
+- **Nuxt Studio:** production editing requires the Studio GitHub OAuth environment variables. See the [Studio docs](https://content.nuxt.com/docs/studio/setup).
 
 ## Contact
 

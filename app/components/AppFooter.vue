@@ -1,84 +1,66 @@
 <script setup lang="ts">
-import type { FooterColumn } from '@nuxt/ui';
+import type { FooterColumn } from '@nuxt/ui'
+
+const { site } = useAppConfig()
 
 const columns: FooterColumn[] = [{
   label: 'Resources',
-  children: [{
-    label: 'Guides',
-    to: '/guides'
-  }, {
-    label: 'Templates',
-    to: '/templates'
-  }, {
-    label: 'Articles',
-    to: '/articles'
-  }]
+  children: [
+    { label: 'Guides', to: '/guides' },
+    { label: 'Templates', to: '/templates' },
+    { label: 'Articles', to: '/articles' },
+    { label: 'RSS feed', to: '/rss.xml', target: '_blank' },
+  ],
 }, {
-  label: 'Community',
-  children: [{
-    label: 'Discord',
-    to: 'https://discord.com',
-    target: '_blank'
-  }, {
-    label: 'GitHub',
-    to: 'https://github.com',
-    target: '_blank'
-  }]
+  label: 'Project',
+  children: [
+    { label: 'About', to: '/about' },
+    { label: 'Contribute', to: '/contribute' },
+    { label: 'GitHub', to: site.repository, target: '_blank' },
+  ],
 }, {
   label: 'Legal',
-  children: [{
-    label: 'Privacy Policy',
-    to: '#'
-  }, {
-    label: 'Terms of Service',
-    to: '#'
-  }]
-}]
-
-const socialLinks = [{
-  icon: 'i-simple-icons-github',
-  to: 'https://github.com',
-  target: '_blank',
-  'aria-label': 'GitHub'
-}, {
-  icon: 'i-simple-icons-x',
-  to: 'https://x.com',
-  target: '_blank',
-  'aria-label': 'X'
-}, {
-  icon: 'i-simple-icons-discord',
-  to: 'https://discord.com',
-  target: '_blank',
-  'aria-label': 'Discord'
+  children: [
+    { label: 'Privacy policy', to: '/privacy' },
+    { label: 'Terms of use', to: '/terms' },
+  ],
 }]
 </script>
 
 <template>
-  <UFooter>
+  <USeparator
+    icon="i-lucide-shield"
+    class="h-px"
+  />
+
+  <UFooter :ui="{ top: 'border-b border-default' }">
     <template #top>
       <UContainer>
         <UFooterColumns :columns="columns">
-          <!-- <template #right>
-            <UFormField name="email" label="Subscribe to our newsletter" size="lg">
-              <UInput type="email" class="w-full">
-                <template #trailing>
-                  <UButton type="submit" size="xs" color="neutral" label="Subscribe" />
-                </template>
-</UInput>
-</UFormField>
-</template> -->
+          <template #right>
+            <NewsletterForm compact />
+          </template>
         </UFooterColumns>
       </UContainer>
     </template>
 
     <template #left>
-      <p class="text-gray-500 dark:text-gray-400 text-sm">
-        Copyright © {{ new Date().getFullYear() }} moderation.fyi. All rights reserved.
+      <p class="text-muted text-sm">
+        © {{ new Date().getFullYear() }} moderation.fyi · Built by moderators, for moderators.
       </p>
     </template>
 
     <template #right>
-      <UButton v-for="link in socialLinks" :key="link.icon" v-bind="link" color="neutral" variant="ghost" />
+      <UButton
+        v-for="link in site.socials"
+        :key="link.to"
+        :icon="link.icon"
+        :to="link.to"
+        :aria-label="link.label"
+        target="_blank"
+        color="neutral"
+        variant="ghost"
+      />
     </template>
   </UFooter>
 </template>
