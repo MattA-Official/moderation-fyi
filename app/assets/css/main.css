@@ -1,73 +1,55 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-/* Tailwind Theme Configuration */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/lora";
+@import "@fontsource-variable/fira-code";
+
+@source "../../../content/**/*";
+
 @theme {
-  /* Fonts */
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-serif: 'Lora', serif;
-  --font-mono: 'Fira Code', monospace;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Lora Variable', ui-serif, Georgia, serif;
+  --font-mono: 'Fira Code Variable', ui-monospace, monospace;
 }
 
-/* CSS Variables for Nuxt UI Dark Theme */
 :root {
-  /* Dark theme background */
+  --ui-radius: 0.5rem;
+  --ui-container: 80rem;
+  --ui-header-height: 4rem;
+}
+
+/* Dark-first palette, matching the original moderation.fyi design */
+.dark {
+  --ui-primary: var(--ui-color-primary-400);
+  --ui-secondary: var(--ui-color-secondary-300);
+
   --ui-bg: #111827;
-
-  /* Card/Surface background */
-  --ui-bg-muted: rgba(31, 41, 55, 0.5);
-  --ui-bg-elevated: rgba(31, 41, 55, 0.7);
+  --ui-bg-muted: #161f2e;
+  --ui-bg-elevated: #1f2937;
   --ui-bg-accented: #374151;
+  --ui-bg-inverted: #ffffff;
 
-  /* Border colors (matching legacy.css --colour-border) */
-  --ui-border: #374151;
-  --ui-border-muted: #374151;
-  --ui-border-accented: #4b5563;
+  --ui-border: #263244;
+  --ui-border-muted: #1f2937;
+  --ui-border-accented: #374151;
 
-  /* Text colors (matching legacy.css text colors) */
   --ui-text-dimmed: #6b7280;
   --ui-text-muted: #9ca3af;
   --ui-text-toned: #d1d5db;
   --ui-text: #d1d5db;
   --ui-text-highlighted: #ffffff;
-
-  /* Primary color */
-  --ui-primary: #60a5fa;
-
-  /* Border radius */
-  --ui-radius: 0.5rem;
-
-  /* Container width */
-  --ui-container: 1400px;
 }
 
-/* Since the legacy design is dark-first, we apply similar styling for light mode */
-/* Light mode would need adjustment if you want to support it */
-.light {
-  --ui-bg: #ffffff;
-  --ui-bg-muted: #f9fafb;
-  --ui-bg-elevated: #f3f4f6;
-  --ui-bg-accented: #e5e7eb;
-
-  --ui-border: #e5e7eb;
-  --ui-border-muted: #e5e7eb;
-  --ui-border-accented: #d1d5db;
-
-  --ui-text-dimmed: #9ca3af;
-  --ui-text-muted: #6b7280;
-  --ui-text-toned: #4b5563;
-  --ui-text: #1f2937;
-  --ui-text-highlighted: #111827;
-
-  --ui-primary: #3b82f6;
-}
-
-/* Typography - Apply serif font to headings */
 h1,
 h2,
 h3,
-h4,
-h5,
-h6 {
+h4 {
   font-family: var(--font-serif);
+}
+
+.text-gradient {
+  background-image: linear-gradient(90deg, var(--ui-primary), var(--ui-secondary));
+  background-clip: text;
+  color: transparent;
 }

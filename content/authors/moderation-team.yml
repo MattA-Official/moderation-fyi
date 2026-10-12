@@ -1,5 +1,6 @@
-name: "moderation.fyi"
-description: "Building a comprehensive resource for content moderation professionals"
+name: "moderation.fyi team"
+description: "The volunteers behind moderation.fyi"
 avatar:
-  src: "/images/authors/moderation-team.png"
-  alt: "moderation.fyi!"
+  src: "/images/shield.svg"
+  alt: "moderation.fyi logo"
+to: "https://github.com/MattA-Official/moderation-fyi"

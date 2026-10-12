@@ -1,25 +1,61 @@
+<script setup lang="ts">
+import type { NavigationMenuItem } from '@nuxt/ui'
+
+const route = useRoute()
+const { site } = useAppConfig()
+
+const items = computed<NavigationMenuItem[]>(() => [
+  {
+    label: 'Guides',
+    to: '/guides',
+    icon: 'i-lucide-book-open',
+    active: route.path.startsWith('/guides'),
+  },
+  {
+    label: 'Templates',
+    to: '/templates',
+    icon: 'i-lucide-files',
+    active: route.path.startsWith('/templates'),
+  },
+  {
+    label: 'Articles',
+    to: '/articles',
+    icon: 'i-lucide-newspaper',
+    active: route.path.startsWith('/articles'),
+  },
+  {
+    label: 'Contribute',
+    to: '/contribute',
+    icon: 'i-lucide-git-pull-request',
+  },
+])
+</script>
+
 <template>
-  <UHeader>
+  <UHeader :to="'/'">
     <template #title>
-      <AppLogo class="h-6 w-auto" />
+      <AppLogo />
     </template>
 
-    <UNavigationMenu :items="items" />
+    <UNavigationMenu
+      :items="items"
+      variant="link"
+      :ui="{ linkLeadingIcon: 'hidden' }"
+    />
 
     <template #right>
+      <UContentSearchButton :collapsed="true" />
+
       <UColorModeButton />
 
-      <UTooltip
-        text="Open on GitHub"
-        :kbds="['meta', 'G']"
-      >
+      <UTooltip text="Open on GitHub">
         <UButton
           color="neutral"
           variant="ghost"
-          to="https://github.com/nuxt/ui"
+          :to="site.repository"
           target="_blank"
           icon="i-simple-icons-github"
-          aria-label="GitHub"
+          aria-label="moderation.fyi on GitHub"
         />
       </UTooltip>
     </template>
@@ -33,31 +69,3 @@
     </template>
   </UHeader>
 </template>
-
-<script lang="ts" setup>
-import type { NavigationMenuItem } from '@nuxt/ui'
-
-const route = useRoute()
-
-const items = computed<NavigationMenuItem[]>(() => [
-  {
-    label: 'Explore Guides',
-    to: '/guides',
-    active: route.path.startsWith('/guides'),
-  },
-  {
-    label: 'Read Articles',
-    to: '/articles',
-    active: route.path.startsWith('/articles'),
-  },
-  {
-    label: 'Browse Templates',
-    to: '/templates',
-    active: route.path.startsWith('/templates'),
-  },
-])
-</script>
-
-<style scoped>
-
-</style>

@@ -1,28 +1,25 @@
 ---
 title: Example Template
 description: "This is an example of a content template. Templates provide ready-to-use formats for various types of content, such as policies, guidelines, or forms."
-author: moderation-team
+authors:
+  - moderation-team
 publishedAt: 2025-07-01
 tags:
   - example
   - template
 category: documentation
 templateType: guidelines
-industry:
-  - social-media
-platform:
-  - web
+platforms:
+  - discord
 compliance:
   - GDPR
-downloadable: false
+downloadable: true
 license: cc-by
 featured: true
 customization:
   difficulty: easy
   estimatedTime: 15 minutes
 ---
-
-# Example Template
 
 This is an example template. Templates on this site are designed to provide ready-to-use formats for various types of content, such as policies, guidelines, or forms. They are structured to be easily adaptable for different platforms and communities.
 

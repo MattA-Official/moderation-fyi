@@ -1,17 +1,68 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+// Cloudflare Workers config, written to the generated wrangler.json. Kept out of
+// the config literal because Nitro's bundled Wrangler types don't know about
+// Worker Previews (`previews`, `previews_enabled`) yet.
+const wrangler = {
+  name: 'moderation-fyi',
+  routes: [
+    {
+      pattern: 'moderation.fyi',
+      custom_domain: true,
+    },
+    // Preview-only domain: each branch is served at <branch>.preview.moderation.fyi
+    {
+      pattern: 'preview.moderation.fyi',
+      custom_domain: true,
+      previews_enabled: true,
+      enabled: false,
+    },
+  ],
+  d1_databases: [
+    {
+      binding: 'DB',
+      database_name: 'moderation-fyi',
+      database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
+    },
+  ],
+  observability: {
+    logs: {
+      enabled: true,
+    },
+  },
+  // Settings for branch Previews (`wrangler preview`). Previews don't inherit
+  // production bindings, and must not share the production database: Nuxt
+  // Content rewrites its tables to match each deployment's content.
+  previews: {
+    d1_databases: [
+      {
+        binding: 'DB',
+        database_name: 'moderation-fyi-preview',
+        database_id: '578ea7bf-fa06-4ca9-9f61-d10773d80c1a',
+      },
+    ],
+    observability: {
+      logs: {
+        enabled: true,
+      },
+    },
+  },
+}
+
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@nuxt/content', '@nuxt/eslint', '@nuxt/fonts', '@nuxt/icon', '@nuxt/image', '@nuxtjs/seo', 'nuxt-studio'],
+  modules: ['@nuxt/ui', '@nuxt/content', '@nuxt/eslint', '@nuxt/icon', '@nuxt/image', '@nuxtjs/seo', 'nuxt-studio'],
 
   devtools: { enabled: true },
 
   app: {
     head: {
-      title: 'moderation.fyi', // default fallback title
       htmlAttrs: {
-        lang: 'en',
+        lang: 'en-GB',
       },
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/images/shield.svg' },
+        { rel: 'alternate', type: 'application/rss+xml', title: 'moderation.fyi articles', href: '/rss.xml' },
       ],
     },
   },
@@ -23,7 +74,12 @@ export default defineNuxtConfig({
     url: 'https://moderation.fyi',
     name: 'moderation.fyi',
     description: 'Practical moderation guides for volunteer community moderators. Open-source and community-driven.',
-    defaultLocale: 'en',
+    defaultLocale: 'en-GB',
+  },
+
+  colorMode: {
+    preference: 'dark',
+    fallback: 'dark',
   },
 
   content: {
@@ -31,15 +87,14 @@ export default defineNuxtConfig({
       type: 'd1',
       bindingName: 'DB',
     },
-    renderer: {
-      anchorLinks: false,
-    },
     build: {
       markdown: {
+        toc: {
+          depth: 3,
+        },
         highlight: {
           theme: {
-            default: 'github-dark',
-            light: 'github-light', // TODO: Not currently used because I haven't add light mode support yet
+            default: 'github-light',
             dark: 'github-dark',
           },
         },
@@ -47,26 +102,42 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: '2025-11-04',
+  ui: {
+    // Fonts are self-hosted from @fontsource packages (see main.css)
+    fonts: false,
+  },
+
+  routeRules: {
+    '/rss.xml': { prerender: true },
+  },
+
+  compatibilityDate: '2026-10-01',
 
   nitro: {
     cloudflare: {
-      wrangler: {
-        name: 'moderation-fyi',
-        routes: [
-          {
-            pattern: 'moderation.fyi',
-            custom_domain: true,
-          },
-        ],
-        d1_databases: [
-          {
-            binding: 'DB',
-            database_name: 'moderation-fyi',
-            database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
-          },
-        ],
+      wrangler,
+    },
+    experimental: {
+      database: true,
+    },
+    database: {
+      default: {
+        connector: 'cloudflare-d1',
+        options: {
+          bindingName: 'DB',
+        },
       },
+    },
+    devDatabase: {
+      default: {
+        connector: 'sqlite',
+        options: {
+          name: 'newsletter',
+        },
+      },
+    },
+    prerender: {
+      routes: ['/rss.xml'],
     },
   },
 
@@ -76,28 +147,40 @@ export default defineNuxtConfig({
     },
   },
 
+  icon: {
+    // Brand icons (simple-icons) are picked up by the client bundle scan; the
+    // server bundle only carries lucide to keep the Worker small. Never fall
+    // back to the public Iconify API.
+    serverBundle: {
+      collections: ['lucide'],
+    },
+    clientBundle: {
+      scan: true,
+      // Platform icons are looked up dynamically (see `platformIcons` in app/utils/format.ts)
+      icons: ['discord', 'reddit', 'twitch', 'youtube', 'kick', 'slack', 'discourse', 'telegram', 'matrix', 'mastodon', 'bluesky', 'facebook', 'github', 'x']
+        .map(name => `simple-icons:${name}`),
+    },
+    fallbackToApi: false,
+  },
+
+  image: {
+    // Serve images as-is: IPX can't run on Cloudflare Workers. Switch to the
+    // `cloudflare` provider if Image Transformations get enabled on the zone.
+    provider: 'none',
+  },
+
   linkChecker: {
     enabled: true,
   },
 
   ogImage: {
     enabled: false, // Disabled because it's being problematic while deploying
-    defaults: {
-      component: 'OgImageDefault',
-      width: 1200,
-      height: 630,
-      alt: 'moderation.fyi - Practical moderation guides for volunteer community moderators. Open-source and community-driven.',
-    },
-    compatibility: {
-      prerender: {
-        resvg: false, // Should fix a compatibility issue with Cloudflare Workers
-      },
-    },
   },
 
   robots: {
     enabled: true,
     blockNonSeoBots: true,
+    disallow: ['/_studio'],
   },
 
   schemaOrg: {
@@ -111,13 +194,13 @@ export default defineNuxtConfig({
   },
 
   seo: {
-    // redirectToCanonicalSiteUrl: true,
     automaticDefaults: true,
   },
 
   sitemap: {
     enabled: true,
     autoLastmod: true,
+    exclude: ['/_studio/**'],
   },
 
   studio: {
@@ -126,7 +209,7 @@ export default defineNuxtConfig({
 
     repository: {
       provider: 'github',
-      owner: 'Matta-Official',
+      owner: 'MattA-Official',
       repo: 'moderation-fyi',
       branch: 'dev',
     },

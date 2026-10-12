@@ -1,22 +1,28 @@
 ---
 title: Example Guide
 description: "An example guide for content moderation."
-author: moderation-team
+authors:
+  - moderation-team
 publishedAt: 2025-07-01
 tags:
   - example
   - guide
 category: getting-started
 difficulty: beginner
+platforms:
+  - discord
+  - reddit
 estimatedTime: 30 minutes
 prerequisites:
   - "A cup of coffee"
 tools:
   - "A computer"
+resources:
+  - title: Markdown guide
+    url: https://www.markdownguide.org/basic-syntax/
+    type: documentation
 featured: true
 ---
-
-# Example Guide
 
 This is an example guide. Guides on this site are designed to provide practical, step-by-step instructions for community moderators. They cover a wide range of topics related to content moderation, including best practices, tools, and strategies for effective moderation.
 
@@ -47,7 +53,6 @@ You can create links using the following syntax: [link text](URL)
 You can include images using the following syntax: ![alt text](image URL)
 
 ## Code Blocks
-
 
 You can include code blocks using triple backticks:
 
