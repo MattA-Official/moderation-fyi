@@ -38,7 +38,7 @@ const wrangler = {
       {
         binding: 'DB',
         database_name: 'moderation-fyi-preview',
-        database_id: 'REPLACE_WITH_PREVIEW_DATABASE_ID',
+        database_id: '578ea7bf-fa06-4ca9-9f61-d10773d80c1a',
       },
     ],
     observability: {
