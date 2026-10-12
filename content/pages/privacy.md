@@ -24,7 +24,7 @@ If you subscribe to updates, we store:
 
 We use this information only to email you about new content on moderation.fyi. We will never sell or share it with anyone else for marketing. It is stored in a Cloudflare D1 database.
 
-You can ask us to remove you from the list at any time by [opening an issue](https://github.com/MattA-Official/moderation-fyi/issues/new) or replying to any email we send.
+You can [unsubscribe](/unsubscribe) at any time, and your details are deleted straight away.
 
 ## Contributing
 

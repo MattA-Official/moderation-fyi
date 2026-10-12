@@ -253,7 +253,10 @@ useSeoMeta({
         We only use your email to send you updates. Read our <ULink
           to="/privacy"
           class="underline"
-        >privacy policy</ULink>.
+        >privacy policy</ULink> or <ULink
+          to="/unsubscribe"
+          class="underline"
+        >unsubscribe</ULink>.
       </p>
     </UPageSection>
   </div>

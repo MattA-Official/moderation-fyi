@@ -200,7 +200,7 @@ export default defineNuxtConfig({
   sitemap: {
     enabled: true,
     autoLastmod: true,
-    exclude: ['/_studio/**'],
+    exclude: ['/_studio/**', '/unsubscribe'],
   },
 
   studio: {
