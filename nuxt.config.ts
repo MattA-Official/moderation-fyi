@@ -1,13 +1,56 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-export default defineNuxtConfig({
-  modules: [
-    '@nuxt/content',
-    '@nuxt/eslint',
-    '@nuxt/fonts',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@nuxtjs/seo',
+
+// Cloudflare Workers config, written to the generated wrangler.json. Kept out of
+// the config literal because Nitro's bundled Wrangler types don't know about
+// Worker Previews (`previews`, `previews_enabled`) yet.
+const wrangler = {
+  name: 'moderation-fyi',
+  routes: [
+    {
+      pattern: 'moderation.fyi',
+      custom_domain: true,
+    },
+    // Preview-only domain: each branch is served at <branch>.preview.moderation.fyi
+    {
+      pattern: 'preview.moderation.fyi',
+      custom_domain: true,
+      previews_enabled: true,
+      enabled: false,
+    },
   ],
+  d1_databases: [
+    {
+      binding: 'DB',
+      database_name: 'moderation-fyi',
+      database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
+    },
+  ],
+  observability: {
+    logs: {
+      enabled: true,
+    },
+  },
+  // Settings for branch Previews (`wrangler preview`). Previews don't inherit
+  // production bindings, and use their own database so test sign-ups (and, on
+  // the full site, Nuxt Content's tables) never touch production.
+  previews: {
+    d1_databases: [
+      {
+        binding: 'DB',
+        database_name: 'moderation-fyi-preview',
+        database_id: '578ea7bf-fa06-4ca9-9f61-d10773d80c1a',
+      },
+    ],
+    observability: {
+      logs: {
+        enabled: true,
+      },
+    },
+  },
+}
+
+export default defineNuxtConfig({
+  modules: ['@nuxt/eslint', '@nuxtjs/seo'],
 
   devtools: { enabled: true },
 
@@ -33,41 +76,11 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
   },
 
-  content: {
-    database: {
-      type: 'd1',
-      bindingName: 'DB',
-    },
-  },
-
-  future: {
-    compatibilityVersion: 4,
-  },
-  compatibilityDate: '2025-05-15',
+  compatibilityDate: '2026-10-01',
 
   nitro: {
     cloudflare: {
-      wrangler: {
-        name: 'moderation-fyi',
-        routes: [
-          {
-            pattern: 'moderation.fyi',
-            custom_domain: true,
-          },
-        ],
-        d1_databases: [
-          {
-            binding: 'DB',
-            database_name: 'moderation-fyi',
-            database_id: '5f0bd2fb-5daa-4694-b845-374fcf87ecd3',
-          },
-        ],
-        observability: {
-          logs: {
-            enabled: true,
-          },
-        },
-      },
+      wrangler,
     },
     experimental: {
       database: true,
@@ -77,6 +90,14 @@ export default defineNuxtConfig({
         connector: 'cloudflare-d1',
         options: {
           bindingName: 'DB',
+        },
+      },
+    },
+    devDatabase: {
+      default: {
+        connector: 'sqlite',
+        options: {
+          name: 'newsletter',
         },
       },
     },

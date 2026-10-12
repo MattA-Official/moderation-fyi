@@ -94,14 +94,10 @@ async function subscribeToNewsletter() {
   formMessage.value = null
 
   try {
-    const { error } = await useFetch('/api/subscribe', {
+    await $fetch('/api/subscribe', {
       method: 'POST',
       body: { email: email.value },
     })
-
-    if (error.value) {
-      throw new Error(error.value.statusMessage || 'Failed to subscribe')
-    }
 
     // Success
     formMessage.value = {
@@ -113,7 +109,7 @@ async function subscribeToNewsletter() {
   catch (error: unknown) {
     // Handle error
     formMessage.value = {
-      text: error instanceof Error ? error.message : 'Something went wrong. Please try again later.',
+      text: (error as { data?: { message?: string } }).data?.message || 'Something went wrong. Please try again later.',
       type: 'error',
     }
   }

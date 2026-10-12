@@ -1,3 +1,5 @@
+@import "@fontsource-variable/inter";
+
 :root {
   /* Colour Palette */
   --color-bg-dark: #111827;
@@ -13,7 +15,7 @@
   --color-gradient-end: #5eead4;
 
   /* Typography */
-  --font-family-main: 'Inter', sans-serif;
+  --font-family-main: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
