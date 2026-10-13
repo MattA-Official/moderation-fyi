@@ -28,7 +28,7 @@ export default defineAppConfig({
     // Buttons: sans bold, radius-sm, at least 44px tall; primary is accent on-accent
     button: {
       slots: {
-        base: 'rounded-[3px] font-sans font-bold min-h-11 disabled:opacity-100 aria-disabled:opacity-100 disabled:border-dashed',
+        base: 'rounded-[8px] font-sans font-bold min-h-11 disabled:opacity-100 aria-disabled:opacity-100 disabled:border-dashed',
       },
       compoundVariants: [
         { color: 'primary', variant: 'solid', class: 'bg-mf-accent text-mf-on-accent hover:bg-mf-accent-strong active:bg-mf-accent-strong disabled:bg-transparent disabled:text-mf-ink-muted disabled:ring disabled:ring-mf-rule aria-disabled:bg-transparent' },
@@ -58,7 +58,7 @@ export default defineAppConfig({
     // Inputs: paper-raised ground, 1.5px rule-strong outline
     input: {
       slots: {
-        base: 'rounded-[3px] font-sans bg-mf-paper-raised min-h-11',
+        base: 'rounded-[8px] font-sans bg-mf-paper-raised min-h-11',
       },
       compoundVariants: [
         { color: 'primary', variant: 'outline', class: 'ring-[1.5px] ring-mf-rule-strong hover:ring-mf-ink focus-visible:ring-[1.5px] focus-visible:ring-mf-ink' },
@@ -66,7 +66,7 @@ export default defineAppConfig({
     },
     selectMenu: {
       slots: {
-        base: 'rounded-[3px] font-sans bg-mf-paper-raised min-h-11',
+        base: 'rounded-[8px] font-sans bg-mf-paper-raised min-h-11',
       },
     },
     formField: {
@@ -78,12 +78,12 @@ export default defineAppConfig({
     },
     card: {
       slots: {
-        root: 'rounded-[6px]',
+        root: 'rounded-[14px]',
       },
     },
     pageCard: {
       slots: {
-        root: 'rounded-[6px]',
+        root: 'rounded-[14px]',
         title: 'font-serif text-[21px]/7 font-semibold text-mf-ink',
         description: 'font-serif text-base/[26px] text-mf-ink',
       },
@@ -122,7 +122,7 @@ export default defineAppConfig({
     },
     contentSurround: {
       slots: {
-        link: 'rounded-[6px] ring-1 ring-mf-rule hover:ring-mf-rule-strong hover:bg-transparent',
+        link: 'rounded-[14px] ring-1 ring-mf-rule hover:ring-mf-rule-strong hover:bg-transparent',
         linkTitle: 'font-serif font-semibold text-[21px]/7 text-mf-ink',
         linkDescription: 'font-serif text-base/[26px] text-mf-ink',
         linkLeadingIcon: 'text-mf-accent',
@@ -132,7 +132,7 @@ export default defineAppConfig({
     prose: {
       callout: {
         slots: {
-          base: 'border-0 border-t-4 rounded-[6px] px-6 pt-4 pb-6 font-serif text-base/[26px] text-mf-ink',
+          base: 'border-0 border-t-4 rounded-[12px] px-6 pt-4 pb-6 font-serif text-base/[26px] text-mf-ink',
           icon: 'size-5',
         },
         compoundVariants: [
@@ -143,7 +143,7 @@ export default defineAppConfig({
       },
       card: {
         slots: {
-          base: 'rounded-[6px] border border-mf-rule bg-mf-paper hover:border-mf-rule-strong hover:bg-mf-paper',
+          base: 'rounded-[14px] border border-mf-rule bg-mf-paper hover:border-mf-rule-strong hover:bg-mf-paper',
           title: 'font-serif font-semibold text-[21px]/7 text-mf-ink',
           description: 'font-serif text-base/[26px] text-mf-ink',
           icon: 'text-mf-accent',

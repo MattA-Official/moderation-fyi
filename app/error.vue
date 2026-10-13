@@ -18,6 +18,12 @@ useSeoMeta({
     <NuxtLayout>
       <div class="mx-auto max-w-page px-4 md:px-8 py-16 md:py-24">
         <div class="max-w-measure space-y-6">
+          <span
+            class="mf-icon-tile"
+            aria-hidden="true"
+          >
+            <UIcon :name="notFound ? 'i-lucide-map-pin-off' : 'i-lucide-wrench'" />
+          </span>
           <h1 class="mf-h1">
             {{ notFound ? 'This page isn\'t here.' : 'Something broke on our end.' }}
           </h1>
@@ -26,7 +32,7 @@ useSeoMeta({
               Either it never was, or it moved. Try the search, or browse the library — most things on the site can be found in two clicks.
             </template>
             <template v-else>
-              It's not you. Try again in a minute, or search for what you were after.
+              It's not you, it's us. Give it a minute and try again, or search for what you were after.
             </template>
           </p>
           <SearchForm large />

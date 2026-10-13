@@ -69,9 +69,18 @@ const columns = [{
     </div>
 
     <div class="border-t border-mf-rule">
-      <p class="mx-auto max-w-page px-4 md:px-8 py-4 font-sans text-sm text-mf-ink-muted">
-        © {{ new Date().getFullYear() }} moderation.fyi. Built by mods, for mods.
-      </p>
+      <div class="mx-auto max-w-page px-4 md:px-8 py-4 flex flex-wrap justify-between gap-2 font-sans text-sm text-mf-ink-muted">
+        <p>© {{ new Date().getFullYear() }} moderation.fyi</p>
+        <p class="inline-flex items-center gap-1.5">
+          Made with
+          <UIcon
+            name="i-lucide-heart"
+            class="size-4 text-mf-accent"
+            aria-label="care"
+          />
+          by volunteer mods, usually after midnight.
+        </p>
+      </div>
     </div>
   </footer>
 </template>

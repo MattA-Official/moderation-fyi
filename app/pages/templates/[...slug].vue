@@ -95,7 +95,7 @@ useSchemaOrg([
     </template>
 
     <template #aside>
-      <dl class="space-y-3 font-sans text-sm border border-mf-rule rounded-[6px] p-4">
+      <dl class="space-y-3 font-sans text-sm border border-mf-rule rounded-[14px] p-4">
         <div v-if="template.customization">
           <dt class="text-mf-ink-muted">
             Effort to adapt

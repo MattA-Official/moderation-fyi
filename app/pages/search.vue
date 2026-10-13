@@ -97,6 +97,11 @@ useSeoMeta({
           >
             <ul class="mf-pills">
               <li class="mf-pill mf-pill--format">
+                <UIcon
+                  :name="formatIcons[result.format]"
+                  class="size-3.5"
+                  aria-hidden="true"
+                />
                 {{ formatLabels[result.format] }}
               </li>
             </ul>

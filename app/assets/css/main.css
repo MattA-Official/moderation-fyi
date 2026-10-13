@@ -196,8 +196,8 @@
   --ui-border-accented: var(--mf-rule-strong);
   --ui-border-inverted: var(--mf-ink);
 
-  /* radius-sm 3px; Nuxt UI's rounded-lg (cards) becomes radius-md 6px */
-  --ui-radius: 3px;
+  /* Softer than the brand book's 3px/6px: friendlier, still restrained */
+  --ui-radius: 6px;
   --ui-container: 72rem;
   --ui-header-height: auto;
 }
@@ -349,7 +349,7 @@ body {
   gap: 12px;
   padding: 16px;
   border: 1px solid var(--mf-rule);
-  border-radius: 6px;
+  border-radius: 14px;
   background: var(--mf-paper);
 }
 @media (min-width: 768px) {
@@ -379,7 +379,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 6px;
+  border-radius: 14px;
 }
 .mf-card__title a:hover {
   text-decoration: underline;
@@ -432,7 +432,7 @@ body {
   min-block-size: 44px;
   padding: 8px 12px 8px 40px;
   border: 1.5px solid var(--mf-rule-strong);
-  border-radius: 3px;
+  border-radius: 8px;
   background: var(--mf-paper-raised);
   color: var(--mf-ink);
   font-family: var(--font-sans);
@@ -449,7 +449,7 @@ body {
 }
 .mf-search--lg .mf-search__input {
   min-block-size: 60px;
-  border-radius: 6px;
+  border-radius: 12px;
   font-size: 20px;
   line-height: 28px;
   padding-inline-start: 48px;
@@ -471,14 +471,14 @@ body {
   background: var(--mf-accent-soft);
   color: inherit;
   padding-inline: 2px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 /* ---------- Callouts ---------- */
 .mf-callout {
   padding: 16px 24px 24px;
   border-block-start: 4px solid var(--mf-accent);
-  border-radius: 6px;
+  border-radius: 12px;
   background: var(--mf-accent-soft);
   color: var(--mf-ink);
   font-family: var(--font-serif);
@@ -525,6 +525,90 @@ body {
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 0.18em;
+}
+
+/* ---------- Friendly touches ---------- */
+
+/* Cards lift a touch on hover; nothing moves for people who'd rather it didn't */
+.mf-card {
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.mf-card:hover {
+  transform: translateY(-2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mf-card,
+  .mf-card:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* A highlighter stroke behind a few words in a headline */
+.mf-highlight {
+  background-image: linear-gradient(
+    to top,
+    transparent 0.08em,
+    color-mix(in oklab, var(--mf-accent) 24%, transparent) 0.08em,
+    color-mix(in oklab, var(--mf-accent) 24%, transparent) 0.42em,
+    transparent 0.42em
+  );
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-inline: 0.06em;
+}
+
+/* Rounded icon tile for entry points and principles */
+.mf-icon-tile {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 44px;
+  block-size: 44px;
+  flex: none;
+  border-radius: 12px;
+  background: var(--mf-accent-soft);
+  color: var(--mf-accent);
+}
+.mf-icon-tile .iconify {
+  inline-size: 22px;
+  block-size: 22px;
+}
+
+/* Quick-search chips under the hero search */
+.mf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-block-size: 36px;
+  padding-inline: 14px;
+  border: 1px solid var(--mf-rule-strong);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--mf-ink);
+  text-decoration: none;
+  background: var(--mf-paper-raised);
+}
+.mf-chip:hover {
+  border-color: var(--mf-accent);
+  color: var(--mf-accent);
+  background: var(--mf-accent-soft);
+}
+
+/* Small friendly label above a hero or section */
+.mf-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--mf-accent-soft);
+  color: var(--mf-accent);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 /* ---------- Page meta ---------- */
@@ -676,7 +760,7 @@ body {
   font-family: var(--font-mono);
   font-size: 0.9em;
   padding: 1px 5px;
-  border-radius: 3px;
+  border-radius: 4px;
   background: var(--mf-paper-sunken);
   border: 1px solid var(--mf-rule);
   color: var(--mf-ink);
@@ -684,7 +768,7 @@ body {
 .mf-prose pre {
   max-inline-size: 48rem;
   border: 1px solid var(--mf-rule);
-  border-radius: 3px;
+  border-radius: 10px;
   background: var(--mf-paper-sunken) !important;
   font-family: var(--font-mono);
   font-size: 15px;
@@ -802,4 +886,24 @@ body {
   .mf-checklist > li {
     break-inside: avoid;
   }
+  .mf-card {
+    transform: none !important;
+  }
+}
+
+/* The "m." monogram, large, for the contribute panel */
+.mf-monogram-lg {
+  place-items: center;
+  inline-size: 96px;
+  block-size: 96px;
+  border-radius: 22px;
+  background: var(--mf-accent);
+  color: var(--mf-on-accent);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  padding-block-end: 8px;
+  transform: rotate(-4deg);
 }

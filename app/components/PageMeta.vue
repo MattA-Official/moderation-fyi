@@ -56,6 +56,11 @@ const stale = computed(() => isStale(props.reviewed))
         v-if="format"
         class="mf-pill mf-pill--format"
       >
+        <UIcon
+          :name="formatIcons[format]"
+          class="size-3.5"
+          aria-hidden="true"
+        />
         {{ formatLabels[format] }}
       </li>
       <li

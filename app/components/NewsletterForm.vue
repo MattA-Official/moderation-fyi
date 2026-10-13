@@ -33,9 +33,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 <template>
   <p
     v-if="subscribed"
-    class="font-serif text-lg/[29px] text-mf-ink"
+    class="flex items-center gap-3 font-serif text-lg/[29px] text-mf-ink"
     role="status"
   >
+    <span class="mf-icon-tile">
+      <UIcon
+        name="i-lucide-check"
+        aria-hidden="true"
+      />
+    </span>
     You're on the list. We'll email you when something new goes up.
   </p>
 

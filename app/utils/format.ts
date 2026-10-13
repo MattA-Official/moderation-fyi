@@ -30,6 +30,12 @@ export const formatLabels: Record<ContentFormat, string> = {
   article: 'Article',
 }
 
+export const formatIcons: Record<ContentFormat, string> = {
+  guide: 'i-lucide-book-open',
+  template: 'i-lucide-file-text',
+  article: 'i-lucide-newspaper',
+}
+
 /** Difficulty in the design system's words */
 export const difficultyLabels = {
   beginner: 'New mod',
