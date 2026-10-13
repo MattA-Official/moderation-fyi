@@ -31,15 +31,36 @@ const markdown = computed(() => (template.value?.rawbody ?? '')
   .replace(/\\n/g, '\n')
   .trim())
 
+// A template either is one piece of text, or holds several snippets with
+// guidance around them; then Copy and Download give just the snippets
+const snippets = computed(() => templateSnippets(markdown.value))
+provide(templateSnippetsKey, snippets)
+const copyable = computed(() => snippets.value.size
+  ? [...snippets.value].map(([title, body]) => `## ${title}\n\n${body}`).join('\n\n')
+  : markdown.value)
+
+// Placeholders like {name} are highlighted in the text and filled in on the
+// page; Copy, Download and the Markdown views give the filled-in text
+const placeholderValues = ref<Record<string, string>>({})
+const fillIn = (text: string) => fillPlaceholders(text, placeholderValues.value)
+provide(templatePlaceholdersKey, { values: placeholderValues, fillIn })
+const rendered = computed(() => {
+  const body = template.value!.body
+  if (body?.type !== 'minimark') return template.value!
+  return { ...template.value!, body: { ...body, value: markPlaceholders(body.value, snippets.value.size > 0) } }
+})
+
 // The label itself confirms the copy; no toast or pop-up
 const { copy, copied } = useClipboard({ copiedDuring: 2000 })
 
+const fileName = computed(() => `${template.value!.stem.split('/').pop()}.md`)
+
 function downloadTemplate() {
-  const blob = new Blob([markdown.value], { type: 'text/markdown;charset=utf-8' })
+  const blob = new Blob([fillIn(copyable.value)], { type: 'text/markdown;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = `${template.value!.stem.split('/').pop()}.md`
+  link.download = fileName.value
   link.click()
   URL.revokeObjectURL(url)
 }
@@ -64,6 +85,7 @@ useSchemaOrg([
   <ContentLayout
     v-if="template"
     :toc="template.body?.toc?.links"
+    :toc-title="snippets.size ? undefined : 'In this template'"
   >
     <template #header>
       <PageMeta
@@ -78,9 +100,9 @@ useSchemaOrg([
       >
         <div class="flex flex-wrap gap-3 mf-no-print">
           <UButton
-            :label="copied ? 'Copied' : 'Copy template'"
+            :label="copied ? 'Copied' : snippets.size ? 'Copy all snippets' : 'Copy template'"
             :icon="copied ? 'i-lucide-check' : 'i-lucide-copy'"
-            @click="copy(markdown)"
+            @click="copy(fillIn(copyable))"
           />
           <UButton
             v-if="template.downloadable"
@@ -138,9 +160,19 @@ useSchemaOrg([
     </template>
 
     <ContentRenderer
-      :value="template"
+      v-if="snippets.size"
+      :value="rendered"
       class="mf-prose"
     />
+    <TemplateSheet
+      v-else
+      id="template"
+      title="The template"
+      :detail="fileName"
+      :markdown="markdown"
+    >
+      <ContentRenderer :value="rendered" />
+    </TemplateSheet>
 
     <PageFooterLinks :file="`${template.stem}.${template.extension}`" />
 

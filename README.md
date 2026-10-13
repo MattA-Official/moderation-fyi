@@ -58,6 +58,24 @@ Guides, templates and articles share two ways of saying what they're about:
 - **`topics`** lists topic IDs, which are the file names in `content/topics/` (for example `raids` for `raids.yml`). To add a topic, add a file there. `bun run check:content` warns about any page that names a topic with no file.
 - **`platforms`** lists platform IDs from `shared/taxonomy.ts` (for example `discord`). These are fixed: `bun run check:content` reports an unknown one as an error. To add a platform, add it to that file.
 
+### Templates with several snippets
+
+A template page shows its whole body as one copyable sheet. When a template holds several pieces of text that people copy separately (a warning, a timeout notice and a ban message, say), wrap each one in a `template-snippet` block with a unique title. Text outside the blocks is shown as guidance around them, and each snippet gets its own copy button.
+
+```md
+Send this when you warn a member.
+
+::template-snippet{title="Warning"}
+Hi {name}, this is a warning for breaking rule {number}.
+::
+```
+
+On a template with snippets, the page's Copy and Download buttons give every snippet, each under its title.
+
+### Placeholders
+
+Write the parts a reader should fill in as placeholders in curly brackets, like `{server name}` (not square brackets: Markdown treats `[square brackets]` as link text and drops them). On the page each placeholder is highlighted and can be typed into where it sits; a value fills that placeholder everywhere it appears, and Copy, Download and the Markdown view give the filled-in text. To have two placeholders with the same label filled in separately, tag them: `{name:a}` and `{name:b}` both show as "name" (with a small a or b) and take their own values, while every plain `{name}` shares one. Tags are letters or numbers. Placeholders in code stay as written, and on a template with snippets only the snippets have them.
+
 ## Design
 
 The look and voice follow the moderation.fyi design system. Its tokens live as CSS variables in `app/assets/css/main.css` (light and dark), are mapped onto Nuxt UI's colours in `app/app.config.ts`, and its fonts (Source Serif 4 and Atkinson Hyperlegible Next) are self-hosted from `public/fonts/`. Shared component classes are prefixed `mf-`.
