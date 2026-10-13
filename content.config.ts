@@ -115,6 +115,7 @@ export default defineContentConfig({
         }).optional(), // Falls back to initials
         link: z.url({ protocol: /^https?$/ }).optional(), // Personal site or profile, used instead of a bio page
         pronouns: z.string().optional(),
+        team: z.boolean().default(false), // A group rather than a person, e.g. the moderation.fyi team
         moderatingSince: z.number().int().optional(), // Year, e.g. 2019
         platforms: z.array(z.string()).default([]), // e.g. ['discord', 'reddit']
         links: z.array(z.object({
