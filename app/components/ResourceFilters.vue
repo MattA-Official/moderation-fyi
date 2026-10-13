@@ -57,6 +57,11 @@ function setValues(key: string, values: unknown[]) {
   filters.value = { ...filters.value, [key]: values.filter((value): value is string => typeof value === 'string') }
 }
 
+function toggle(key: string, value: string) {
+  const selected = filters.value[key] ?? []
+  setValues(key, isSelected(key, value) ? selected.filter(entry => entry !== value) : [...selected, value])
+}
+
 function pillItems(option: Option) {
   return option.items.map(item => ({ ...item, disabled: !item.count && !isSelected(option.key, item.value) }))
 }
@@ -82,6 +87,7 @@ const range = computed({
   },
 })
 const inputDate = useTemplateRef('inputDate')
+const id = useId()
 
 // Everything that's narrowing the list, each removable on its own
 const chips = computed<Chip[]>(() => [
@@ -135,34 +141,65 @@ const chips = computed<Chip[]>(() => [
 
         <template #content>
           <div class="w-[min(calc(100vw-2rem),26rem)] max-h-[min(70vh,36rem)] overflow-y-auto p-4 space-y-5">
-            <UCheckboxGroup
+            <div
               v-for="option in pills"
               :key="option.key"
-              :legend="option.label"
-              :items="pillItems(option)"
-              :model-value="filters[option.key] ?? []"
-              orientation="horizontal"
-              :ui="{ fieldset: 'flex-wrap gap-x-5 gap-y-2', legend: 'mb-2 font-sans font-bold text-sm text-mf-ink', label: 'font-sans text-sm text-mf-ink' }"
-              @update:model-value="setValues(option.key, $event)"
+              role="group"
+              :aria-labelledby="`${id}-${option.key}`"
             >
-              <template #label="{ item }">
-                {{ item.label }} <span class="text-mf-ink-muted">{{ item.count }}</span>
-              </template>
-            </UCheckboxGroup>
+              <p
+                :id="`${id}-${option.key}`"
+                class="mb-2 font-sans font-bold text-sm text-mf-ink"
+              >
+                {{ option.label }}
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <UButton
+                  v-for="item in pillItems(option)"
+                  :key="item.value"
+                  :color="isSelected(option.key, item.value) ? 'primary' : 'neutral'"
+                  :variant="isSelected(option.key, item.value) ? 'soft' : 'outline'"
+                  size="sm"
+                  :icon="isSelected(option.key, item.value) ? 'i-lucide-check' : undefined"
+                  :disabled="item.disabled"
+                  :aria-pressed="isSelected(option.key, item.value)"
+                  class="rounded-full min-h-9 px-3 font-sans disabled:opacity-50 disabled:cursor-not-allowed"
+                  :class="{ 'ring-1 ring-mf-accent': isSelected(option.key, item.value) }"
+                  @click="toggle(option.key, item.value)"
+                >
+                  {{ item.label }}
+                  <span class="font-normal text-mf-ink-muted">{{ item.count }}</span>
+                </UButton>
+              </div>
+            </div>
 
             <UCollapsible
               v-if="hasAdvanced"
               v-model:open="advancedOpen"
-              :class="{ 'border-t border-mf-rule pt-3': pills.length }"
             >
-              <UButton
-                color="neutral"
-                variant="ghost"
-                label="Advanced"
-                trailing-icon="i-lucide-chevron-down"
-                class="group -mx-2.5"
-                :ui="{ trailingIcon: 'transition-transform group-data-[state=open]:rotate-180 motion-reduce:transition-none' }"
-              />
+              <!-- The divider is the toggle: a line either side of "Advanced" -->
+              <button
+                type="button"
+                class="group flex w-full items-center gap-3 min-h-11 font-sans font-bold text-sm text-mf-ink rounded-[8px] focus-visible:outline-2 focus-visible:outline-mf-ink"
+              >
+                <span
+                  v-if="pills.length"
+                  class="h-px flex-1 bg-mf-rule"
+                  aria-hidden="true"
+                />
+                <span class="inline-flex items-center gap-1.5 group-hover:text-mf-accent">
+                  Advanced
+                  <UIcon
+                    name="i-lucide-chevron-down"
+                    class="size-4 transition-transform group-data-[state=open]:rotate-180 motion-reduce:transition-none"
+                    aria-hidden="true"
+                  />
+                </span>
+                <span
+                  class="h-px flex-1 bg-mf-rule"
+                  aria-hidden="true"
+                />
+              </button>
 
               <template #content>
                 <div class="space-y-4 pt-3">
