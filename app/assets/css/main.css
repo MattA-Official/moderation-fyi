@@ -340,6 +340,18 @@ body {
   border-color: var(--mf-accent);
   color: var(--mf-accent);
 }
+/* An active filter under a listing; the whole pill removes it */
+.mf-pill--chip {
+  min-block-size: 32px;
+  padding-inline: 12px;
+  color: var(--mf-ink);
+  background: var(--mf-paper-raised);
+  cursor: pointer;
+}
+.mf-pill--chip:hover {
+  border-color: var(--mf-accent);
+  color: var(--mf-accent);
+}
 
 /* ---------- Cards ---------- */
 .mf-card {

@@ -1,10 +1,17 @@
 <script setup lang="ts">
 const { data: templates } = await useAsyncData('templates-list', () => queryCollection('templates')
-  .select('title', 'description', 'path', 'category', 'templateType', 'platforms', 'tags', 'featured', 'publishedAt')
+  .select('title', 'description', 'path', 'category', 'templateType', 'platforms', 'topics', 'authors', 'featured', 'publishedAt')
   .order('publishedAt', 'DESC')
   .all())
 
-const { search, filters, results, options, reset, active } = useResourceFilters(templates, ['platforms', 'templateType', 'category'])
+const optionLabel = await useFacetLabels()
+const { search, filters, from, to, sort, sorts, results, options, filterCount, reset, active } = useResourceFilters(templates, ['topics', 'platforms', 'templateType', 'category', 'authors'], {
+  labels: { category: 'Kind' },
+  advanced: ['authors'],
+  optionLabel,
+  dateField: 'publishedAt',
+  sorts: listingSorts,
+})
 
 useSeoMeta({
   title: 'Moderation templates: rules, ban messages and appeal forms',
@@ -27,9 +34,15 @@ useSeoMeta({
       <ResourceFilters
         v-model:search="search"
         v-model:filters="filters"
+        v-model:from="from"
+        v-model:to="to"
+        v-model:sort="sort"
         :options="options"
+        :sorts="sorts"
         :active="active"
+        :filter-count="filterCount"
         :count="results.length"
+        date-label="Published"
         noun="template"
         @reset="reset"
       />

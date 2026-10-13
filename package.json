@@ -11,10 +11,12 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "nuxt typecheck",
+    "check:content": "bun scripts/check-content.ts",
     "test": "vitest run"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.143",
+    "@internationalized/date": "^3.12.4",
     "@nuxt/content": "^3.16.1",
     "@nuxt/icon": "^2.5.1",
     "@nuxt/image": "^2.1.0",

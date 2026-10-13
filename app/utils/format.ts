@@ -1,3 +1,6 @@
+import { compliance, platforms } from '#shared/taxonomy'
+import type { Compliance, Platform } from '#shared/taxonomy'
+
 /** "2 May 2026" in body copy */
 export function formatDate(date: string | Date | undefined) {
   if (!date) return ''
@@ -44,13 +47,13 @@ export const difficultyLabels = {
 } as const
 
 /** Platform names as the platforms write them */
-const platformNames: Record<string, string> = {
-  youtube: 'YouTube',
-  bluesky: 'Bluesky',
+export function platformLabel(platform: string) {
+  return platforms[platform as Platform] ?? humanise(platform)
 }
 
-export function platformLabel(platform: string) {
-  return platformNames[platform] ?? humanise(platform)
+/** "GDPR", "Online Safety Act" */
+export function complianceLabel(id: string) {
+  return compliance[id as Compliance] ?? humanise(id)
 }
 
 export const licences = {

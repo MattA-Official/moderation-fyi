@@ -31,6 +31,7 @@ bun install      # install dependencies
 bun run dev      # start the dev server on http://localhost:3000
 bun run lint     # lint (add :fix to autofix)
 bun run typecheck
+bun run check:content  # check topic, platform and compliance IDs
 bun run build    # production build
 bun run preview  # preview the production build
 ```
@@ -46,8 +47,16 @@ All content lives in `content/` as Markdown, and can also be edited visually thr
 | `content/articles/`  | Articles, case studies and opinion (also in `/rss.xml`) | `/articles/<file>`  |
 | `content/pages/`     | Standalone pages: about, contribute, privacy, terms    | `/<file>`           |
 | `content/authors/`   | One file per author: a bio, or a `link` to their own site | `/authors/<file>` (bio only) |
+| `content/topics/`    | One YAML file per topic: a `label` and a one-line `description` | none yet |
 
 The front matter fields for each collection are defined in `content.config.ts`, and the `example.md` file in each folder shows them all in use.
+
+### Topics and platforms
+
+Guides, templates and articles share two ways of saying what they're about:
+
+- **`topics`** lists topic IDs, which are the file names in `content/topics/` (for example `raids` for `raids.yml`). To add a topic, add a file there. `bun run check:content` warns about any page that names a topic with no file.
+- **`platforms`** lists platform IDs from `shared/taxonomy.ts` (for example `discord`). These are fixed: `bun run check:content` reports an unknown one as an error. To add a platform, add it to that file.
 
 ## Design
 

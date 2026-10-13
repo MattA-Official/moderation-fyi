@@ -1,8 +1,20 @@
 <script setup lang="ts">
 const { data: articles } = await useAsyncData('articles-list', () => queryCollection('articles')
-  .select('title', 'description', 'path', 'date', 'badge', 'authors')
+  .select('title', 'description', 'path', 'date', 'badge', 'authors', 'topics', 'platforms')
   .order('date', 'DESC')
-  .all())
+  .all(), {
+  // The badge ("Study", "Opinion") doubles as the article's type filter
+  transform: articles => articles.map(article => ({ ...article, kind: article.badge?.label })),
+})
+
+const optionLabel = await useFacetLabels()
+const { search, filters, from, to, sort, sorts, results, options, filterCount, reset, active } = useResourceFilters(articles, ['topics', 'platforms', 'kind', 'authors'], {
+  labels: { kind: 'Type' },
+  advanced: ['authors'],
+  optionLabel,
+  dateField: 'date',
+  sorts: listingSorts,
+})
 
 useSeoMeta({
   title: 'Articles on community moderation',
@@ -33,13 +45,29 @@ useSeoMeta({
       </NuxtLink>
     </header>
 
-    <div class="py-8">
+    <div class="py-8 space-y-8">
+      <ResourceFilters
+        v-model:search="search"
+        v-model:filters="filters"
+        v-model:from="from"
+        v-model:to="to"
+        v-model:sort="sort"
+        :options="options"
+        :sorts="sorts"
+        :active="active"
+        :filter-count="filterCount"
+        :count="results.length"
+        date-label="Published"
+        noun="article"
+        @reset="reset"
+      />
+
       <div
-        v-if="articles?.length"
+        v-if="results.length"
         class="mf-grid"
       >
         <ResourceCard
-          v-for="article in articles"
+          v-for="article in results"
           :key="article.path"
           :to="article.path"
           :title="article.title"
@@ -52,7 +80,9 @@ useSeoMeta({
 
       <EmptyState
         v-else
+        :filtered="active"
         noun="articles"
+        @reset="reset"
       />
     </div>
   </div>
