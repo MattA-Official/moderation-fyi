@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    rect { fill: #0e5a58; }
+    text { fill: #ffffff; }
+    @media (prefers-color-scheme: dark) {
+      rect { fill: #6cc2b8; }
+      text { fill: #0c1413; }
+    }
+  </style>
+  <rect width="32" height="32" rx="3"/>
+  <text x="16" y="23" text-anchor="middle" font-family="'Atkinson Hyperlegible Next', system-ui, sans-serif" font-weight="700" font-size="22" letter-spacing="-0.4">m.</text>
+</svg>

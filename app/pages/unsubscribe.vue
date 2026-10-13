@@ -1,72 +1,82 @@
 <template>
-  <main class="page-container">
-    <div class="content-card">
-      <div class="inner-content">
-        <h1 class="title">
+  <div class="mf-page">
+    <header class="mf-shell header">
+      <NuxtLink
+        to="/"
+        class="mf-wordmark"
+      >moderation<span class="mf-wordmark__tld">.fyi</span></NuxtLink>
+    </header>
+
+    <main class="mf-shell main">
+      <template v-if="!unsubscribed">
+        <h1 class="mf-display">
           Unsubscribe
         </h1>
-
-        <p class="tagline">
-          Stop receiving moderation.fyi updates by email.
+        <p class="mf-lede">
+          Stop getting moderation.fyi emails. Your address is deleted straight away.
         </p>
 
-        <div class="newsletter-signup">
-          <form
-            v-if="!unsubscribed"
-            class="signup-form"
-            @submit.prevent="unsubscribe"
-          >
-            <div class="form-group">
-              <input
-                v-model="email"
-                type="email"
-                placeholder="Your email address"
-                required
-                class="email-input"
-                aria-label="Email address"
-              >
-              <button
-                type="submit"
-                class="submit-button"
-                :disabled="isSubmitting"
-              >
-                {{ isSubmitting ? 'Unsubscribing...' : 'Unsubscribe' }}
-              </button>
-            </div>
-
-            <div
-              v-if="errorMessage"
-              class="form-message error"
-              role="alert"
+        <form
+          class="mf-card mf-card--raised form"
+          @submit.prevent="unsubscribe"
+        >
+          <label
+            for="email"
+            class="mf-label"
+          >Email</label>
+          <div class="mf-field">
+            <input
+              id="email"
+              v-model="email"
+              type="email"
+              autocomplete="email"
+              required
+              class="mf-input"
             >
-              {{ errorMessage }}
-            </div>
-          </form>
-
-          <div
-            v-else
-            class="form-message success"
-            role="status"
-          >
-            You've been unsubscribed and won't receive any more emails from us. Changed your mind? You can
-            <NuxtLink
-              to="/"
-              class="link"
-            >sign up again</NuxtLink> at any time.
+            <button
+              type="submit"
+              class="mf-button"
+              :disabled="isSubmitting"
+            >
+              {{ isSubmitting ? 'Unsubscribing…' : 'Unsubscribe me' }}
+            </button>
           </div>
-        </div>
-
-        <div class="github-callout">
-          <NuxtLink
-            to="/"
-            class="link"
+          <p
+            v-if="errorMessage"
+            class="mf-error"
+            role="alert"
           >
-            ← Back to moderation.fyi
-          </NuxtLink>
-        </div>
-      </div>
-    </div>
-  </main>
+            {{ errorMessage }}
+          </p>
+        </form>
+      </template>
+
+      <template v-else>
+        <span class="mf-icon-tile"><MfIcon name="check" /></span>
+        <h1 class="mf-display">
+          You've been unsubscribed.
+        </h1>
+        <p
+          class="mf-lede"
+          role="status"
+        >
+          No more emails from us. Changed your mind? You can <NuxtLink
+            to="/"
+            class="mf-link"
+          >sign up again</NuxtLink> at any time.
+        </p>
+      </template>
+
+      <NuxtLink
+        to="/"
+        class="mf-link mf-link--quiet back"
+      >
+        <MfIcon name="arrow-left" /> Back to moderation.fyi
+      </NuxtLink>
+    </main>
+
+    <SiteFooter />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -106,3 +116,31 @@ useSeoMeta({
   robots: 'noindex, nofollow',
 })
 </script>
+
+<style scoped>
+.header {
+  padding-block: 24px;
+}
+
+.main {
+  display: grid;
+  gap: 24px;
+  justify-items: start;
+  max-inline-size: 48rem;
+  padding-block: 48px 96px;
+}
+
+.form {
+  display: grid;
+  gap: 8px;
+  inline-size: 100%;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+</style>

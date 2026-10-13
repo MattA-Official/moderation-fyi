@@ -58,10 +58,18 @@ export default defineNuxtConfig({
     head: {
       title: 'moderation.fyi', // default fallback title
       htmlAttrs: {
-        lang: 'en',
+        lang: 'en-GB',
       },
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '48x48' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/SourceSerif4-latin-wght.woff2', crossorigin: '' },
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/AtkinsonHyperlegibleNext-latin-400.woff2', crossorigin: '' },
+      ],
+      meta: [
+        { name: 'theme-color', content: '#f7f5ef', media: '(prefers-color-scheme: light)' },
+        { name: 'theme-color', content: '#141918', media: '(prefers-color-scheme: dark)' },
       ],
     },
   },
