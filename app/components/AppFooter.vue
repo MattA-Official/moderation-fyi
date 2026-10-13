@@ -13,6 +13,7 @@ const columns = [{
   label: 'Project',
   links: [
     { label: 'About', to: '/about' },
+    { label: 'Authors', to: '/authors' },
     { label: 'Contribute', to: '/contribute' },
     { label: 'GitHub', to: site.repository, external: true },
   ],

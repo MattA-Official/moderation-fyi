@@ -39,5 +39,7 @@ useSchemaOrg([
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
+
+    <LeavingSiteModal />
   </UApp>
 </template>

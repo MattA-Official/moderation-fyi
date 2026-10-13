@@ -34,4 +34,4 @@ moderation.fyi collects that hard-won knowledge in one place, so every mod can u
 
 ## Who's behind it
 
-moderation.fyi is an open-source project maintained by volunteer moderators. Anyone can [contribute](/contribute), whether that means writing a guide, sharing a template, fixing a typo or improving the website itself.
+moderation.fyi is an open-source project maintained by volunteer moderators. You can [meet the authors](/authors), and anyone can [contribute](/contribute), whether that means writing a guide, sharing a template, fixing a typo or improving the website itself.

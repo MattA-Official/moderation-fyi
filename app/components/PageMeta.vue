@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type Author = { name: string, to?: string, target?: string }
+type Author = { name: string, to?: string }
 
 const props = defineProps<{
   format?: ContentFormat
@@ -109,7 +109,6 @@ const stale = computed(() => isStale(props.reviewed))
         <NuxtLink
           v-if="author.to"
           :to="author.to"
-          :target="author.target"
         >{{ author.name }}</NuxtLink>
         <span v-else>{{ author.name }}</span>
       </template>.

@@ -43,7 +43,7 @@ All content lives in `content/` as Markdown, and can also be edited visually thr
 | `content/templates/` | Copy-and-paste templates (copy and download buttons)   | `/templates/<file>` |
 | `content/articles/`  | Articles, case studies and opinion (also in `/rss.xml`) | `/articles/<file>`  |
 | `content/pages/`     | Standalone pages: about, contribute, privacy, terms    | `/<file>`           |
-| `content/authors/`   | One YAML file per author, referenced by file name      | n/a                 |
+| `content/authors/`   | One file per author: a bio, or a `link` to their own site | `/authors/<file>` (bio only) |
 
 The front matter fields for each collection are defined in `content.config.ts`, and the `example.md` file in each folder shows them all in use.
 
@@ -54,6 +54,7 @@ The look and voice follow the moderation.fyi design system. Its tokens live as C
 ## Configuration
 
 - **Social links, repository and "edit this page" branch:** `app/app.config.ts`
+- **External links:** every link off the site asks the reader to confirm first, except the links listed in `site.trustedLinks` in `app/app.config.ts` (the repository and the moderation.fyi GitHub organisation).
 - **Newsletter:** `POST /api/subscribe` stores sign-ups in the `subscribers` table of the `DB` D1 database (the table is created automatically). In development it uses a local SQLite file in `.data/`.
 - **Branch previews:** pushes to any branch other than the production branch are deployed as [Worker Previews](https://developers.cloudflare.com/workers/previews/) at `<branch>.preview.moderation.fyi` (for example `dev.preview.moderation.fyi`). Previews use a separate D1 database (`previews` in the Wrangler config in `nuxt.config.ts`) and are hidden from search engines.
 - **Nuxt Studio:** production editing requires the Studio GitHub OAuth environment variables. See the [Studio docs](https://content.nuxt.com/docs/studio/setup).

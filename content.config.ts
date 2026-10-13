@@ -25,9 +25,10 @@ const base = {
 type Dated = { updatedAt?: Date | string, publishedAt?: Date | string, date?: Date | string }
 
 // Every content page goes in the sitemap, with its newest date as lastmod
-function sitemap(name: string) {
+function sitemap(name: string, filter?: (entry: Record<string, unknown>) => boolean) {
   return {
     name,
+    filter,
     onUrl(url: { lastmod?: string | Date }, entry: Dated) {
       const lastmod = entry.updatedAt ?? entry.publishedAt ?? entry.date
       if (lastmod) url.lastmod = new Date(lastmod).toISOString()
@@ -99,19 +100,29 @@ export default defineContentConfig({
         updatedAt: z.date().optional(),
       }),
     }, sitemap('pages'))),
-    authors: defineCollection({
-      source: 'authors/*.yml',
-      type: 'data',
+    // One Markdown file per author, referenced by file name. An author either
+    // writes a bio in the body (shown at /authors/<file>) or sets `link` to
+    // point readers at their own site or profile instead.
+    authors: defineCollection(asSitemapCollection({
+      source: 'authors/*.md',
+      type: 'page',
       schema: z.object({
         name: z.string().nonempty(),
-        description: z.string().nonempty(),
+        description: z.string().nonempty(), // One line, shown in bylines and the directory
         avatar: z.object({
           src: property(z.string().nonempty()).editor({ input: 'media' }),
           alt: z.string().optional(),
-        }),
-        to: z.string().optional(),
-        target: z.string().optional(),
+        }).optional(), // Falls back to initials
+        link: z.url({ protocol: /^https?$/ }).optional(), // Personal site or profile, used instead of a bio page
+        pronouns: z.string().optional(),
+        moderatingSince: z.number().int().optional(), // Year, e.g. 2019
+        platforms: z.array(z.string()).default([]), // e.g. ['discord', 'reddit']
+        links: z.array(z.object({
+          label: z.string(),
+          url: z.url({ protocol: /^https?$/ }),
+        })).default([]), // "Elsewhere" links on the bio page
+        seo: seo.optional(),
       }),
-    }),
+    }, sitemap('authors', entry => !entry.link))),
   },
 })

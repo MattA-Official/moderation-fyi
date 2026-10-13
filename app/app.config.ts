@@ -3,6 +3,12 @@ export default defineAppConfig({
     repository: 'https://github.com/MattA-Official/moderation-fyi',
     // Branch that "Edit this page" links point at
     branch: 'dev',
+    // External links that skip the "you're leaving" check. Each entry covers
+    // itself and everything beneath it.
+    trustedLinks: [
+      'https://github.com/MattA-Official/moderation-fyi',
+      'https://github.com/moderation-fyi',
+    ],
   },
   ui: {
     // One ink, one paper, one accent, plus a reserved red (error) and an

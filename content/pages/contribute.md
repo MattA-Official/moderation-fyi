@@ -48,7 +48,21 @@ The examples already in each folder show every supported front matter field.
 
 ### Add yourself as an author
 
-Create a YAML file in `content/authors/` (for example `your-name.yml`) with your name, a short description and an avatar, then list the file name in the `authors` field of your content.
+Create a Markdown file in `content/authors/` (for example `your-name.md`) with your name and a one-line description, then list the file name, without `.md`, in the `authors` field of your content. You can add an avatar too; without one, we show your initials.
+
+You then have two options:
+
+- **A bio page on moderation.fyi.** Write a short bio below the front matter and it appears at `/authors/your-name`, along with everything you've written here.
+- **A link to your own site or profile.** Set `link` to its address instead, and your name will link there. You won't get a bio page.
+
+Write your bio in the third person ("Sam has moderated…") and keep it to three or four short paragraphs. Good bios cover:
+
+- what you moderate, on which platforms, and for how long
+- what you know most about, or what your team is known for
+- why you write for moderation.fyi, or what you tend to write about
+- optionally, one line about life outside moderation
+
+You can also add your pronouns, the year you started moderating, the platforms you moderate on and a few "Elsewhere" links. `sam-okafor.md` shows every field in use.
 
 ### Open a pull request
 
