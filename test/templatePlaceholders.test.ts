@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { fillPlaceholders, markPlaceholders, placeholderNames } from '../app/utils/templatePlaceholders'
+import { fillPlaceholders, markPlaceholders, placeholderNames, placeholderParts } from '../app/utils/templatePlaceholders'
 
 describe('placeholderNames', () => {
   it('lists each placeholder once, in order', () => {
@@ -18,6 +18,22 @@ describe('placeholderNames', () => {
 describe('fillPlaceholders', () => {
   it('swaps filled placeholders and leaves empty ones', () => {
     expect(fillPlaceholders('Hi {name}, from {server}', { name: 'Sam', server: ' ' })).toBe('Hi Sam, from {server}')
+  })
+})
+
+describe('tagged placeholders', () => {
+  it('splits a tag off the label', () => {
+    expect(placeholderParts('name:a')).toEqual({ label: 'name', tag: 'a' })
+    expect(placeholderParts('name')).toEqual({ label: 'name', tag: '' })
+    expect(placeholderParts('time: 5 mins')).toEqual({ label: 'time: 5 mins', tag: '' })
+  })
+
+  it('fills each tag separately and drops tags from empty ones', () => {
+    expect(fillPlaceholders('{name:a} reported {name:b} to {name}', { 'name:a': 'Sam' })).toBe('Sam reported {name} to {name}')
+  })
+
+  it('lists tagged placeholders separately', () => {
+    expect(placeholderNames('{name:a} and {name:b} and {name:a}')).toEqual(['name:a', 'name:b'])
   })
 })
 

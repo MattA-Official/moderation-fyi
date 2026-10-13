@@ -801,6 +801,15 @@ body {
   content: attr(data-name);
   color: var(--mf-ink-muted);
 }
+.mf-placeholder[data-tag]:empty::after {
+  content: attr(data-tag);
+  margin-inline-start: 3px;
+  vertical-align: sub;
+  font-family: var(--font-sans);
+  font-size: 0.6em;
+  font-weight: 700;
+  color: var(--mf-stale);
+}
 .mf-placeholder:hover {
   border-style: solid;
 }

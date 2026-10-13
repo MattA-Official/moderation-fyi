@@ -4,6 +4,16 @@ import type { InjectionKey, Ref } from 'vue'
 // reader fills in once on the page; the filled text is what they copy.
 const pattern = /\{([^{}\n]{1,60})\}/g
 
+/**
+ * A placeholder's key splits into the label shown and an optional tag:
+ * {name:a} and {name:b} both read "name" but are filled in separately,
+ * while every plain {name} shares one value.
+ */
+export function placeholderParts(key: string) {
+  const tagged = key.match(/^(.+?):([A-Za-z0-9]+)$/)
+  return tagged ? { label: tagged[1]!.trim(), tag: tagged[2]! } : { label: key, tag: '' }
+}
+
 /** A minimark node: text, or [tag, props, ...children] */
 type MinimarkNode = string | [string, Record<string, unknown>, ...MinimarkNode[]]
 
@@ -18,9 +28,12 @@ export function placeholderNames(markdown: string) {
   return [...new Set([...text.matchAll(pattern)].map(match => match[1]!.trim()))].filter(Boolean)
 }
 
-/** Swaps each filled-in placeholder for its value; empty ones stay as {name} */
+/** Swaps each filled-in placeholder for its value; empty ones read {label}, without their tag */
 export function fillPlaceholders(markdown: string, values: Record<string, string>) {
-  return markdown.replace(pattern, (match, name: string) => values[name.trim()]?.trim() || match)
+  return markdown.replace(pattern, (match, name: string) => {
+    const key = name.trim()
+    return values[key]?.trim() || (key ? `{${placeholderParts(key).label}}` : match)
+  })
 }
 
 /**

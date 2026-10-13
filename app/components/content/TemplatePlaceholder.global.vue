@@ -11,6 +11,7 @@ const placeholders = inject(templatePlaceholdersKey, undefined)
 const el = useTemplateRef<HTMLElement>('el')
 const value = computed(() => placeholders?.values.value[props.name] ?? '')
 const filled = computed(() => !!value.value.trim())
+const parts = placeholderParts(props.name)
 // As written in the template, for anywhere outside a template page
 const written = `{${props.name}}`
 
@@ -41,10 +42,11 @@ function finish() {
     ref="el"
     class="mf-placeholder"
     :class="filled && 'mf-placeholder--filled'"
-    :data-name="props.name"
+    :data-name="parts.label"
+    :data-tag="parts.tag || undefined"
     contenteditable="plaintext-only"
     role="textbox"
-    :aria-label="props.name"
+    :aria-label="parts.tag ? `${parts.label} (${parts.tag})` : parts.label"
     spellcheck="true"
     @input="update"
     @blur="finish"

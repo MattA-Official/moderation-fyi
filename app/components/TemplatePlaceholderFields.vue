@@ -30,7 +30,7 @@ function update(name: string, value: string) {
     <UFormField
       v-for="name in props.names"
       :key="name"
-      :label="name"
+      :label="placeholderParts(name).tag ? `${placeholderParts(name).label} (${placeholderParts(name).tag})` : name"
       :ui="{ label: 'text-sm' }"
     >
       <UInput
