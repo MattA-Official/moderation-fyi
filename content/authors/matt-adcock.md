@@ -1,6 +1,6 @@
 ---
 name: Matt Adcock
-description: "TODO(Matt): one line about you, shown in bylines and the author directory"
+description: "The founder of moderation.fyi & volunteer moderator for 7+ years"
 platforms:
   - discord
   - reddit
@@ -8,6 +8,10 @@ platforms:
 links:
   - label: GitHub
     url: https://github.com/MattA-Official
+  - label: Personal Site
+    url: https://matt-is.gay
+pronouns: they/them
+moderatingSince: 2019
 ---
 
 <!-- TODO(Matt): write your bio. Optional front matter you can add above: pronouns, moderatingSince (a year), and avatar. -->
