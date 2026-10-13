@@ -30,6 +30,7 @@ moderation.fyi collects that hard-won knowledge in one place, so every mod can u
 - Every page should help you do something today. Theory comes after, if at all.
 - Good moderation works the same way on most platforms. Where a platform's settings matter, we say so.
 - We favour approaches that treat members with respect, including the ones being moderated.
+- Written by people, not AI. Contributors write in their own words, as set out in our [AI usage policy](/ai-policy).
 - No paywalls and no accounts. Everything is published openly on GitHub, and contributors are credited.
 
 ## Who's behind it

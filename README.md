@@ -20,6 +20,8 @@ Our mission is to build a community-driven knowledge base to help moderators on 
 
 We welcome contributions from the community! Whether you're a seasoned moderator with insights to share or a developer looking to improve the website, there are many ways to get involved. Fork the repository to get started!
 
+Please read our [AI usage policy](content/pages/ai-policy.md) first: AI tools are fine for website code, but guides, templates and articles must be written by you.
+
 ## Development
 
 The site is built with [Nuxt 4](https://nuxt.com), [Nuxt UI](https://ui.nuxt.com) and [Nuxt Content](https://content.nuxt.com), and is deployed to Cloudflare Workers. We use [Bun](https://bun.sh):

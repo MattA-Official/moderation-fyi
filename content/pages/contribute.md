@@ -79,6 +79,7 @@ Write mod-to-mod: a peer with more experience, not a guru or a trainer.
 - Be specific. Real examples and exact wording beat general advice.
 - Cite factual claims, and hedge honestly: "on Discord specifically", "most servers this size".
 - Never include identifying details of real users or communities without permission.
+- Write it yourself. Spellcheckers and proofreading tools are fine, but AI-written text isn't. See our [AI usage policy](/ai-policy) for details.
 
 ::note
 By contributing, you agree that your contribution will be published under the licence shown on the content (CC BY-NC-SA 4.0 unless stated otherwise).
