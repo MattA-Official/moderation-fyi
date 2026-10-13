@@ -44,7 +44,6 @@ const copyable = computed(() => snippets.value.size
 const placeholderValues = ref<Record<string, string>>({})
 const fillIn = (text: string) => fillPlaceholders(text, placeholderValues.value)
 provide(templatePlaceholdersKey, { values: placeholderValues, fillIn })
-const placeholders = computed(() => placeholderNames(snippets.value.size ? [...snippets.value.values()].join('\n') : markdown.value))
 const rendered = computed(() => {
   const body = template.value!.body
   if (body?.type !== 'minimark') return template.value!
@@ -118,10 +117,6 @@ useSchemaOrg([
     </template>
 
     <template #aside>
-      <TemplatePlaceholderFields
-        v-if="placeholders.length"
-        :names="placeholders"
-      />
       <dl class="space-y-3 font-sans text-sm border border-mf-rule rounded-[14px] p-4">
         <div v-if="template.customization">
           <dt class="text-mf-ink-muted">

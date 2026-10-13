@@ -21,13 +21,6 @@ type MinimarkNode = string | [string, Record<string, unknown>, ...MinimarkNode[]
 // placeholder never nests
 const literal = new Set(['code', 'pre', 'template-placeholder'])
 
-/** The placeholder names in some Markdown, in order of first appearance */
-export function placeholderNames(markdown: string) {
-  // Code is shown as written, so its {brackets} aren't placeholders
-  const text = markdown.replace(/```[\s\S]*?```|`[^`\n]*`/g, '')
-  return [...new Set([...text.matchAll(pattern)].map(match => match[1]!.trim()))].filter(Boolean)
-}
-
 /** Swaps each filled-in placeholder for its value; empty ones read {label}, without their tag */
 export function fillPlaceholders(markdown: string, values: Record<string, string>) {
   return markdown.replace(pattern, (match, name: string) => {

@@ -74,7 +74,7 @@ On a template with snippets, the page's Copy and Download buttons give every sni
 
 ### Placeholders
 
-Write the parts a reader should fill in as placeholders in curly brackets, like `{server name}` (not square brackets: Markdown treats `[square brackets]` as link text and drops them). On the page each placeholder is highlighted and can be typed into where it sits (or filled in from the "Fill in the blanks" box beside the template); a value fills that placeholder everywhere it appears, and Copy, Download and the Markdown view give the filled-in text. To have two placeholders with the same label filled in separately, tag them: `{name:a}` and `{name:b}` both show as "name" (with a small a or b) and take their own values, while every plain `{name}` shares one. Tags are letters or numbers. Placeholders in code stay as written, and on a template with snippets only the snippets have them.
+Write the parts a reader should fill in as placeholders in curly brackets, like `{server name}` (not square brackets: Markdown treats `[square brackets]` as link text and drops them). On the page each placeholder is highlighted and can be typed into where it sits; a value fills that placeholder everywhere it appears, and Copy, Download and the Markdown view give the filled-in text. To have two placeholders with the same label filled in separately, tag them: `{name:a}` and `{name:b}` both show as "name" (with a small a or b) and take their own values, while every plain `{name}` shares one. Tags are letters or numbers. Placeholders in code stay as written, and on a template with snippets only the snippets have them.
 
 ## Design
 

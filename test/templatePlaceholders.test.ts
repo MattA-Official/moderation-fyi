@@ -1,19 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { fillPlaceholders, markPlaceholders, placeholderNames, placeholderParts } from '../app/utils/templatePlaceholders'
-
-describe('placeholderNames', () => {
-  it('lists each placeholder once, in order', () => {
-    expect(placeholderNames('Hi {name}, welcome to {server}. Bye {name}!')).toEqual(['name', 'server'])
-  })
-
-  it('skips code', () => {
-    expect(placeholderNames('Run `{cmd}` in {channel}\n\n```\n{x}\n```')).toEqual(['channel'])
-  })
-
-  it('ignores empty brackets and ones spanning lines', () => {
-    expect(placeholderNames('{} and {a\nb}')).toEqual([])
-  })
-})
+import { fillPlaceholders, markPlaceholders, placeholderParts } from '../app/utils/templatePlaceholders'
 
 describe('fillPlaceholders', () => {
   it('swaps filled placeholders and leaves empty ones', () => {
@@ -30,10 +16,6 @@ describe('tagged placeholders', () => {
 
   it('fills each tag separately and drops tags from empty ones', () => {
     expect(fillPlaceholders('{name:a} reported {name:b} to {name}', { 'name:a': 'Sam' })).toBe('Sam reported {name} to {name}')
-  })
-
-  it('lists tagged placeholders separately', () => {
-    expect(placeholderNames('{name:a} and {name:b} and {name:a}')).toEqual(['name:a', 'name:b'])
   })
 })
 

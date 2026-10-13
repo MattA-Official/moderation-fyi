@@ -16,8 +16,7 @@ const parts = placeholderParts(props.name)
 const written = `{${props.name}}`
 
 // The text is set by hand rather than bound, so typing never moves the caret.
-// It follows the value when that changes elsewhere: the same placeholder in
-// another snippet, or the Fill in the blanks box.
+// It follows the value when the same placeholder is typed into elsewhere.
 function show(text: string) {
   if (el.value && document.activeElement !== el.value && el.value.textContent !== text) el.value.textContent = text
 }
