@@ -22,6 +22,7 @@ const columns = [{
   links: [
     { label: 'Privacy policy', to: '/privacy' },
     { label: 'Terms of use', to: '/terms' },
+    { label: 'AI usage policy', to: '/ai-policy' },
   ],
 }]
 </script>

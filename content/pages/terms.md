@@ -22,7 +22,7 @@ If someone is in immediate danger, contact your local emergency services.
 
 ## Contributions
 
-When you contribute to moderation.fyi, you confirm that you have the right to share what you submit, and you agree to it being published under the content licence above. Contributions must not include personal information about real people without their permission.
+When you contribute to moderation.fyi, you confirm that you have the right to share what you submit, and you agree to it being published under the content licence above. Contributions must not include personal information about real people without their permission, and must follow our [AI usage policy](/ai-policy).
 
 ## Availability
 
