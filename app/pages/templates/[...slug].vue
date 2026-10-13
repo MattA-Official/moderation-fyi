@@ -34,12 +34,20 @@ const markdown = computed(() => (template.value?.rawbody ?? '')
 // The label itself confirms the copy; no toast or pop-up
 const { copy, copied } = useClipboard({ copiedDuring: 2000 })
 
+// The template sits in its own sheet, shown formatted or as the Markdown you copy
+const view = ref<'preview' | 'markdown'>('preview')
+const views = [
+  { label: 'Preview', value: 'preview', icon: 'i-lucide-eye' },
+  { label: 'Markdown', value: 'markdown', icon: 'i-lucide-code' },
+]
+const fileName = computed(() => `${template.value!.stem.split('/').pop()}.md`)
+
 function downloadTemplate() {
   const blob = new Blob([markdown.value], { type: 'text/markdown;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = `${template.value!.stem.split('/').pop()}.md`
+  link.download = fileName.value
   link.click()
   URL.revokeObjectURL(url)
 }
@@ -63,7 +71,8 @@ useSchemaOrg([
 <template>
   <ContentLayout
     v-if="template"
-    :toc="template.body?.toc?.links"
+    :toc="view === 'preview' ? template.body?.toc?.links : undefined"
+    toc-title="In this template"
   >
     <template #header>
       <PageMeta
@@ -137,10 +146,58 @@ useSchemaOrg([
       </dl>
     </template>
 
-    <ContentRenderer
-      :value="template"
-      class="mf-prose"
-    />
+    <section
+      id="template"
+      aria-labelledby="template-heading"
+      class="mf-template-sheet"
+    >
+      <header class="mf-template-sheet__bar">
+        <div class="flex items-center gap-2 min-w-0">
+          <UIcon
+            name="i-lucide-file-text"
+            class="size-5 shrink-0 text-mf-accent"
+            aria-hidden="true"
+          />
+          <h2
+            id="template-heading"
+            class="font-sans font-bold text-base text-mf-ink"
+          >
+            The template
+          </h2>
+          <span class="font-mono text-sm text-mf-ink-muted truncate">{{ fileName }}</span>
+        </div>
+        <div class="flex items-center gap-2 mf-no-print">
+          <UTabs
+            v-model="view"
+            :items="views"
+            :content="false"
+            size="sm"
+            color="neutral"
+            aria-label="Show the template as"
+          />
+          <UTooltip :text="copied ? 'Copied' : 'Copy template'">
+            <UButton
+              :icon="copied ? 'i-lucide-check' : 'i-lucide-copy'"
+              :aria-label="copied ? 'Copied' : 'Copy template'"
+              color="neutral"
+              variant="ghost"
+              square
+              @click="copy(markdown)"
+            />
+          </UTooltip>
+        </div>
+      </header>
+
+      <ContentRenderer
+        v-show="view === 'preview'"
+        :value="template"
+        class="mf-prose mf-template-sheet__body"
+      />
+      <pre
+        v-show="view === 'markdown'"
+        class="mf-template-sheet__body mf-template-sheet__source"
+      >{{ markdown }}</pre>
+    </section>
 
     <PageFooterLinks :file="`${template.stem}.${template.extension}`" />
 

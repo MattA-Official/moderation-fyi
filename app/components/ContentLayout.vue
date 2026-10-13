@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { TocLink } from '@nuxt/content'
 
-defineProps<{
+withDefaults(defineProps<{
   toc?: TocLink[]
-}>()
+  tocTitle?: string
+}>(), { tocTitle: 'On this page' })
 </script>
 
 <template>
@@ -25,7 +26,7 @@ defineProps<{
             v-if="toc?.length"
             class="hidden lg:block"
             :links="toc"
-            title="On this page"
+            :title="tocTitle"
             highlight
             highlight-color="primary"
           />
