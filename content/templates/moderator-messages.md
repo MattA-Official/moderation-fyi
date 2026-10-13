@@ -18,7 +18,7 @@ customization:
   estimatedTime: 10 minutes
 ---
 
-Send these as direct messages when you act on a member. Swap the words in curly brackets for the details of the case, and keep the tone calm: the message is a record as much as a notice.
+Send these as direct messages when you act on a member. Click a highlighted word to fill in the details of the case, and keep the tone calm: the message is a record as much as a notice.
 
 ## Warnings
 

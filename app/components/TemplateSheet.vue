@@ -12,6 +12,9 @@ const props = withDefaults(defineProps<{
 }>(), { headingLevel: 'h2' })
 
 const id = useId()
+// What gets copied and shown as Markdown, with any filled-in placeholders
+const placeholders = inject(templatePlaceholdersKey, undefined)
+const filled = computed(() => placeholders?.fillIn(props.markdown) ?? props.markdown)
 const view = ref<'preview' | 'markdown'>('preview')
 const views = [
   { label: 'Preview', value: 'preview', icon: 'i-lucide-eye' },
@@ -62,7 +65,7 @@ const { copy, copied } = useClipboard({ copiedDuring: 2000 })
             color="neutral"
             variant="ghost"
             square
-            @click="copy(props.markdown)"
+            @click="copy(filled)"
           />
         </UTooltip>
       </div>
@@ -77,6 +80,6 @@ const { copy, copied } = useClipboard({ copiedDuring: 2000 })
     <pre
       v-show="view === 'markdown'"
       class="mf-template-sheet__body mf-template-sheet__source"
-    >{{ props.markdown }}</pre>
+    >{{ filled }}</pre>
   </section>
 </template>

@@ -784,6 +784,35 @@ body {
   }
 }
 
+/* Placeholders: dashed ochre while empty, accent once filled in */
+.mf-placeholder {
+  display: inline;
+  padding: 0 4px;
+  border-radius: 4px;
+  border: 1px dashed var(--mf-stale);
+  background: var(--mf-stale-soft);
+  color: var(--mf-ink);
+  font: inherit;
+  cursor: pointer;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.mf-placeholder:hover {
+  border-style: solid;
+}
+.mf-placeholder--filled {
+  border: 1px solid transparent;
+  border-block-end: 2px solid var(--mf-accent);
+  background: var(--mf-accent-soft);
+}
+@media print {
+  .mf-placeholder {
+    border: 0;
+    background: none;
+    padding: 0;
+  }
+}
+
 /* ---------- Prose (rendered Markdown) ---------- */
 .mf-prose {
   max-inline-size: 40rem;

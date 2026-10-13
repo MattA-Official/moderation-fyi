@@ -39,13 +39,25 @@ const copyable = computed(() => snippets.value.size
   ? [...snippets.value].map(([title, body]) => `## ${title}\n\n${body}`).join('\n\n')
   : markdown.value)
 
+// Placeholders like {name} are highlighted in the text and filled in on the
+// page; Copy, Download and the Markdown views give the filled-in text
+const placeholderValues = ref<Record<string, string>>({})
+const fillIn = (text: string) => fillPlaceholders(text, placeholderValues.value)
+provide(templatePlaceholdersKey, { values: placeholderValues, fillIn })
+const placeholders = computed(() => placeholderNames(snippets.value.size ? [...snippets.value.values()].join('\n') : markdown.value))
+const rendered = computed(() => {
+  const body = template.value!.body
+  if (body?.type !== 'minimark') return template.value!
+  return { ...template.value!, body: { ...body, value: markPlaceholders(body.value, snippets.value.size > 0) } }
+})
+
 // The label itself confirms the copy; no toast or pop-up
 const { copy, copied } = useClipboard({ copiedDuring: 2000 })
 
 const fileName = computed(() => `${template.value!.stem.split('/').pop()}.md`)
 
 function downloadTemplate() {
-  const blob = new Blob([copyable.value], { type: 'text/markdown;charset=utf-8' })
+  const blob = new Blob([fillIn(copyable.value)], { type: 'text/markdown;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
@@ -91,7 +103,7 @@ useSchemaOrg([
           <UButton
             :label="copied ? 'Copied' : snippets.size ? 'Copy all snippets' : 'Copy template'"
             :icon="copied ? 'i-lucide-check' : 'i-lucide-copy'"
-            @click="copy(copyable)"
+            @click="copy(fillIn(copyable))"
           />
           <UButton
             v-if="template.downloadable"
@@ -106,6 +118,10 @@ useSchemaOrg([
     </template>
 
     <template #aside>
+      <TemplatePlaceholderFields
+        v-if="placeholders.length"
+        :names="placeholders"
+      />
       <dl class="space-y-3 font-sans text-sm border border-mf-rule rounded-[14px] p-4">
         <div v-if="template.customization">
           <dt class="text-mf-ink-muted">
@@ -150,7 +166,7 @@ useSchemaOrg([
 
     <ContentRenderer
       v-if="snippets.size"
-      :value="template"
+      :value="rendered"
       class="mf-prose"
     />
     <TemplateSheet
@@ -160,7 +176,7 @@ useSchemaOrg([
       :detail="fileName"
       :markdown="markdown"
     >
-      <ContentRenderer :value="template" />
+      <ContentRenderer :value="rendered" />
     </TemplateSheet>
 
     <PageFooterLinks :file="`${template.stem}.${template.extension}`" />
