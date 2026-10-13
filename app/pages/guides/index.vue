@@ -7,8 +7,8 @@ const { data: guides } = await useAsyncData('guides-list', () => queryCollection
 const { search, filters, results, options, reset, active } = useResourceFilters(guides, ['platforms', 'difficulty', 'category'])
 
 useSeoMeta({
-  title: 'Guides',
-  description: 'Step-by-step guides for volunteer mods: writing rules, handling raids, de-escalating conflict and running a mod team.',
+  title: 'Moderation guides for Discord, Reddit and Twitch',
+  description: 'Free step-by-step moderation guides for volunteer mods: writing server rules, handling raids, de-escalating conflict and running a mod team.',
 })
 </script>
 

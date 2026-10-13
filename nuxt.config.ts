@@ -63,6 +63,7 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '48x48' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
         // The serif roman and the sans regular are on every page
         { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/SourceSerif4-latin-wght.woff2', crossorigin: '' },
         { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/AtkinsonHyperlegibleNext-latin-400.woff2', crossorigin: '' },
@@ -81,7 +82,7 @@ export default defineNuxtConfig({
   site: {
     url: 'https://moderation.fyi',
     name: 'moderation.fyi',
-    description: 'Practical moderation guides for volunteer community moderators. Open-source and community-driven.',
+    description: 'Free, open-source moderation guides and templates for volunteer moderators on Discord, Reddit, Twitch and beyond, written by mods who\'ve done the job.',
     defaultLocale: 'en-GB',
   },
 
@@ -194,7 +195,9 @@ export default defineNuxtConfig({
       type: 'Organization',
       name: 'moderation.fyi',
       url: 'https://moderation.fyi',
-      description: 'Practical moderation guides for volunteer community moderators. Open-source and community-driven.',
+      logo: 'https://moderation.fyi/icon-512.png',
+      description: 'Free, open-source moderation guides and templates for volunteer moderators on Discord, Reddit, Twitch and beyond.',
+      sameAs: ['https://github.com/MattA-Official/moderation-fyi'],
     },
   },
 
@@ -205,7 +208,7 @@ export default defineNuxtConfig({
   sitemap: {
     enabled: true,
     autoLastmod: true,
-    exclude: ['/_studio/**', '/unsubscribe'],
+    exclude: ['/_studio/**', '/unsubscribe', '/search'],
   },
 
   studio: {

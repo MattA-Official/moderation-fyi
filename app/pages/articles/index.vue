@@ -5,7 +5,7 @@ const { data: articles } = await useAsyncData('articles-list', () => queryCollec
   .all())
 
 useSeoMeta({
-  title: 'Articles',
+  title: 'Articles on community moderation',
   description: 'Case studies, opinion and longer reads on community moderation and online safety, from mods who\'ve been there.',
 })
 </script>

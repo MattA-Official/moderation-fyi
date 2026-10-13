@@ -154,7 +154,7 @@ useSeoMeta({
         v-else
         class="font-serif text-lg/[29px] text-mf-ink"
       >
-        Search every guide, template and article. Try ‘raid’, ‘ban appeal’ or ‘rules’.
+        Search every guide, template and article. Try ‘rules’, ‘welcome message’ or ‘ban appeal’.
       </p>
     </div>
   </div>

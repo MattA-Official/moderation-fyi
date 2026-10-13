@@ -6,6 +6,7 @@ const props = defineProps<{
 
 const route = useRoute()
 const id = useId()
+const placeholder = useSearchPlaceholder()
 const query = ref(typeof route.query.q === 'string' && route.path === '/search' ? route.query.q : '')
 
 watch(() => route.query.q, (value) => {
@@ -29,7 +30,7 @@ function submit() {
       v-if="props.large"
       :for="id"
       class="mf-search__label"
-    >What's going wrong right now?</label>
+    >Find a resource</label>
     <div
       class="mf-search"
       :class="{ 'mf-search--lg': props.large }"
@@ -45,7 +46,7 @@ function submit() {
         type="search"
         name="q"
         class="mf-search__input"
-        placeholder="What's going wrong?"
+        :placeholder="placeholder"
         :aria-label="props.large ? undefined : 'Search the library'"
         autocomplete="off"
       >

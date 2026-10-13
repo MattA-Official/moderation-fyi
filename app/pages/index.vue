@@ -20,10 +20,10 @@ const { data: articles } = await useAsyncData('home-articles', () => queryCollec
   .all())
 
 const quickSearches = [
-  { label: 'A raid in progress', q: 'raid' },
   { label: 'Writing server rules', q: 'rules' },
-  { label: 'Handling ban appeals', q: 'ban appeal' },
-  { label: 'Mod burnout', q: 'burnout' },
+  { label: 'Welcoming new members', q: 'welcome' },
+  { label: 'Ban appeals', q: 'ban appeal' },
+  { label: 'Building a mod team', q: 'mod team' },
 ]
 
 const platforms = ['Discord servers', 'subreddits', 'Twitch channels', 'Matrix rooms', 'forums', 'group chats']
@@ -59,9 +59,11 @@ const entryPoints = [
   },
 ]
 
+// The homepage carries the brand first, so skip the " · moderation.fyi" suffix
+useHead({ titleTemplate: null })
 useSeoMeta({
-  title: 'Practical moderation guides for volunteer mods',
-  description: 'Free, open-source guides and templates for volunteer moderators on Discord, Reddit, Twitch and beyond, written by mods who\'ve done the job.',
+  title: 'moderation.fyi: free guides and templates for volunteer mods',
+  description: 'Free, open-source moderation guides and copy-and-paste templates for Discord, Reddit and Twitch mods: server rules, ban appeals, welcome messages and more, written by mods who\'ve done the job.',
 })
 </script>
 
@@ -82,7 +84,7 @@ useSeoMeta({
             Moderation, written by <span class="mf-highlight">people who've done it.</span>
           </h1>
           <p class="mf-lede">
-            Practical guides and copy-and-paste templates for volunteer mods. For the midnight raid, the awkward ban appeal and everything in between.
+            Practical guides and copy-and-paste templates for volunteer mods on Discord, Reddit, Twitch and beyond. From writing your first rules to growing a mod team, and everything in between.
           </p>
           <SearchForm large />
           <div class="flex flex-wrap items-center gap-2">

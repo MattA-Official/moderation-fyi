@@ -1,4 +1,5 @@
 import { defineCollection, defineContentConfig, property } from '@nuxt/content'
+import { asSitemapCollection } from '@nuxtjs/sitemap/content'
 import { z } from 'zod'
 
 const image = z.object({
@@ -21,9 +22,22 @@ const base = {
   featured: z.boolean().default(false),
 }
 
+type Dated = { updatedAt?: Date | string, publishedAt?: Date | string, date?: Date | string }
+
+// Every content page goes in the sitemap, with its newest date as lastmod
+function sitemap(name: string) {
+  return {
+    name,
+    onUrl(url: { lastmod?: string | Date }, entry: Dated) {
+      const lastmod = entry.updatedAt ?? entry.publishedAt ?? entry.date
+      if (lastmod) url.lastmod = new Date(lastmod).toISOString()
+    },
+  }
+}
+
 export default defineContentConfig({
   collections: {
-    articles: defineCollection({
+    articles: defineCollection(asSitemapCollection({
       source: 'articles/**/*.md',
       type: 'page',
       schema: z.object({
@@ -32,8 +46,8 @@ export default defineContentConfig({
         updatedAt: z.date().optional(),
         badge: z.object({ label: z.string().nonempty() }).optional(),
       }),
-    }),
-    guides: defineCollection({
+    }, sitemap('articles'))),
+    guides: defineCollection(asSitemapCollection({
       source: 'guides/**/*.md',
       type: 'page',
       schema: z.object({
@@ -52,8 +66,8 @@ export default defineContentConfig({
           type: z.enum(['documentation', 'tool', 'article', 'video']),
         })).default([]),
       }),
-    }),
-    templates: defineCollection({
+    }, sitemap('guides'))),
+    templates: defineCollection(asSitemapCollection({
       source: 'templates/**/*.md',
       type: 'page',
       schema: z.object({
@@ -73,8 +87,8 @@ export default defineContentConfig({
         }).optional(),
         rawbody: z.string(), // Populated automatically; used by the copy/download buttons
       }),
-    }),
-    pages: defineCollection({
+    }, sitemap('templates'))),
+    pages: defineCollection(asSitemapCollection({
       source: {
         include: 'pages/*.md',
         prefix: '/',
@@ -84,7 +98,7 @@ export default defineContentConfig({
         seo: seo.optional(),
         updatedAt: z.date().optional(),
       }),
-    }),
+    }, sitemap('pages'))),
     authors: defineCollection({
       source: 'authors/*.yml',
       type: 'data',

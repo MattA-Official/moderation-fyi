@@ -7,8 +7,8 @@ const { data: templates } = await useAsyncData('templates-list', () => queryColl
 const { search, filters, results, options, reset, active } = useResourceFilters(templates, ['platforms', 'templateType', 'category'])
 
 useSeoMeta({
-  title: 'Templates',
-  description: 'Free copy-and-paste templates for volunteer mods: server rules, removal reasons, ban messages, appeal forms and checklists.',
+  title: 'Moderation templates: rules, ban messages and appeal forms',
+  description: 'Free copy-and-paste moderation templates for Discord servers, subreddits and Twitch channels: server rules, removal reasons, ban messages, appeal forms and checklists.',
 })
 </script>
 
