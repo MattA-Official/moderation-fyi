@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { parseDate } from '@internationalized/date'
+import type { DateValue } from '@internationalized/date'
+
 type Option = {
   key: string
   label: string
@@ -37,34 +40,54 @@ const from = defineModel<string>('from', { default: '' })
 const to = defineModel<string>('to', { default: '' })
 const sort = defineModel<string>('sort', { default: '' })
 
-const panelId = useId()
-const open = ref(false)
+// Reka's select can't hold an empty value, so "any" stands in for no filter
+const ANY = '__any'
 
 const pills = computed(() => props.options.filter(option => !option.advanced))
 const dropdowns = computed(() => props.options.filter(option => option.advanced))
 const hasAdvanced = computed(() => dropdowns.value.length > 0 || Boolean(props.dateLabel) || props.sorts.length > 1)
 const advancedActive = computed(() => Boolean(from.value || to.value) || dropdowns.value.some(option => filters.value[option.key]?.length))
+const advancedOpen = ref(advancedActive.value)
 
 function isSelected(key: string, value: string) {
   return filters.value[key]?.includes(value) ?? false
 }
 
-function toggle(key: string, value: string) {
-  const selected = filters.value[key] ?? []
-  filters.value = { ...filters.value, [key]: isSelected(key, value) ? selected.filter(entry => entry !== value) : [...selected, value] }
+function setValues(key: string, values: unknown[]) {
+  filters.value = { ...filters.value, [key]: values.filter((value): value is string => typeof value === 'string') }
+}
+
+function pillItems(option: Option) {
+  return option.items.map(item => ({ ...item, disabled: !item.count && !isSelected(option.key, item.value) }))
 }
 
 /** A dropdown holds one value at a time */
-function pick(key: string, event: Event) {
-  const value = (event.target as HTMLSelectElement).value
-  filters.value = { ...filters.value, [key]: value ? [value] : [] }
+function selectItems(option: Option) {
+  return [
+    { label: `Any ${option.label.toLowerCase()}`, value: ANY },
+    ...option.items.map(item => ({ label: `${item.label} (${item.count})`, value: item.value, disabled: !item.count && !isSelected(option.key, item.value) })),
+  ]
 }
+
+function pick(key: string, value: unknown) {
+  setValues(key, value && value !== ANY ? [value] : [])
+}
+
+// The date inputs work in CalendarDates; the URL and filters in YYYY-MM-DD
+const range = computed({
+  get: () => ({ start: from.value ? parseDate(from.value) : undefined, end: to.value ? parseDate(to.value) : undefined }),
+  set: (value: { start?: DateValue | null, end?: DateValue | null } | null) => {
+    from.value = value?.start?.toString() ?? ''
+    to.value = value?.end?.toString() ?? ''
+  },
+})
+const inputDate = useTemplateRef('inputDate')
 
 // Everything that's narrowing the list, each removable on its own
 const chips = computed<Chip[]>(() => [
   ...props.options.flatMap(option => (filters.value[option.key] ?? []).map(value => ({
     label: `${option.label}: ${option.items.find(item => item.value === value)?.label ?? value}`,
-    remove: () => toggle(option.key, value),
+    remove: () => setValues(option.key, (filters.value[option.key] ?? []).filter(entry => entry !== value)),
   }))),
   ...(from.value ? [{ label: `${props.dateLabel ?? 'Date'} from ${formatDate(from.value)}`, remove: () => (from.value = '') }] : []),
   ...(to.value ? [{ label: `${props.dateLabel ?? 'Date'} until ${formatDate(to.value)}`, remove: () => (to.value = '') }] : []),
@@ -72,163 +95,149 @@ const chips = computed<Chip[]>(() => [
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div class="space-y-3">
     <div class="flex flex-wrap items-center gap-3">
-      <div
+      <UInput
         v-if="showSearch"
-        class="mf-search max-w-measure flex-1 min-w-[min(100%,16rem)]"
-      >
-        <UIcon
-          name="i-lucide-search"
-          class="mf-search__icon"
-          aria-hidden="true"
-        />
-        <input
-          v-model="search"
-          type="search"
-          class="mf-search__input"
-          :placeholder="`Search ${noun}s`"
-          :aria-label="`Search ${noun}s`"
-        >
-      </div>
+        v-model="search"
+        type="search"
+        icon="i-lucide-search"
+        size="lg"
+        :placeholder="`Search ${noun}s`"
+        :aria-label="`Search ${noun}s`"
+        class="flex-1 min-w-[min(100%,16rem)] max-w-measure"
+      />
 
-      <button
+      <UPopover
         v-if="options.length || hasAdvanced"
-        type="button"
-        class="mf-pill mf-pill--filter"
-        :aria-expanded="open"
-        :aria-controls="panelId"
-        @click="open = !open"
+        :content="{ align: 'start', sideOffset: 8, collisionPadding: 16 }"
       >
-        <UIcon
-          name="i-lucide-sliders-horizontal"
-          class="size-4"
-          aria-hidden="true"
-        />
-        Filters
-        <span
-          v-if="filterCount"
-          class="mf-count"
-        >{{ filterCount }}<span class="sr-only"> active</span></span>
-      </button>
+        <UButton
+          color="neutral"
+          variant="outline"
+          size="lg"
+          icon="i-lucide-sliders-horizontal"
+          label="Filters"
+        >
+          <template
+            v-if="filterCount"
+            #trailing
+          >
+            <UBadge
+              color="primary"
+              variant="solid"
+              size="sm"
+            >
+              {{ filterCount }}<span class="sr-only"> active</span>
+            </UBadge>
+          </template>
+        </UButton>
+
+        <template #content>
+          <div class="w-[min(calc(100vw-2rem),26rem)] max-h-[min(70vh,36rem)] overflow-y-auto p-4 space-y-5">
+            <UCheckboxGroup
+              v-for="option in pills"
+              :key="option.key"
+              :legend="option.label"
+              :items="pillItems(option)"
+              :model-value="filters[option.key] ?? []"
+              orientation="horizontal"
+              :ui="{ fieldset: 'flex-wrap gap-x-5 gap-y-2', legend: 'mb-2 font-sans font-bold text-sm text-mf-ink', label: 'font-sans text-sm text-mf-ink' }"
+              @update:model-value="setValues(option.key, $event)"
+            >
+              <template #label="{ item }">
+                {{ item.label }} <span class="text-mf-ink-muted">{{ item.count }}</span>
+              </template>
+            </UCheckboxGroup>
+
+            <UCollapsible
+              v-if="hasAdvanced"
+              v-model:open="advancedOpen"
+              :class="{ 'border-t border-mf-rule pt-3': pills.length }"
+            >
+              <UButton
+                color="neutral"
+                variant="ghost"
+                label="Advanced"
+                trailing-icon="i-lucide-chevron-down"
+                class="group -mx-2.5"
+                :ui="{ trailingIcon: 'transition-transform group-data-[state=open]:rotate-180 motion-reduce:transition-none' }"
+              />
+
+              <template #content>
+                <div class="space-y-4 pt-3">
+                  <UFormField
+                    v-for="option in dropdowns"
+                    :key="option.key"
+                    :label="option.label"
+                    :ui="{ label: 'text-sm' }"
+                  >
+                    <USelect
+                      :model-value="filters[option.key]?.[0] ?? ANY"
+                      :items="selectItems(option)"
+                      class="w-full"
+                      @update:model-value="pick(option.key, $event)"
+                    />
+                  </UFormField>
+
+                  <UFormField
+                    v-if="dateLabel"
+                    :label="dateLabel"
+                    :ui="{ label: 'text-sm' }"
+                  >
+                    <UInputDate
+                      ref="inputDate"
+                      v-model="range"
+                      range
+                      locale="en-GB"
+                      class="w-full"
+                    >
+                      <template #trailing>
+                        <UPopover :reference="inputDate?.inputsRef?.[0]?.$el">
+                          <UButton
+                            color="neutral"
+                            variant="link"
+                            size="sm"
+                            icon="i-lucide-calendar"
+                            aria-label="Pick dates from a calendar"
+                            class="px-0 min-h-0"
+                          />
+                          <template #content>
+                            <UCalendar
+                              v-model="range"
+                              range
+                              locale="en-GB"
+                              class="p-2"
+                            />
+                          </template>
+                        </UPopover>
+                      </template>
+                    </UInputDate>
+                  </UFormField>
+
+                  <UFormField
+                    v-if="sorts.length > 1"
+                    label="Sort by"
+                    :ui="{ label: 'text-sm' }"
+                  >
+                    <USelect
+                      v-model="sort"
+                      :items="sorts"
+                      class="w-full"
+                    />
+                  </UFormField>
+                </div>
+              </template>
+            </UCollapsible>
+          </div>
+        </template>
+      </UPopover>
     </div>
 
     <div
-      v-show="open"
-      :id="panelId"
-      class="mf-filter-panel space-y-6"
+      v-if="showCount || chips.length"
+      class="flex flex-wrap items-center gap-x-3 gap-y-2 font-sans text-sm text-mf-ink-muted"
     >
-      <div
-        v-for="option in pills"
-        :key="option.key"
-        role="group"
-        :aria-labelledby="`${panelId}-${option.key}`"
-      >
-        <p
-          :id="`${panelId}-${option.key}`"
-          class="font-sans font-bold text-sm text-mf-ink mb-2"
-        >
-          {{ option.label }}
-        </p>
-        <div class="flex flex-wrap gap-2">
-          <button
-            v-for="item in option.items"
-            :key="item.value"
-            type="button"
-            class="mf-pill mf-pill--filter"
-            :aria-pressed="isSelected(option.key, item.value)"
-            :disabled="!item.count && !isSelected(option.key, item.value)"
-            @click="toggle(option.key, item.value)"
-          >
-            <UIcon
-              v-if="isSelected(option.key, item.value)"
-              name="i-lucide-check"
-              class="size-4"
-              aria-hidden="true"
-            />
-            {{ item.label }}
-            <span class="mf-pill__count"><span class="sr-only">(</span>{{ item.count }}<span class="sr-only">)</span></span>
-          </button>
-        </div>
-      </div>
-
-      <details
-        v-if="hasAdvanced"
-        class="mf-advanced"
-        :open="advancedActive || undefined"
-      >
-        <summary class="mf-advanced__summary">
-          <UIcon
-            name="i-lucide-chevron-right"
-            class="mf-advanced__chevron size-4"
-            aria-hidden="true"
-          />
-          Advanced
-        </summary>
-        <div class="grid gap-4 pt-4 sm:grid-cols-2">
-          <label
-            v-for="option in dropdowns"
-            :key="option.key"
-            class="mf-field"
-          >
-            <span class="mf-field__label">{{ option.label }}</span>
-            <select
-              class="mf-input"
-              :value="filters[option.key]?.[0] ?? ''"
-              @change="pick(option.key, $event)"
-            >
-              <option value="">Any {{ option.label.toLowerCase() }}</option>
-              <option
-                v-for="item in option.items"
-                :key="item.value"
-                :value="item.value"
-                :disabled="!item.count && !isSelected(option.key, item.value)"
-              >{{ item.label }} ({{ item.count }})</option>
-            </select>
-          </label>
-
-          <template v-if="dateLabel">
-            <label class="mf-field">
-              <span class="mf-field__label">{{ dateLabel }} from</span>
-              <input
-                v-model="from"
-                type="date"
-                class="mf-input"
-                :max="to || undefined"
-              >
-            </label>
-            <label class="mf-field">
-              <span class="mf-field__label">{{ dateLabel }} until</span>
-              <input
-                v-model="to"
-                type="date"
-                class="mf-input"
-                :min="from || undefined"
-              >
-            </label>
-          </template>
-
-          <label
-            v-if="sorts.length > 1"
-            class="mf-field"
-          >
-            <span class="mf-field__label">Sort by</span>
-            <select
-              v-model="sort"
-              class="mf-input"
-            >
-              <option
-                v-for="option in sorts"
-                :key="option.value"
-                :value="option.value"
-              >{{ option.label }}</option>
-            </select>
-          </label>
-        </div>
-      </details>
-    </div>
-
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 font-sans text-sm text-mf-ink-muted">
       <span
         v-if="showCount"
         aria-live="polite"
@@ -260,7 +269,7 @@ const chips = computed<Chip[]>(() => [
       <button
         v-if="active"
         type="button"
-        class="mf-link inline-flex items-center min-h-11 font-bold"
+        class="mf-link font-bold"
         @click="emit('reset')"
       >
         Clear filters
