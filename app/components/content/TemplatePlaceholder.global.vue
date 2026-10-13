@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// Global: Nuxt Content only bundles content components named in the Markdown,
+// and this one is only ever added by markPlaceholders()
 // A {placeholder} in a template: highlighted, and typed into where it sits.
 // The value is shared by every copy of the same placeholder on the page.
 const props = defineProps<{
