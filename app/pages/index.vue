@@ -1,263 +1,265 @@
 <script setup lang="ts">
 const { site } = useAppConfig()
-const { resolveAuthors } = await useAuthors()
 
 const { data: guides } = await useAsyncData('home-guides', () => queryCollection('guides')
-  .select('title', 'description', 'path', 'category', 'difficulty', 'estimatedTime', 'featured', 'publishedAt')
-  .order('featured', 'DESC')
+  .select('title', 'description', 'path', 'difficulty', 'platforms', 'featured', 'publishedAt')
   .order('publishedAt', 'DESC')
   .limit(3)
   .all())
 
 const { data: templates } = await useAsyncData('home-templates', () => queryCollection('templates')
-  .select('title', 'description', 'path', 'category', 'templateType', 'featured', 'publishedAt')
-  .order('featured', 'DESC')
+  .select('title', 'description', 'path', 'templateType', 'platforms', 'featured', 'publishedAt')
   .order('publishedAt', 'DESC')
   .limit(3)
   .all())
 
 const { data: articles } = await useAsyncData('home-articles', () => queryCollection('articles')
-  .select('title', 'description', 'path', 'date', 'image', 'badge', 'authors')
+  .select('title', 'description', 'path', 'date')
   .order('date', 'DESC')
   .limit(3)
   .all())
 
-const resources = [
+const entryPoints = [
   {
     title: 'Guides',
-    description: 'Step-by-step walkthroughs for the situations you actually face: writing rules, handling raids, de-escalating conflict and building a mod team.',
-    icon: 'i-lucide-book-open',
+    description: 'Step-by-step answers to the situations mods actually face: writing rules, handling a raid, calming a heated thread.',
     to: '/guides',
+    link: 'Browse the guides',
   },
   {
     title: 'Templates',
-    description: 'Copy-and-paste rules, removal reasons, ban appeal forms, onboarding checklists and policies that you can adapt in minutes.',
-    icon: 'i-lucide-files',
+    description: 'Rules, removal reasons, ban messages and appeal forms you can copy, paste and adapt in a few minutes.',
     to: '/templates',
+    link: 'Browse the templates',
   },
   {
     title: 'Articles',
-    description: 'Case studies, opinion pieces and deeper dives into trends in online safety and community management.',
-    icon: 'i-lucide-newspaper',
+    description: 'Longer reads: what other mod teams tried, what worked, and what they\'d do differently.',
     to: '/articles',
+    link: 'Read the articles',
   },
 ]
 
-const principles = [
-  { title: 'Practical first', description: 'Every resource is written to be used today, not just read.', icon: 'i-lucide-hammer' },
-  { title: 'Platform-agnostic', description: 'Discord, Reddit, Twitch, forums and beyond. The principles carry over.', icon: 'i-lucide-layers' },
-  { title: 'Community-driven', description: 'Written and reviewed by volunteer moderators with real experience.', icon: 'i-lucide-users' },
-  { title: 'Free and open source', description: 'No paywalls, no sign-ups. Everything lives openly on GitHub.', icon: 'i-lucide-heart-handshake' },
-  { title: 'Kind and fair', description: 'Approaches that treat everyone with respect, including the people being moderated.', icon: 'i-lucide-scale' },
-  { title: 'Always improving', description: 'Every page can be corrected or updated by anyone who spots something better.', icon: 'i-lucide-refresh-cw' },
-]
-
-const platforms = ['discord', 'reddit', 'twitch', 'youtube', 'discourse', 'slack', 'telegram', 'mastodon']
-
 useSeoMeta({
-  title: 'Practical moderation guides for volunteer moderators',
-  description: 'Free, open-source guides and templates to help volunteer moderators on Discord, Reddit, Twitch and beyond run safer, healthier communities.',
+  title: 'Practical moderation guides for volunteer mods',
+  description: 'Free, open-source guides and templates for volunteer moderators on Discord, Reddit, Twitch and beyond, written by mods who\'ve done the job.',
 })
 </script>
 
 <template>
   <div>
-    <UPageHero
-      orientation="vertical"
-      :ui="{ title: 'max-w-4xl mx-auto', description: 'max-w-2xl mx-auto' }"
-    >
-      <template #headline>
-        <UBadge
-          label="Open source and free forever"
-          variant="subtle"
-          icon="i-lucide-sparkles"
-          size="lg"
-          class="rounded-full"
-        />
-      </template>
+    <div class="mx-auto max-w-page px-4 md:px-8">
+      <section class="pt-12 md:pt-24 pb-12 md:pb-16 max-w-measure-wide space-y-6">
+        <h1 class="mf-display text-pretty">
+          Moderation, written by people who've done it.
+        </h1>
+        <p class="mf-lede">
+          Practical guides and templates for volunteer mods on Discord, Reddit, Twitch and everywhere else. Free, open source and written by the community.
+        </p>
+        <SearchForm large />
+      </section>
 
-      <template #title>
-        Practical guides for <span class="text-gradient">volunteer moderators</span>
-      </template>
-
-      <template #description>
-        Community-driven resources to help you run safer, healthier and more welcoming online communities, whatever platform you moderate on.
-      </template>
-
-      <template #links>
-        <UButton
-          label="Explore the guides"
-          to="/guides"
-          icon="i-lucide-book-open"
-          size="xl"
-        />
-        <UButton
-          label="Browse templates"
-          to="/templates"
-          icon="i-lucide-files"
-          color="neutral"
-          variant="subtle"
-          size="xl"
-        />
-      </template>
-
-      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-muted">
-        <UIcon
-          v-for="platform in platforms"
-          :key="platform"
-          :name="platformIcons[platform]!"
-          :aria-label="humanise(platform)"
-          class="size-7 opacity-70 hover:opacity-100 transition-opacity"
-        />
-      </div>
-    </UPageHero>
-
-    <UPageSection
-      title="Everything a moderator needs, in one place"
-      description="Moderation is hard, often thankless work. We collect what experienced moderators have learnt so that you don't have to figure it out alone."
-      :ui="{ container: 'pt-0 sm:pt-0 lg:pt-0' }"
-    >
-      <UPageGrid>
-        <UPageCard
-          v-for="resource in resources"
-          :key="resource.to"
-          v-bind="resource"
-          spotlight
-          spotlight-color="primary"
+      <section
+        aria-labelledby="start-here"
+        class="py-8 md:py-16 border-t border-mf-rule"
+      >
+        <h2
+          id="start-here"
+          class="mf-h2 mb-6"
         >
-          <template #footer>
-            <span class="text-sm font-medium text-primary inline-flex items-center gap-1">
-              Browse {{ resource.title.toLowerCase() }}
-              <UIcon name="i-lucide-arrow-right" />
-            </span>
-          </template>
-        </UPageCard>
-      </UPageGrid>
-    </UPageSection>
+          Start here
+        </h2>
+        <div class="mf-grid">
+          <div
+            v-for="entry in entryPoints"
+            :key="entry.to"
+            class="space-y-2"
+          >
+            <h3 class="font-serif font-semibold text-[21px]/7 text-mf-ink">
+              {{ entry.title }}
+            </h3>
+            <p class="font-serif text-base/[26px] text-mf-ink">
+              {{ entry.description }}
+            </p>
+            <NuxtLink
+              :to="entry.to"
+              class="mf-link--onward"
+            >
+              {{ entry.link }}
+              <UIcon
+                name="i-lucide-arrow-right"
+                class="size-5"
+                aria-hidden="true"
+              />
+            </NuxtLink>
+          </div>
+        </div>
+      </section>
 
-    <UPageSection
-      v-if="guides?.length"
-      title="Start with a guide"
-      class="bg-muted/50 border-y border-default"
-    >
-      <template #links>
-        <UButton
-          label="All guides"
+      <section
+        v-if="guides?.length"
+        aria-labelledby="latest-guides"
+        class="py-8 md:py-16 border-t border-mf-rule"
+      >
+        <h2
+          id="latest-guides"
+          class="mf-h2 mb-6"
+        >
+          Latest guides
+        </h2>
+        <div class="mf-grid">
+          <ResourceCard
+            v-for="guide in guides"
+            :key="guide.path"
+            :to="guide.path"
+            :title="guide.title"
+            :description="guide.description"
+            format="guide"
+            :tags="[...(guide.platforms ?? []).map(platformLabel), difficultyLabels[guide.difficulty]]"
+          />
+        </div>
+        <NuxtLink
           to="/guides"
-          color="neutral"
-          variant="link"
-          trailing-icon="i-lucide-arrow-right"
-        />
-      </template>
+          class="mf-link--onward mt-4"
+        >
+          Browse all guides
+          <UIcon
+            name="i-lucide-arrow-right"
+            class="size-5"
+            aria-hidden="true"
+          />
+        </NuxtLink>
+      </section>
 
-      <UPageGrid>
-        <ResourceCard
-          v-for="guide in guides"
-          :key="guide.path"
-          :to="guide.path"
-          :title="guide.title"
-          :description="guide.description"
-          :category="guide.category"
-          :difficulty="guide.difficulty"
-          :estimated-time="guide.estimatedTime"
-        />
-      </UPageGrid>
-    </UPageSection>
-
-    <UPageSection
-      v-if="templates?.length"
-      title="Ready-made templates"
-    >
-      <template #links>
-        <UButton
-          label="All templates"
+      <section
+        v-if="templates?.length"
+        aria-labelledby="latest-templates"
+        class="py-8 md:py-16 border-t border-mf-rule"
+      >
+        <h2
+          id="latest-templates"
+          class="mf-h2 mb-6"
+        >
+          Latest templates
+        </h2>
+        <div class="mf-grid">
+          <ResourceCard
+            v-for="template in templates"
+            :key="template.path"
+            :to="template.path"
+            :title="template.title"
+            :description="template.description"
+            format="template"
+            :tags="[humanise(template.templateType), ...(template.platforms ?? []).map(platformLabel)]"
+          />
+        </div>
+        <NuxtLink
           to="/templates"
-          color="neutral"
-          variant="link"
-          trailing-icon="i-lucide-arrow-right"
-        />
-      </template>
+          class="mf-link--onward mt-4"
+        >
+          Browse all templates
+          <UIcon
+            name="i-lucide-arrow-right"
+            class="size-5"
+            aria-hidden="true"
+          />
+        </NuxtLink>
+      </section>
 
-      <UPageGrid>
-        <ResourceCard
-          v-for="template in templates"
-          :key="template.path"
-          :to="template.path"
-          :title="template.title"
-          :description="template.description"
-          :category="template.category"
-          :type="template.templateType"
-          icon="i-lucide-file-text"
-        />
-      </UPageGrid>
-    </UPageSection>
-
-    <UPageSection
-      v-if="articles?.length"
-      title="Latest articles"
-      class="bg-muted/50 border-y border-default"
-    >
-      <template #links>
-        <UButton
-          label="All articles"
+      <section
+        v-if="articles?.length"
+        aria-labelledby="latest-articles"
+        class="py-8 md:py-16 border-t border-mf-rule"
+      >
+        <h2
+          id="latest-articles"
+          class="mf-h2 mb-6"
+        >
+          Latest articles
+        </h2>
+        <div class="mf-grid">
+          <ResourceCard
+            v-for="article in articles"
+            :key="article.path"
+            :to="article.path"
+            :title="article.title"
+            :description="article.description"
+            format="article"
+            :meta="formatDate(article.date)"
+          />
+        </div>
+        <NuxtLink
           to="/articles"
-          color="neutral"
-          variant="link"
-          trailing-icon="i-lucide-arrow-right"
-        />
-      </template>
+          class="mf-link--onward mt-4"
+        >
+          Browse all articles
+          <UIcon
+            name="i-lucide-arrow-right"
+            class="size-5"
+            aria-hidden="true"
+          />
+        </NuxtLink>
+      </section>
+    </div>
 
-      <UBlogPosts>
-        <UBlogPost
-          v-for="article in articles"
-          :key="article.path"
-          :to="article.path"
-          :title="article.title"
-          :description="article.description"
-          :image="article.image"
-          :date="formatDate(article.date)"
-          :authors="resolveAuthors(article.authors)"
-          :badge="article.badge ? { ...article.badge, variant: 'subtle' } : undefined"
-          variant="naked"
-          :ui="{ description: 'line-clamp-2' }"
-        />
-      </UBlogPosts>
-    </UPageSection>
-
-    <UPageSection
-      title="Built by moderators, for moderators"
-      description="moderation.fyi is a volunteer project. We believe good moderation knowledge should be free, shared openly and improved by the people who use it."
-      :features="principles"
-    />
-
-    <UPageSection :ui="{ container: 'pt-0 sm:pt-0 lg:pt-0' }">
-      <UPageCTA
-        title="Share what you've learnt"
-        description="Got a technique that works, a template you swear by or a hard-won lesson? Contribute it and help thousands of other moderators."
-        variant="subtle"
-        :links="[
-          { label: 'How to contribute', to: '/contribute', icon: 'i-lucide-git-pull-request', size: 'lg' },
-          { label: 'View on GitHub', to: site.repository, target: '_blank', icon: 'i-simple-icons-github', color: 'neutral', variant: 'outline', size: 'lg' },
-        ]"
-      />
-    </UPageSection>
-
-    <UPageSection
-      id="newsletter"
-      title="Stay in the loop"
-      description="Get an occasional email when new guides and templates are published. No spam, unsubscribe at any time."
-      :ui="{ container: 'pt-0 sm:pt-0 lg:pt-0 max-w-3xl' }"
+    <section
+      aria-labelledby="contribute"
+      class="bg-mf-paper-sunken border-y border-mf-rule py-12 md:py-16 mt-8"
     >
-      <NewsletterForm />
-      <p class="text-xs text-dimmed text-center">
-        We only use your email to send you updates. Read our <ULink
-          to="/privacy"
-          class="underline"
-        >privacy policy</ULink> or <ULink
-          to="/unsubscribe"
-          class="underline"
-        >unsubscribe</ULink>.
-      </p>
-    </UPageSection>
+      <div class="mx-auto max-w-page px-4 md:px-8">
+        <div class="max-w-measure-wide space-y-4">
+          <h2
+            id="contribute"
+            class="mf-h2"
+          >
+            Share what you've learnt
+          </h2>
+          <p class="font-serif text-lg/[29px] text-mf-ink">
+            Everything here is written by volunteer mods. If you've worked out how to handle something the hard way, write it up and save the next mod the trouble.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <UButton
+              to="/contribute"
+              label="Read the contributor guide"
+            />
+            <UButton
+              :to="site.repository"
+              target="_blank"
+              label="Open the repository"
+              color="neutral"
+              variant="outline"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="newsletter"
+      aria-labelledby="updates"
+      class="mx-auto max-w-page px-4 md:px-8 py-12 md:py-16"
+    >
+      <div class="max-w-measure-wide space-y-4">
+        <h2
+          id="updates"
+          class="mf-h2"
+        >
+          Get new guides by email
+        </h2>
+        <p class="font-serif text-lg/[29px] text-mf-ink">
+          An occasional email when something new goes up. Nothing else.
+        </p>
+        <NewsletterForm />
+        <p class="font-sans text-sm text-mf-ink-muted">
+          We only use your email to send you updates. Read the <NuxtLink
+            to="/privacy"
+            class="mf-link"
+          >privacy policy</NuxtLink>, or <NuxtLink
+            to="/unsubscribe"
+            class="mf-link"
+          >unsubscribe</NuxtLink>.
+        </p>
+      </div>
+    </section>
   </div>
 </template>

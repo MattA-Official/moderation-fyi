@@ -60,9 +60,17 @@ export default defineNuxtConfig({
         lang: 'en-GB',
       },
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'icon', type: 'image/svg+xml', href: '/images/shield.svg' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '48x48' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        // The serif roman and the sans regular are on every page
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/SourceSerif4-latin-wght.woff2', crossorigin: '' },
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/AtkinsonHyperlegibleNext-latin-400.woff2', crossorigin: '' },
         { rel: 'alternate', type: 'application/rss+xml', title: 'moderation.fyi articles', href: '/rss.xml' },
+      ],
+      meta: [
+        { name: 'theme-color', content: '#f7f5ef', media: '(prefers-color-scheme: light)' },
+        { name: 'theme-color', content: '#141918', media: '(prefers-color-scheme: dark)' },
       ],
     },
   },
@@ -78,8 +86,9 @@ export default defineNuxtConfig({
   },
 
   colorMode: {
-    preference: 'dark',
-    fallback: 'dark',
+    // Both themes are first-class: follow the reader's system setting
+    preference: 'system',
+    fallback: 'light',
   },
 
   content: {
@@ -103,7 +112,7 @@ export default defineNuxtConfig({
   },
 
   ui: {
-    // Fonts are self-hosted from @fontsource packages (see main.css)
+    // Fonts are self-hosted from public/fonts (see main.css)
     fonts: false,
   },
 
@@ -148,17 +157,13 @@ export default defineNuxtConfig({
   },
 
   icon: {
-    // Brand icons (simple-icons) are picked up by the client bundle scan; the
-    // server bundle only carries lucide to keep the Worker small. Never fall
-    // back to the public Iconify API.
+    // The design system uses Lucide only. Icons are bundled; never fall back
+    // to the public Iconify API.
     serverBundle: {
       collections: ['lucide'],
     },
     clientBundle: {
       scan: true,
-      // Platform icons are looked up dynamically (see `platformIcons` in app/utils/format.ts)
-      icons: ['discord', 'reddit', 'twitch', 'youtube', 'kick', 'slack', 'discourse', 'telegram', 'matrix', 'mastodon', 'bluesky', 'facebook', 'github', 'x']
-        .map(name => `simple-icons:${name}`),
     },
     fallbackToApi: false,
   },

@@ -11,12 +11,15 @@ const { data: surround } = await useAsyncData(`${route.path}-surround`, () => qu
   fields: ['description'],
 }))
 
-const authors = computed(() => resolveAuthors(guide.value?.authors))
+const tags = computed(() => [
+  ...(guide.value?.platforms ?? []).map(platformLabel),
+  difficultyLabels[guide.value!.difficulty],
+])
 
 const resourceIcons = {
-  documentation: 'i-lucide-book-text',
+  documentation: 'i-lucide-book-open',
   tool: 'i-lucide-wrench',
-  article: 'i-lucide-newspaper',
+  article: 'i-lucide-file-text',
   video: 'i-lucide-video',
 } as const
 
@@ -45,130 +48,88 @@ useSchemaOrg([
 </script>
 
 <template>
-  <UContainer v-if="guide">
-    <UPage>
-      <UPageHeader
+  <ContentLayout
+    v-if="guide"
+    :toc="guide.body?.toc?.links"
+  >
+    <template #header>
+      <PageMeta
+        format="guide"
+        :tags="tags"
         :title="guide.title"
         :description="guide.description"
+        :reading-time="readingTime(guide.body)"
+        :reviewed="guide.updatedAt ?? guide.publishedAt"
+        :authors="resolveAuthors(guide.authors)"
+        :file="`${guide.stem}.${guide.extension}`"
+        :breadcrumb="{ label: 'All guides', to: '/guides' }"
+      />
+    </template>
+
+    <MfCallout
+      v-if="guide.prerequisites?.length || guide.tools?.length || guide.estimatedTime"
+      label="Before you start"
+      class="max-w-measure"
+    >
+      <p v-if="guide.estimatedTime">
+        This takes about {{ guide.estimatedTime }}.
+      </p>
+      <p v-if="guide.prerequisites?.length">
+        You'll need: {{ guide.prerequisites.join('; ') }}.
+      </p>
+      <p v-if="guide.tools?.length">
+        Tools: {{ guide.tools.join('; ') }}.
+      </p>
+    </MfCallout>
+
+    <ContentRenderer
+      :value="guide"
+      class="mf-prose"
+    />
+
+    <section
+      v-if="guide.resources?.length"
+      aria-labelledby="sources"
+      class="max-w-measure"
+    >
+      <h2
+        id="sources"
+        class="mf-h2 mb-3"
       >
-        <template #headline>
-          <UBreadcrumb :items="[{ label: 'Guides', to: '/guides', icon: 'i-lucide-book-open' }, { label: humanise(guide.category) }]" />
-        </template>
-
-        <div class="flex flex-wrap items-center gap-2 mt-4">
-          <UBadge
-            :label="humanise(guide.difficulty)"
-            :color="difficultyColours[guide.difficulty]"
-            variant="subtle"
-            icon="i-lucide-gauge"
-          />
-          <UBadge
-            v-if="guide.estimatedTime"
-            :label="guide.estimatedTime"
-            color="neutral"
-            variant="subtle"
-            icon="i-lucide-clock"
-          />
-          <UBadge
-            v-for="platform in guide.platforms"
-            :key="platform"
-            :label="humanise(platform)"
-            :icon="platformIcons[platform]"
-            color="neutral"
-            variant="outline"
-          />
-          <span class="text-sm text-muted ms-1">Published {{ formatDate(guide.publishedAt, 'long') }}</span>
-        </div>
-
-        <AuthorList
-          :authors="authors"
-          class="mt-6"
-        />
-      </UPageHeader>
-
-      <UPageBody>
-        <UPageCard
-          v-if="guide.prerequisites?.length || guide.tools?.length"
-          variant="subtle"
-          :ui="{ container: 'grid gap-6 sm:grid-cols-2' }"
+        Sources and further reading
+      </h2>
+      <ul class="space-y-1">
+        <li
+          v-for="resource in guide.resources"
+          :key="resource.url"
+          class="flex items-start gap-2 font-serif text-lg/[29px]"
         >
-          <div v-if="guide.prerequisites?.length">
-            <p class="font-semibold text-highlighted flex items-center gap-2 mb-2">
-              <UIcon
-                name="i-lucide-list-checks"
-                class="text-primary"
-              />
-              Before you start
-            </p>
-            <ul class="list-disc ps-5 text-sm text-muted space-y-1">
-              <li
-                v-for="item in guide.prerequisites"
-                :key="item"
-              >
-                {{ item }}
-              </li>
-            </ul>
-          </div>
-          <div v-if="guide.tools?.length">
-            <p class="font-semibold text-highlighted flex items-center gap-2 mb-2">
-              <UIcon
-                name="i-lucide-wrench"
-                class="text-primary"
-              />
-              What you'll need
-            </p>
-            <ul class="list-disc ps-5 text-sm text-muted space-y-1">
-              <li
-                v-for="item in guide.tools"
-                :key="item"
-              >
-                {{ item }}
-              </li>
-            </ul>
-          </div>
-        </UPageCard>
-
-        <ContentRenderer :value="guide" />
-
-        <template v-if="guide.resources?.length">
-          <h2 class="text-2xl font-bold text-highlighted">
-            Further reading
-          </h2>
-          <UPageList divide>
-            <UPageCard
-              v-for="resource in guide.resources"
-              :key="resource.url"
+          <UIcon
+            :name="resourceIcons[resource.type]"
+            class="size-5 mt-1 shrink-0 text-mf-ink-muted"
+            aria-hidden="true"
+          />
+          <span>
+            <NuxtLink
               :to="resource.url"
-              target="_blank"
-              :title="resource.title"
-              :description="humanise(resource.type)"
-              :icon="resourceIcons[resource.type]"
-              variant="ghost"
-              orientation="horizontal"
+              external
+              class="mf-link"
+            >{{ resource.title }}</NuxtLink>
+            <UIcon
+              name="i-lucide-external-link"
+              class="size-4 ms-1 align-[-2px] text-mf-ink-muted"
+              aria-label="(external)"
             />
-          </UPageList>
-        </template>
+          </span>
+        </li>
+      </ul>
+    </section>
 
-        <USeparator />
+    <PageFooterLinks :file="`${guide.stem}.${guide.extension}`" />
 
-        <PageFooterLinks
-          :file="`${guide.stem}.${guide.extension}`"
-          :updated-at="guide.updatedAt"
-        />
-
-        <UContentSurround :surround="surround ?? []" />
-      </UPageBody>
-
-      <template
-        v-if="guide.body?.toc?.links?.length"
-        #right
-      >
-        <UContentToc
-          :links="guide.body.toc.links"
-          title="On this page"
-          highlight
-        />
-      </template>
-    </UPage>
-  </UContainer>
+    <UContentSurround
+      :surround="surround ?? []"
+      class="mf-no-print"
+    />
+  </ContentLayout>
 </template>

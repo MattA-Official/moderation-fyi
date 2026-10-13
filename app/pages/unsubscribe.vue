@@ -3,10 +3,9 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import { z } from 'zod'
 
 const route = useRoute()
-const toast = useToast()
 
 const schema = z.object({
-  email: z.email('Please enter a valid email address'),
+  email: z.email('Enter an email address, like you@example.com'),
 })
 
 type Schema = z.output<typeof schema>
@@ -18,16 +17,17 @@ const state = reactive<Partial<Schema>>({
 })
 const loading = ref(false)
 const unsubscribed = ref(false)
+const failure = ref('')
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
+  failure.value = ''
   try {
     await $fetch('/api/unsubscribe', { method: 'POST', body: event.data })
     unsubscribed.value = true
   }
   catch (error) {
-    const message = (error as { data?: { message?: string } }).data?.message
-    toast.add({ title: 'Something went wrong', description: message || 'Please try again in a moment.', color: 'error', icon: 'i-lucide-circle-alert' })
+    failure.value = (error as { data?: { message?: string } }).data?.message || 'That didn\'t work. Try again in a moment.'
   }
   finally {
     loading.value = false
@@ -36,53 +36,36 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 useSeoMeta({
   title: 'Unsubscribe',
-  description: 'Unsubscribe from moderation.fyi email updates.',
+  description: 'Stop getting moderation.fyi updates by email.',
   robots: 'noindex, nofollow',
 })
 </script>
 
 <template>
-  <UContainer class="py-16 sm:py-24">
-    <UPageCard
-      class="max-w-xl mx-auto"
-      variant="subtle"
-    >
-      <div
-        v-if="unsubscribed"
-        class="text-center space-y-4"
-        role="status"
-      >
-        <UIcon
-          name="i-lucide-mail-x"
-          class="size-10 text-primary mx-auto"
-        />
-        <h1 class="text-2xl font-bold text-highlighted">
-          You've been unsubscribed
+  <div class="mx-auto max-w-page px-4 md:px-8 py-16 md:py-24">
+    <div class="max-w-measure space-y-6">
+      <template v-if="unsubscribed">
+        <h1 class="mf-h1">
+          You've been unsubscribed.
         </h1>
-        <p class="text-muted">
-          You won't receive any more emails from us. Changed your mind? You can sign up again at any time.
+        <p
+          class="mf-lede"
+          role="status"
+        >
+          You won't get any more emails from us. Changed your mind? You can <NuxtLink
+            to="/#newsletter"
+            class="mf-link"
+          >sign up again</NuxtLink> at any time.
         </p>
-        <UButton
-          to="/#newsletter"
-          label="Back to moderation.fyi"
-          icon="i-lucide-arrow-left"
-          color="neutral"
-          variant="subtle"
-        />
-      </div>
+      </template>
 
-      <div
-        v-else
-        class="space-y-6"
-      >
-        <div class="text-center space-y-2">
-          <h1 class="text-2xl font-bold text-highlighted">
-            Unsubscribe
-          </h1>
-          <p class="text-muted">
-            Stop receiving moderation.fyi updates by email.
-          </p>
-        </div>
+      <template v-else>
+        <h1 class="mf-h1">
+          Unsubscribe
+        </h1>
+        <p class="mf-lede">
+          Stop getting moderation.fyi updates by email. Your address is deleted straight away.
+        </p>
 
         <UForm
           :schema="schema"
@@ -98,21 +81,23 @@ useSeoMeta({
               v-model="state.email"
               type="email"
               autocomplete="email"
-              placeholder="you@example.com"
-              size="lg"
               class="w-full"
             />
           </UFormField>
           <UButton
             type="submit"
-            label="Unsubscribe"
-            icon="i-lucide-mail-x"
-            size="lg"
-            block
+            label="Unsubscribe me"
             :loading="loading"
           />
+          <p
+            v-if="failure"
+            class="font-sans text-sm text-mf-ink"
+            role="alert"
+          >
+            {{ failure }}
+          </p>
         </UForm>
-      </div>
-    </UPageCard>
-  </UContainer>
+      </template>
+    </div>
+  </div>
 </template>

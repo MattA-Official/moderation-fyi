@@ -5,6 +5,19 @@ type Item = {
   [key: string]: unknown
 }
 
+const facetLabels: Record<string, string> = {
+  category: 'Topic',
+  difficulty: 'Experience',
+  platforms: 'Platform',
+  templateType: 'Type',
+}
+
+function optionLabel(facet: string, value: string) {
+  if (facet === 'difficulty') return difficultyLabels[value as keyof typeof difficultyLabels] ?? humanise(value)
+  if (facet === 'platforms') return platformLabel(value)
+  return humanise(value)
+}
+
 /**
  * Client-side search and facet filtering for resource listings. Filter state
  * is mirrored to the URL query so filtered views can be shared.
@@ -29,8 +42,8 @@ export function useResourceFilters<T extends Item>(items: Ref<T[] | null | undef
     }
     return {
       key: facet,
-      label: facet === 'templateType' ? 'Type' : humanise(facet.replace(/s$/, '')),
-      items: [...values].sort().map(value => ({ label: humanise(value), value })),
+      label: facetLabels[facet] ?? humanise(facet),
+      items: [...values].sort().map(value => ({ label: optionLabel(facet, value), value })),
     }
   }).filter(option => option.items.length > 1))
 

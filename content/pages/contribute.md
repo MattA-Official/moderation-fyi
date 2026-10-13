@@ -8,19 +8,19 @@ Every guide, template and article on moderation.fyi is written by volunteers. If
 ## Ways to help
 
 ::card-group
-  :::card{title="Suggest a topic" icon="i-lucide-lightbulb" to="https://github.com/MattA-Official/moderation-fyi/issues/new" target="_blank"}
+  :::card{title="Suggest a topic" to="https://github.com/MattA-Official/moderation-fyi/issues/new" target="_blank"}
   Tell us what you'd like to see covered. Even a one-line idea helps.
   :::
 
-  :::card{title="Improve existing content" icon="i-lucide-pencil" to="https://github.com/MattA-Official/moderation-fyi" target="_blank"}
+  :::card{title="Improve existing content" to="https://github.com/MattA-Official/moderation-fyi" target="_blank"}
   Every page has a **Suggest an edit** link at the bottom. Fix a typo, add an example or bring something up to date.
   :::
 
-  :::card{title="Write something new" icon="i-lucide-file-plus" to="#writing-content"}
+  :::card{title="Write something new" to="#writing-content"}
   Share a guide, a template or an article based on your own experience.
   :::
 
-  :::card{title="Improve the website" icon="i-lucide-code" to="https://github.com/MattA-Official/moderation-fyi" target="_blank"}
+  :::card{title="Improve the website" to="https://github.com/MattA-Official/moderation-fyi" target="_blank"}
   The site is built with Nuxt. Bug reports, accessibility fixes and feature ideas are all welcome.
   :::
 ::
@@ -57,11 +57,14 @@ Open a pull request against the `dev` branch. A maintainer will review it, sugge
 
 ## Style guide
 
-- **Write for a busy volunteer.** Lead with what to do, then explain why.
-- **Use plain British English.** Avoid jargon, or explain it the first time you use it.
-- **Be specific.** Real examples, exact wording and screenshots beat general advice.
-- **Stay platform-agnostic where you can.** Call out platform-specific steps clearly.
-- **Be respectful.** Never include identifying details of real users or communities without permission.
+Write mod-to-mod: a peer with more experience, not a guru or a trainer.
+
+- Lead with what to do. Explain why afterwards, if at all.
+- Use plain British English and small words: "stop", not "cease".
+- Keep paragraphs to two to four sentences, and use headings rather than bold phrases to signpost.
+- Be specific. Real examples and exact wording beat general advice.
+- Cite factual claims, and hedge honestly: "on Discord specifically", "most servers this size".
+- Never include identifying details of real users or communities without permission.
 
 ::note
 By contributing, you agree that your contribution will be published under the licence shown on the content (CC BY-NC-SA 4.0 unless stated otherwise).

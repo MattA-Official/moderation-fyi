@@ -2,7 +2,6 @@
 const props = defineProps<{
   /** Content file path relative to `content/`, e.g. `guides/example.md` */
   file?: string
-  updatedAt?: string | Date
 }>()
 
 const editLink = useEditLink(() => props.file)
@@ -10,28 +9,26 @@ const { site } = useAppConfig()
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center justify-between gap-3 text-sm text-muted">
-    <span v-if="updatedAt">Last updated {{ formatDate(updatedAt, 'long') }}</span>
-    <div class="flex flex-wrap gap-2 ms-auto">
-      <UButton
-        v-if="editLink"
-        :to="editLink"
-        target="_blank"
-        label="Suggest an edit"
-        icon="i-lucide-pencil"
-        color="neutral"
-        variant="ghost"
-        size="sm"
+  <div class="flex flex-wrap items-center gap-x-6 border-t border-mf-rule pt-4">
+    <NuxtLink
+      v-if="editLink"
+      :to="editLink"
+      external
+      class="mf-edit"
+    >
+      <UIcon
+        name="i-lucide-pencil"
+        class="size-4"
+        aria-hidden="true"
       />
-      <UButton
-        :to="`${site.repository}/issues/new`"
-        target="_blank"
-        label="Report a problem"
-        icon="i-lucide-flag"
-        color="neutral"
-        variant="ghost"
-        size="sm"
-      />
-    </div>
+      Edit this page
+    </NuxtLink>
+    <NuxtLink
+      :to="`${site.repository}/issues/new`"
+      external
+      class="mf-link mf-link--quiet inline-flex items-center min-h-11 font-sans text-sm"
+    >
+      Report a problem
+    </NuxtLink>
   </div>
 </template>

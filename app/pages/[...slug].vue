@@ -13,34 +13,24 @@ useSeoMeta({
 </script>
 
 <template>
-  <UContainer v-if="page">
-    <UPage>
-      <UPageHeader
+  <ContentLayout
+    v-if="page"
+    :toc="page.body?.toc?.links"
+  >
+    <template #header>
+      <PageMeta
         :title="page.title"
         :description="page.description"
+        :reviewed="page.updatedAt"
+        :file="`${page.stem}.${page.extension}`"
       />
+    </template>
 
-      <UPageBody>
-        <ContentRenderer :value="page" />
+    <ContentRenderer
+      :value="page"
+      class="mf-prose"
+    />
 
-        <USeparator />
-
-        <PageFooterLinks
-          :file="`${page.stem}.${page.extension}`"
-          :updated-at="page.updatedAt"
-        />
-      </UPageBody>
-
-      <template
-        v-if="page.body?.toc?.links?.length"
-        #right
-      >
-        <UContentToc
-          :links="page.body.toc.links"
-          title="On this page"
-          highlight
-        />
-      </template>
-    </UPage>
-  </UContainer>
+    <PageFooterLinks :file="`${page.stem}.${page.extension}`" />
+  </ContentLayout>
 </template>

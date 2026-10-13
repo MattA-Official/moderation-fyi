@@ -1,61 +1,52 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   to: string
   title: string
   description?: string
-  icon?: string
-  category?: string
-  type?: string
-  difficulty?: keyof typeof difficultyColours
-  estimatedTime?: string
-  platforms?: string[]
+  format?: ContentFormat
+  /** Shown after the format pill: platforms, difficulty, type */
+  tags?: string[]
+  /** A meta line instead of tags, e.g. a date */
+  meta?: string
 }>()
 </script>
 
 <template>
-  <UPageCard
-    :to="props.to"
-    :title="props.title"
-    :description="props.description"
-    :icon="props.icon ?? 'i-lucide-book-open'"
-    spotlight
-    :ui="{ description: 'line-clamp-3' }"
-  >
-    <template #footer>
-      <div class="flex flex-wrap items-center gap-2">
-        <UBadge
-          v-if="category"
-          :label="humanise(category)"
-          color="neutral"
-          variant="subtle"
-        />
-        <UBadge
-          v-if="type"
-          :label="humanise(type)"
-          color="secondary"
-          variant="subtle"
-        />
-        <UBadge
-          v-if="difficulty"
-          :label="humanise(difficulty)"
-          :color="difficultyColours[difficulty]"
-          variant="subtle"
-        />
-        <span
-          v-if="estimatedTime"
-          class="inline-flex items-center gap-1 text-xs text-muted"
-        >
-          <UIcon name="i-lucide-clock" />
-          {{ estimatedTime }}
-        </span>
-        <UIcon
-          v-for="platform in platforms?.filter(p => platformIcons[p])"
-          :key="platform"
-          :name="platformIcons[platform]!"
-          :aria-label="humanise(platform)"
-          class="size-4 text-muted"
-        />
-      </div>
-    </template>
-  </UPageCard>
+  <article class="mf-card">
+    <h3 class="mf-card__title">
+      <NuxtLink :to="to">
+        {{ title }}
+      </NuxtLink>
+    </h3>
+    <p
+      v-if="description"
+      class="mf-card__desc line-clamp-3"
+    >
+      {{ description }}
+    </p>
+    <p
+      v-if="meta"
+      class="mf-card__meta"
+    >
+      {{ meta }}
+    </p>
+    <ul
+      v-if="format || tags?.length"
+      class="mf-pills"
+    >
+      <li
+        v-if="format"
+        class="mf-pill mf-pill--format"
+      >
+        {{ formatLabels[format] }}
+      </li>
+      <li
+        v-for="tag in tags"
+        :key="tag"
+        class="mf-pill"
+      >
+        {{ tag }}
+      </li>
+    </ul>
+  </article>
 </template>

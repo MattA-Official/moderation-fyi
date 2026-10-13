@@ -2,14 +2,9 @@
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { z } from 'zod'
 
-defineProps<{
-  /** Single-field layout for the footer */
-  compact?: boolean
-}>()
-
 const schema = z.object({
   name: z.string().trim().max(100).optional(),
-  email: z.email('Please enter a valid email address'),
+  email: z.email('Enter an email address, like you@example.com'),
 })
 
 type Schema = z.output<typeof schema>
@@ -17,18 +12,17 @@ type Schema = z.output<typeof schema>
 const state = reactive<Partial<Schema>>({ name: undefined, email: undefined })
 const loading = ref(false)
 const subscribed = ref(false)
-const toast = useToast()
+const failure = ref('')
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
+  failure.value = ''
   try {
     await $fetch('/api/subscribe', { method: 'POST', body: event.data })
     subscribed.value = true
-    toast.add({ title: 'Thanks for subscribing!', description: 'We\'ll let you know when new resources are published.', color: 'success', icon: 'i-lucide-mail-check' })
   }
   catch (error) {
-    const message = (error as { data?: { message?: string } }).data?.message
-    toast.add({ title: 'Something went wrong', description: message || 'Please try again in a moment.', color: 'error', icon: 'i-lucide-circle-alert' })
+    failure.value = (error as { data?: { message?: string } }).data?.message || 'That didn\'t work. Try again in a moment.'
   }
   finally {
     loading.value = false
@@ -37,49 +31,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <div
+  <p
     v-if="subscribed"
-    class="flex items-center gap-2 text-sm text-success"
+    class="font-serif text-lg/[29px] text-mf-ink"
     role="status"
   >
-    <UIcon
-      name="i-lucide-mail-check"
-      class="size-5"
-    />
-    You're subscribed. Thank you!
-  </div>
-
-  <UForm
-    v-else-if="compact"
-    :schema="schema"
-    :state="state"
-    @submit="onSubmit"
-  >
-    <UFormField
-      name="email"
-      label="Get new resources by email"
-      size="lg"
-    >
-      <UInput
-        v-model="state.email"
-        type="email"
-        autocomplete="email"
-        placeholder="you@example.com"
-        class="w-full"
-        :ui="{ trailing: 'pe-1' }"
-      >
-        <template #trailing>
-          <UButton
-            type="submit"
-            size="xs"
-            color="neutral"
-            label="Subscribe"
-            :loading="loading"
-          />
-        </template>
-      </UInput>
-    </UFormField>
-  </UForm>
+    You're on the list. We'll email you when something new goes up.
+  </p>
 
   <UForm
     v-else
@@ -95,32 +53,34 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <UInput
         v-model="state.name"
         autocomplete="given-name"
-        placeholder="Alex"
-        size="lg"
         class="w-full"
       />
     </UFormField>
     <UFormField
       name="email"
       label="Email"
-      required
     >
       <UInput
         v-model="state.email"
         type="email"
         autocomplete="email"
-        placeholder="you@example.com"
-        size="lg"
         class="w-full"
       />
     </UFormField>
     <UButton
       type="submit"
-      label="Subscribe"
-      icon="i-lucide-send"
-      size="lg"
+      label="Get updates"
+      color="neutral"
+      variant="outline"
       :loading="loading"
-      class="sm:mt-6 justify-center"
+      class="sm:mt-7 justify-center"
     />
+    <p
+      v-if="failure"
+      class="sm:col-span-3 font-sans text-sm text-mf-ink"
+      role="alert"
+    >
+      {{ failure }}
+    </p>
   </UForm>
 </template>

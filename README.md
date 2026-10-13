@@ -47,6 +47,10 @@ All content lives in `content/` as Markdown, and can also be edited visually thr
 
 The front matter fields for each collection are defined in `content.config.ts`, and the `example.md` file in each folder shows them all in use.
 
+## Design
+
+The look and voice follow the moderation.fyi design system. Its tokens live as CSS variables in `app/assets/css/main.css` (light and dark), are mapped onto Nuxt UI's colours in `app/app.config.ts`, and its fonts (Source Serif 4 and Atkinson Hyperlegible Next) are self-hosted from `public/fonts/`. Shared component classes are prefixed `mf-`.
+
 ## Configuration
 
 - **Social links, repository and "edit this page" branch:** `app/app.config.ts`

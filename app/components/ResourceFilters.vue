@@ -10,57 +10,65 @@ const emit = defineEmits<{ reset: [] }>()
 
 const search = defineModel<string>('search', { required: true })
 const filters = defineModel<Record<string, string | null | undefined>>('filters', { required: true })
+
+function toggle(key: string, value: string) {
+  filters.value = { ...filters.value, [key]: filters.value[key] === value ? undefined : value }
+}
 </script>
 
 <template>
-  <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-    <UInput
-      v-model="search"
-      icon="i-lucide-search"
-      placeholder="Search…"
-      aria-label="Search"
-      class="sm:w-72"
-      :ui="{ trailing: 'pe-1' }"
-    >
-      <template
-        v-if="search"
-        #trailing
+  <div class="space-y-4">
+    <div class="mf-search max-w-measure">
+      <UIcon
+        name="i-lucide-search"
+        class="mf-search__icon"
+        aria-hidden="true"
+      />
+      <input
+        v-model="search"
+        type="search"
+        class="mf-search__input"
+        :placeholder="`Search ${noun}s`"
+        :aria-label="`Search ${noun}s`"
       >
-        <UButton
-          color="neutral"
-          variant="link"
-          size="sm"
-          icon="i-lucide-x"
-          aria-label="Clear search"
-          @click="search = ''"
-        />
-      </template>
-    </UInput>
+    </div>
 
-    <USelectMenu
+    <div
       v-for="option in options"
       :key="option.key"
-      v-model="filters[option.key]"
-      :items="option.items"
-      value-key="value"
-      :search-input="false"
-      clear
-      :placeholder="option.label"
+      role="group"
       :aria-label="`Filter by ${option.label.toLowerCase()}`"
-      class="sm:w-44"
-    />
+      class="flex flex-wrap items-center gap-2"
+    >
+      <span class="font-sans font-bold text-sm text-mf-ink me-1">{{ option.label }}</span>
+      <button
+        v-for="item in option.items"
+        :key="item.value"
+        type="button"
+        class="mf-pill mf-pill--filter"
+        :aria-pressed="filters[option.key] === item.value"
+        @click="toggle(option.key, item.value)"
+      >
+        <UIcon
+          v-if="filters[option.key] === item.value"
+          name="i-lucide-check"
+          class="size-4"
+          aria-hidden="true"
+        />
+        {{ item.label }}
+      </button>
+    </div>
 
-    <div class="flex items-center gap-3 sm:ms-auto text-sm text-muted">
-      <span>{{ count }} {{ noun }}{{ count === 1 ? '' : 's' }}</span>
-      <UButton
+    <div class="flex flex-wrap items-center gap-4 font-sans text-sm text-mf-ink-muted">
+      <span aria-live="polite">{{ count }} {{ noun }}{{ count === 1 ? '' : 's' }}</span>
+      <button
         v-if="active"
-        label="Clear filters"
-        color="neutral"
-        variant="ghost"
-        size="sm"
-        icon="i-lucide-filter-x"
+        type="button"
+        class="mf-link inline-flex items-center min-h-11 font-bold"
         @click="emit('reset')"
-      />
+      >
+        Clear filters
+      </button>
     </div>
   </div>
 </template>

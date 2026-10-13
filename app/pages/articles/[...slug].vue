@@ -11,8 +11,6 @@ const { data: surround } = await useAsyncData(`${route.path}-surround`, () => qu
   fields: ['description'],
 }))
 
-const authors = computed(() => resolveAuthors(article.value?.authors))
-
 useSeoMeta({
   title: article.value.seo?.title || article.value.title,
   description: article.value.seo?.description || article.value.description,
@@ -33,64 +31,38 @@ useSchemaOrg([
 </script>
 
 <template>
-  <UContainer v-if="article">
-    <UPage>
-      <UPageHeader
+  <ContentLayout
+    v-if="article"
+    :toc="article.body?.toc?.links"
+  >
+    <template #header>
+      <PageMeta
+        format="article"
+        :tags="article.badge ? [article.badge.label] : []"
         :title="article.title"
         :description="article.description"
+        :reading-time="readingTime(article.body)"
+        :reviewed="article.updatedAt ?? article.date"
+        :authors="resolveAuthors(article.authors)"
+        :file="`${article.stem}.${article.extension}`"
+        :breadcrumb="{ label: 'All articles', to: '/articles' }"
       >
-        <template #headline>
-          <UBreadcrumb :items="[{ label: 'Articles', to: '/articles', icon: 'i-lucide-newspaper' }]" />
-          <span class="text-muted">&middot;</span>
-          <UBadge
-            v-if="article.badge"
-            v-bind="article.badge"
-            variant="subtle"
-          />
-          <time
-            class="text-muted"
-            :datetime="new Date(article.date).toISOString()"
-          >{{ formatDate(article.date, 'long') }}</time>
-        </template>
+        <p class="mf-meta">
+          <time :datetime="isoDate(article.date)">Published {{ formatDate(article.date) }}</time>
+        </p>
+      </PageMeta>
+    </template>
 
-        <AuthorList
-          :authors="authors"
-          class="mt-6"
-        />
-      </UPageHeader>
+    <ContentRenderer
+      :value="article"
+      class="mf-prose"
+    />
 
-      <UPageBody>
-        <NuxtImg
-          v-if="article.image?.src"
-          :src="article.image.src"
-          :alt="article.image.alt || ''"
-          class="w-full rounded-lg aspect-[16/9] object-cover"
-          width="1200"
-          height="675"
-        />
+    <PageFooterLinks :file="`${article.stem}.${article.extension}`" />
 
-        <ContentRenderer :value="article" />
-
-        <USeparator />
-
-        <PageFooterLinks
-          :file="`${article.stem}.${article.extension}`"
-          :updated-at="article.updatedAt"
-        />
-
-        <UContentSurround :surround="surround ?? []" />
-      </UPageBody>
-
-      <template
-        v-if="article.body?.toc?.links?.length"
-        #right
-      >
-        <UContentToc
-          :links="article.body.toc.links"
-          title="On this page"
-          highlight
-        />
-      </template>
-    </UPage>
-  </UContainer>
+    <UContentSurround
+      :surround="surround ?? []"
+      class="mf-no-print"
+    />
+  </ContentLayout>
 </template>

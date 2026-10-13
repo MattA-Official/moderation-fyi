@@ -8,22 +8,24 @@ const emit = defineEmits<{ reset: [] }>()
 </script>
 
 <template>
-  <UEmpty
-    v-if="filtered"
-    icon="i-lucide-search-x"
-    :title="`No ${noun} match your filters`"
-    description="Try a different search term or clear the filters."
-    :actions="[{ label: 'Clear filters', icon: 'i-lucide-filter-x', color: 'neutral', variant: 'subtle', onClick: () => emit('reset') }]"
-    variant="naked"
-    size="lg"
-  />
-  <UEmpty
-    v-else
-    icon="i-lucide-pencil-line"
-    :title="`No ${noun} yet`"
-    :description="`We're busy writing the first ${noun}. Want to help? Contributions are very welcome.`"
-    :actions="[{ label: 'Contribute', to: '/contribute', icon: 'i-lucide-git-pull-request' }]"
-    variant="naked"
-    size="lg"
-  />
+  <div class="py-12 max-w-measure font-serif text-lg/[29px] text-mf-ink">
+    <template v-if="filtered">
+      <p>
+        No {{ noun }} match those filters.
+        <button
+          type="button"
+          class="mf-link font-sans font-bold text-base"
+          @click="emit('reset')"
+        >
+          Clear filters
+        </button>
+      </p>
+    </template>
+    <p v-else>
+      No {{ noun }} yet. <NuxtLink
+        to="/contribute"
+        class="mf-link"
+      >Want to write the first one?</NuxtLink>
+    </p>
+  </div>
 </template>

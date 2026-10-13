@@ -1,26 +1,24 @@
 <script setup lang="ts">
-import type { FooterColumn } from '@nuxt/ui'
-
 const { site } = useAppConfig()
 
-const columns: FooterColumn[] = [{
-  label: 'Resources',
-  children: [
+const columns = [{
+  label: 'Library',
+  links: [
     { label: 'Guides', to: '/guides' },
     { label: 'Templates', to: '/templates' },
     { label: 'Articles', to: '/articles' },
-    { label: 'RSS feed', to: '/rss.xml', target: '_blank' },
+    { label: 'RSS feed', to: '/rss.xml', external: true },
   ],
 }, {
   label: 'Project',
-  children: [
+  links: [
     { label: 'About', to: '/about' },
     { label: 'Contribute', to: '/contribute' },
-    { label: 'GitHub', to: site.repository, target: '_blank' },
+    { label: 'GitHub', to: site.repository, external: true },
   ],
 }, {
   label: 'Legal',
-  children: [
+  links: [
     { label: 'Privacy policy', to: '/privacy' },
     { label: 'Terms of use', to: '/terms' },
   ],
@@ -28,39 +26,52 @@ const columns: FooterColumn[] = [{
 </script>
 
 <template>
-  <USeparator
-    icon="i-lucide-shield"
-    class="h-px"
-  />
+  <footer class="bg-mf-paper-sunken border-t border-mf-rule mt-16 mf-no-print">
+    <div class="mx-auto max-w-page px-4 md:px-8 py-12 grid gap-10 md:grid-cols-[1fr_2fr]">
+      <div class="space-y-3">
+        <NuxtLink to="/">
+          <AppLogo />
+        </NuxtLink>
+        <p class="font-serif text-base/[26px] text-mf-ink max-w-xs">
+          Practical moderation guides, written by mods who've done the job. Free and open source.
+        </p>
+      </div>
 
-  <UFooter :ui="{ top: 'border-b border-default' }">
-    <template #top>
-      <UContainer>
-        <UFooterColumns :columns="columns">
-          <template #right>
-            <NewsletterForm compact />
-          </template>
-        </UFooterColumns>
-      </UContainer>
-    </template>
+      <div class="grid gap-8 sm:grid-cols-3">
+        <div
+          v-for="column in columns"
+          :key="column.label"
+        >
+          <h2 class="font-sans font-bold text-sm text-mf-ink mb-2">
+            {{ column.label }}
+          </h2>
+          <ul>
+            <li
+              v-for="link in column.links"
+              :key="link.to"
+            >
+              <a
+                v-if="link.external"
+                :href="link.to"
+                class="mf-link mf-link--quiet inline-flex items-center min-h-11 font-sans text-base"
+              >{{ link.label }}</a>
+              <NuxtLink
+                v-else
+                :to="link.to"
+                class="mf-link mf-link--quiet inline-flex items-center min-h-11 font-sans text-base"
+              >
+                {{ link.label }}
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-    <template #left>
-      <p class="text-muted text-sm">
-        © {{ new Date().getFullYear() }} moderation.fyi · Built by moderators, for moderators.
+    <div class="border-t border-mf-rule">
+      <p class="mx-auto max-w-page px-4 md:px-8 py-4 font-sans text-sm text-mf-ink-muted">
+        © {{ new Date().getFullYear() }} moderation.fyi. Built by mods, for mods.
       </p>
-    </template>
-
-    <template #right>
-      <UButton
-        v-for="link in site.socials"
-        :key="link.to"
-        :icon="link.icon"
-        :to="link.to"
-        :aria-label="link.label"
-        target="_blank"
-        color="neutral"
-        variant="ghost"
-      />
-    </template>
-  </UFooter>
+    </div>
+  </footer>
 </template>
