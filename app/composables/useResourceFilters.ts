@@ -1,3 +1,5 @@
+import type { LocationQuery } from 'vue-router'
+
 type Item = {
   title: string
   description?: string
@@ -26,10 +28,16 @@ export function useResourceFilters<T extends Item>(items: Ref<T[] | null | undef
   const route = useRoute()
   const router = useRouter()
 
-  const search = ref(typeof route.query.q === 'string' ? route.query.q : '')
-  const filters = ref<Record<string, string | null | undefined>>(Object.fromEntries(
-    facets.map(facet => [facet, typeof route.query[facet] === 'string' ? route.query[facet] as string : undefined]),
-  ))
+  const fromQuery = (query: LocationQuery) => ({
+    search: typeof query.q === 'string' ? query.q : '',
+    filters: Object.fromEntries(facets.map(facet => [facet, typeof query[facet] === 'string' ? query[facet] as string : undefined])),
+  })
+  const toQuery = () => Object.fromEntries(Object.entries({ q: search.value || undefined, ...filters.value }).filter(([, value]) => value)) as Record<string, string>
+  const sameQuery = (a: LocationQuery, b: LocationQuery) => ['q', ...facets].every(key => (a[key] || undefined) === (b[key] || undefined))
+
+  const initial = fromQuery(route.query)
+  const search = ref(initial.search)
+  const filters = ref<Record<string, string | null | undefined>>(initial.filters)
 
   // Facet options are built from the values actually present in the content
   const options = computed(() => facets.map((facet) => {
@@ -65,9 +73,18 @@ export function useResourceFilters<T extends Item>(items: Ref<T[] | null | undef
   })
 
   watch([search, filters], () => {
-    const query = Object.fromEntries(Object.entries({ q: search.value || undefined, ...filters.value }).filter(([, value]) => value))
-    router.replace({ query })
+    const query = toQuery()
+    if (!sameQuery(query, route.query)) router.replace({ query })
   }, { deep: true })
+
+  // Back/forward, or a link to this same listing, changes the query without
+  // remounting the page, so the filters have to follow the URL
+  watch(() => route.query, (query) => {
+    if (sameQuery(query, toQuery())) return
+    const next = fromQuery(query)
+    search.value = next.search
+    filters.value = next.filters
+  })
 
   function reset() {
     search.value = ''
