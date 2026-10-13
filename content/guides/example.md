@@ -4,9 +4,8 @@ description: "An example guide for content moderation."
 authors:
   - moderation-team
 publishedAt: 2025-07-01
-tags:
-  - example
-  - guide
+topics: # IDs of files in content/topics
+  - onboarding
 category: getting-started
 difficulty: beginner
 platforms:

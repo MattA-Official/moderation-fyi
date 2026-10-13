@@ -117,7 +117,7 @@ useSchemaOrg([
             Written with
           </dt>
           <dd class="text-mf-ink">
-            {{ template.compliance.join(', ') }} in mind
+            {{ template.compliance.map(complianceLabel).join(', ') }} in mind
           </dd>
         </div>
         <div>

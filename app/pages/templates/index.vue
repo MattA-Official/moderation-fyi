@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const { data: templates } = await useAsyncData('templates-list', () => queryCollection('templates')
-  .select('title', 'description', 'path', 'category', 'templateType', 'platforms', 'tags', 'featured', 'publishedAt')
+  .select('title', 'description', 'path', 'category', 'templateType', 'platforms', 'topics', 'featured', 'publishedAt')
   .order('publishedAt', 'DESC')
   .all())
 
-const { search, filters, results, options, reset, active } = useResourceFilters(templates, ['platforms', 'templateType', 'category'])
+const { search, filters, results, options, reset, active } = useResourceFilters(templates, ['platforms', 'templateType', 'category'], { category: 'Kind' })
 
 useSeoMeta({
   title: 'Moderation templates: rules, ban messages and appeal forms',

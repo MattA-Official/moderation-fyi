@@ -5,6 +5,10 @@ authors:
 badge:
   label: Case Study
 date: 2025-07-01T00:00:00.000Z
+topics: # IDs of files in content/topics
+  - rules
+platforms: # IDs from shared/taxonomy.ts
+  - discord
 description: An example article about content moderation
 image:
   src: https://picsum.photos/seed/moderation/1200/675

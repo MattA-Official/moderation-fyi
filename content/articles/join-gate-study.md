@@ -6,10 +6,11 @@ authors:
 badge:
   label: Study
 date: 2026-09-22T00:00:00.000Z
-tags:
-  - discord
+topics:
   - raids
   - onboarding
+platforms:
+  - discord
 ---
 
 ::note

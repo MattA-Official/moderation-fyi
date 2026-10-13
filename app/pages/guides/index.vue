@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const { data: guides } = await useAsyncData('guides-list', () => queryCollection('guides')
-  .select('title', 'description', 'path', 'category', 'difficulty', 'platforms', 'tags', 'featured', 'publishedAt')
+  .select('title', 'description', 'path', 'category', 'difficulty', 'platforms', 'topics', 'featured', 'publishedAt')
   .order('publishedAt', 'DESC')
   .all())
 
-const { search, filters, results, options, reset, active } = useResourceFilters(guides, ['platforms', 'difficulty', 'category'])
+const { search, filters, results, options, reset, active } = useResourceFilters(guides, ['platforms', 'difficulty', 'category'], { category: 'Section' })
 
 useSeoMeta({
   title: 'Moderation guides for Discord, Reddit and Twitch',

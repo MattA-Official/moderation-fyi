@@ -4,15 +4,14 @@ description: "This is an example of a content template. Templates provide ready-
 authors:
   - moderation-team
 publishedAt: 2025-07-01
-tags:
-  - example
-  - template
+topics: # IDs of files in content/topics
+  - rules
 category: documentation
 templateType: guidelines
 platforms:
   - discord
 compliance:
-  - GDPR
+  - gdpr
 downloadable: true
 license: cc-by-nc-sa
 featured: true

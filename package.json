@@ -10,7 +10,8 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "check:content": "bun scripts/check-content.ts"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.143",

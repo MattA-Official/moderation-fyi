@@ -1,12 +1,11 @@
 type Item = {
   title: string
   description?: string
-  tags?: string[]
+  topics?: string[]
   [key: string]: unknown
 }
 
 const facetLabels: Record<string, string> = {
-  category: 'Topic',
   difficulty: 'Experience',
   platforms: 'Platform',
   templateType: 'Type',
@@ -20,9 +19,10 @@ function optionLabel(facet: string, value: string) {
 
 /**
  * Client-side search and facet filtering for resource listings. Filter state
- * is mirrored to the URL query so filtered views can be shared.
+ * is mirrored to the URL query so filtered views can be shared. `labels`
+ * overrides a facet's heading, e.g. `{ category: 'Section' }`.
  */
-export function useResourceFilters<T extends Item>(items: Ref<T[] | null | undefined>, facets: string[]) {
+export function useResourceFilters<T extends Item>(items: Ref<T[] | null | undefined>, facets: string[], labels: Record<string, string> = {}) {
   const route = useRoute()
   const router = useRouter()
 
@@ -42,7 +42,7 @@ export function useResourceFilters<T extends Item>(items: Ref<T[] | null | undef
     }
     return {
       key: facet,
-      label: facetLabels[facet] ?? humanise(facet),
+      label: labels[facet] ?? facetLabels[facet] ?? humanise(facet),
       items: [...values].sort().map(value => ({ label: optionLabel(facet, value), value })),
     }
   }).filter(option => option.items.length > 1))
@@ -53,7 +53,7 @@ export function useResourceFilters<T extends Item>(items: Ref<T[] | null | undef
     const query = search.value.trim().toLowerCase()
     return (items.value ?? []).filter((item) => {
       if (query) {
-        const haystack = [item.title, item.description, ...(item.tags ?? [])].join(' ').toLowerCase()
+        const haystack = [item.title, item.description, ...(item.topics ?? [])].join(' ').toLowerCase()
         if (!query.split(/\s+/).every(word => haystack.includes(word))) return false
       }
       return Object.entries(filters.value).every(([facet, selected]) => {

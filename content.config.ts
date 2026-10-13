@@ -1,6 +1,7 @@
 import { defineCollection, defineContentConfig, property } from '@nuxt/content'
 import { asSitemapCollection } from '@nuxtjs/sitemap/content'
 import { z } from 'zod'
+import { complianceIds, platformIds } from './shared/taxonomy'
 
 const image = z.object({
   src: property(z.string().nonempty()).editor({ input: 'media' }),
@@ -16,7 +17,8 @@ const seo = z.object({
 // Shared by guides, templates and articles
 const base = {
   authors: z.array(z.string()).default(['moderation-team']), // Author IDs from the authors collection
-  tags: z.array(z.string()).default([]),
+  topics: z.array(z.string()).default([]), // Topic IDs from the topics collection
+  platforms: z.array(z.enum(platformIds)).default([]), // IDs from shared/taxonomy.ts, e.g. ['discord', 'reddit']
   image: image.optional(),
   seo: seo.optional(),
   featured: z.boolean().default(false),
@@ -57,7 +59,6 @@ export default defineContentConfig({
         updatedAt: z.date().optional(),
         category: z.enum(['getting-started', 'best-practices', 'implementation', 'tools', 'compliance']),
         difficulty: z.enum(['beginner', 'intermediate', 'advanced']).default('beginner'),
-        platforms: z.array(z.string()).default([]), // e.g. ['discord', 'reddit', 'twitch']
         estimatedTime: z.string().optional(), // e.g. "30 minutes", "2 hours"
         prerequisites: z.array(z.string()).default([]),
         tools: z.array(z.string()).default([]),
@@ -77,8 +78,7 @@ export default defineContentConfig({
         updatedAt: z.date().optional(),
         category: z.enum(['policy', 'guidelines', 'forms', 'processes', 'documentation']),
         templateType: z.enum(['policy-document', 'guidelines', 'checklist', 'form', 'process', 'training', 'message']),
-        platforms: z.array(z.string()).default([]), // e.g. ['discord', 'reddit', 'twitch']
-        compliance: z.array(z.string()).default([]), // e.g. ['GDPR', 'COPPA', 'DSA']
+        compliance: z.array(z.enum(complianceIds)).default([]), // IDs from shared/taxonomy.ts, e.g. ['gdpr', 'dsa']
         downloadable: z.boolean().default(true),
         license: z.enum(['cc-by-nc-sa', 'cc0', 'cc-by', 'cc-by-sa']).default('cc-by-nc-sa'),
         customization: z.object({
@@ -100,6 +100,17 @@ export default defineContentConfig({
         updatedAt: z.date().optional(),
       }),
     }, sitemap('pages'))),
+    // One YAML file per topic, referenced by file name from a page's `topics`.
+    // Add a file here to add a topic; `bun run check:content` warns about
+    // pages that name a topic with no file.
+    topics: defineCollection({
+      source: 'topics/*.yml',
+      type: 'data',
+      schema: z.object({
+        label: z.string().nonempty(),
+        description: z.string().nonempty(), // One line
+      }),
+    }),
     // One Markdown file per author, referenced by file name. An author either
     // writes a bio in the body (shown at /authors/<file>) or sets `link` to
     // point readers at their own site or profile instead.
@@ -116,7 +127,7 @@ export default defineContentConfig({
         link: z.url({ protocol: /^https?$/ }).optional(), // Personal site or profile, used instead of a bio page
         pronouns: z.string().optional(),
         moderatingSince: z.number().int().optional(), // Year, e.g. 2019
-        platforms: z.array(z.string()).default([]), // e.g. ['discord', 'reddit']
+        platforms: z.array(z.enum(platformIds)).default([]), // IDs from shared/taxonomy.ts, e.g. ['discord', 'reddit']
         links: z.array(z.object({
           label: z.string(),
           url: z.url({ protocol: /^https?$/ }),
