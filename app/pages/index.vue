@@ -34,10 +34,40 @@ async function subscribeToNewsletter() {
   }
 }
 
+const faqs = [
+  {
+    question: 'What is moderation.fyi?',
+    answer: 'A free, open-source library of practical moderation guides, copy-and-paste templates and articles for volunteer moderators, written by mods who\'ve done the job.',
+  },
+  {
+    question: 'Which platforms does it cover?',
+    answer: 'Discord servers, subreddits, Twitch channels, Matrix rooms, forums and group chats. Most advice works anywhere, and guides say when a platform\'s own settings matter.',
+  },
+  {
+    question: 'What kind of guides and templates will there be?',
+    answer: 'Things like writing server rules, welcoming new members, setting up AutoMod and removal reasons, running fair ban appeals, handling raids and building a mod team.',
+  },
+  {
+    question: 'Is it free?',
+    answer: 'Yes. There are no paywalls, accounts or tracking, and the content is published under a Creative Commons licence.',
+  },
+  {
+    question: 'Can I help write it?',
+    answer: 'Please do. The whole project is open on GitHub, and every contributor is credited on the guides they write.',
+  },
+]
+
+// The homepage carries the brand first, so skip the " · moderation.fyi" suffix
+useHead({ titleTemplate: null })
 useSeoMeta({
-  title: 'moderation.fyi — coming soon',
-  description: 'Practical moderation guides and templates for volunteer mods, written by people who\'ve done the job. Coming soon.',
+  title: 'moderation.fyi: free guides and templates for volunteer mods',
+  description: 'Free, open-source moderation guides and copy-and-paste templates for Discord, Reddit and Twitch mods: server rules, ban appeals, welcome messages and more. Launching soon.',
 })
+
+useSchemaOrg([
+  defineWebPage({ '@type': 'FAQPage' }),
+  ...faqs.map(faq => defineQuestion({ name: faq.question, acceptedAnswer: faq.answer })),
+])
 </script>
 
 <template>
@@ -56,7 +86,7 @@ useSeoMeta({
           Moderation, written by <span class="mf-highlight">people who've done it.</span>
         </h1>
         <p class="mf-lede">
-          Practical guides and copy-and-paste templates for volunteer mods. For the midnight raid, the awkward ban appeal and everything in between.
+          Practical guides and copy-and-paste templates for volunteer mods on Discord, Reddit, Twitch and beyond. From writing your first rules to growing a mod team, and everything in between.
         </p>
       </section>
 
@@ -182,6 +212,30 @@ useSeoMeta({
           >open on GitHub</NuxtLink>.
         </p>
       </section>
+
+      <section
+        class="faq"
+        aria-labelledby="faq-title"
+      >
+        <h2
+          id="faq-title"
+          class="mf-h2"
+        >
+          Questions you might have
+        </h2>
+        <div
+          v-for="faq in faqs"
+          :key="faq.question"
+          class="faq__item"
+        >
+          <h3 class="mf-h3">
+            {{ faq.question }}
+          </h3>
+          <p class="mf-small">
+            {{ faq.answer }}
+          </p>
+        </div>
+      </section>
     </main>
 
     <SiteFooter />
@@ -234,6 +288,19 @@ useSeoMeta({
   display: grid;
   gap: 12px;
   justify-items: start;
+}
+
+.faq {
+  display: grid;
+  gap: 24px;
+  max-inline-size: 48rem;
+}
+
+.faq__item {
+  display: grid;
+  gap: 8px;
+  padding-block-start: 24px;
+  border-block-start: 1px solid var(--rule);
 }
 
 @media (min-width: 768px) {
