@@ -74,7 +74,7 @@ On a template with snippets, the page's Copy and Download buttons give every sni
 
 ### Placeholders
 
-Write the parts a reader should fill in as placeholders in curly brackets, like `{server name}` (not square brackets: Markdown treats `[square brackets]` as link text and drops them). On the page each placeholder is highlighted; clicking it, or using the "Fill in the blanks" box beside the template, fills it in everywhere it appears, and Copy, Download and the Markdown view give the filled-in text. Placeholders in code stay as written, and on a template with snippets only the snippets have them.
+Write the parts a reader should fill in as placeholders in curly brackets, like `{server name}` (not square brackets: Markdown treats `[square brackets]` as link text and drops them). On the page each placeholder is highlighted and can be typed into where it sits (or filled in from the "Fill in the blanks" box beside the template); a value fills that placeholder everywhere it appears, and Copy, Download and the Markdown view give the filled-in text. Placeholders in code stay as written, and on a template with snippets only the snippets have them.
 
 ## Design
 

@@ -784,7 +784,7 @@ body {
   }
 }
 
-/* Placeholders: dashed ochre while empty, accent once filled in */
+/* Placeholders: dashed ochre while empty, accent once filled in; typed into in place */
 .mf-placeholder {
   display: inline;
   padding: 0 4px;
@@ -792,10 +792,14 @@ body {
   border: 1px dashed var(--mf-stale);
   background: var(--mf-stale-soft);
   color: var(--mf-ink);
-  font: inherit;
-  cursor: pointer;
+  cursor: text;
+  outline-offset: 1px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+}
+.mf-placeholder:empty::before {
+  content: attr(data-name);
+  color: var(--mf-ink-muted);
 }
 .mf-placeholder:hover {
   border-style: solid;
@@ -804,6 +808,10 @@ body {
   border: 1px solid transparent;
   border-block-end: 2px solid var(--mf-accent);
   background: var(--mf-accent-soft);
+}
+.mf-placeholder:focus {
+  outline: 2px solid var(--mf-focus) !important;
+  border-style: solid;
 }
 @media print {
   .mf-placeholder {
