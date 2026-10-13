@@ -335,10 +335,126 @@ body {
 .mf-pill--filter:hover {
   background: var(--mf-paper-sunken);
 }
-.mf-pill--filter[aria-pressed="true"] {
+.mf-pill--filter[aria-pressed="true"],
+.mf-pill--filter[aria-expanded="true"] {
   background: var(--mf-accent-soft);
   border-color: var(--mf-accent);
   color: var(--mf-accent);
+}
+.mf-pill--filter:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.mf-pill--filter:disabled:hover {
+  background: transparent;
+}
+.mf-pill__count {
+  font-weight: 400;
+  color: var(--mf-ink-muted);
+}
+/* An active filter under a listing; the whole pill removes it */
+.mf-pill--chip {
+  min-block-size: 32px;
+  padding-inline: 12px;
+  color: var(--mf-ink);
+  background: var(--mf-paper-raised);
+  cursor: pointer;
+}
+.mf-pill--chip:hover {
+  border-color: var(--mf-accent);
+  color: var(--mf-accent);
+}
+/* Number of active filters on the Filters button */
+.mf-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 20px;
+  block-size: 20px;
+  padding-inline: 6px;
+  border-radius: 999px;
+  background: var(--mf-accent);
+  color: var(--mf-paper);
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* ---------- Filter panel ---------- */
+.mf-filter-panel {
+  padding: 16px;
+  border: 1px solid var(--mf-rule);
+  border-radius: 12px;
+  background: var(--mf-paper-raised);
+}
+@media (min-width: 640px) {
+  .mf-filter-panel {
+    padding: 24px;
+  }
+}
+.mf-advanced {
+  border-block-start: 1px solid var(--mf-rule);
+  padding-block-start: 16px;
+}
+.mf-advanced__summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  min-block-size: 44px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--mf-ink);
+  cursor: pointer;
+}
+.mf-advanced__summary::-webkit-details-marker {
+  display: none;
+}
+.mf-advanced__chevron {
+  transition: transform 150ms ease;
+}
+.mf-advanced[open] .mf-advanced__chevron {
+  transform: rotate(90deg);
+}
+[dir="rtl"] .mf-advanced:not([open]) .mf-advanced__chevron {
+  transform: scaleX(-1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mf-advanced__chevron {
+    transition: none;
+  }
+}
+.mf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mf-field__label {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--mf-ink);
+}
+.mf-input {
+  inline-size: 100%;
+  min-block-size: 44px;
+  padding: 8px 12px;
+  border: 1.5px solid var(--mf-rule-strong);
+  border-radius: 8px;
+  background: var(--mf-paper-raised);
+  color: var(--mf-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+}
+.mf-input:hover,
+.mf-input:focus-visible {
+  border-color: var(--mf-ink);
+}
+/* Native date pickers and dropdowns follow the theme */
+.dark .mf-input {
+  color-scheme: dark;
 }
 
 /* ---------- Cards ---------- */

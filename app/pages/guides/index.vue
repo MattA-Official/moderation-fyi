@@ -1,10 +1,17 @@
 <script setup lang="ts">
 const { data: guides } = await useAsyncData('guides-list', () => queryCollection('guides')
-  .select('title', 'description', 'path', 'category', 'difficulty', 'platforms', 'topics', 'featured', 'publishedAt')
+  .select('title', 'description', 'path', 'category', 'difficulty', 'platforms', 'topics', 'authors', 'featured', 'publishedAt')
   .order('publishedAt', 'DESC')
   .all())
 
-const { search, filters, results, options, reset, active } = useResourceFilters(guides, ['platforms', 'difficulty', 'category'], { category: 'Section' })
+const optionLabel = await useFacetLabels()
+const { search, filters, from, to, sort, sorts, results, options, filterCount, reset, active } = useResourceFilters(guides, ['topics', 'platforms', 'difficulty', 'category', 'authors'], {
+  labels: { category: 'Section' },
+  advanced: ['authors'],
+  optionLabel,
+  dateField: 'publishedAt',
+  sorts: listingSorts,
+})
 
 useSeoMeta({
   title: 'Moderation guides for Discord, Reddit and Twitch',
@@ -27,9 +34,15 @@ useSeoMeta({
       <ResourceFilters
         v-model:search="search"
         v-model:filters="filters"
+        v-model:from="from"
+        v-model:to="to"
+        v-model:sort="sort"
         :options="options"
+        :sorts="sorts"
         :active="active"
+        :filter-count="filterCount"
         :count="results.length"
+        date-label="Published"
         noun="guide"
         @reset="reset"
       />
