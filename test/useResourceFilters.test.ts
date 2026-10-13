@@ -18,7 +18,7 @@ const guides = [
   { title: 'Discord automod', category: 'automation', platforms: ['discord'], authors: ['sam'], publishedAt: '2026-06-20' },
 ]
 
-async function setup(path: string, facets = ['platforms', 'category'], options: FilterOptions = {}) {
+async function setup(path: string, facets = ['platforms', 'category'], options: FilterOptions = {}, items = guides) {
   const { useResourceFilters } = await import('../app/composables/useResourceFilters')
   const router = createRouter({
     history: createMemoryHistory(),
@@ -27,7 +27,7 @@ async function setup(path: string, facets = ['platforms', 'category'], options: 
   const app = createApp({})
   app.use(router)
   await router.push(path)
-  const filters = effectScope().run(() => app.runWithContext(() => useResourceFilters(ref(guides), facets, options)))!
+  const filters = effectScope().run(() => app.runWithContext(() => useResourceFilters(ref(items), facets, options)))!
   return { router, ...filters }
 }
 
@@ -43,6 +43,12 @@ describe('useResourceFilters', () => {
     expect(search.value).toBe('automod')
     expect(filters.value.platforms).toEqual(['discord'])
     expect(results.value.map(guide => guide.title)).toEqual(['Discord automod'])
+  })
+
+  it('lists a facet even when every item shares its one value', async () => {
+    // A listing with a single item, like templates today, still offers its filters
+    const { options } = await setup('/guides', ['platforms', 'authors'], { advanced: ['authors'] }, guides.slice(0, 1))
+    expect(options.value.map(option => [option.key, option.items.map(item => item.value)])).toEqual([['platforms', ['discord']], ['authors', ['sam']]])
   })
 
   it('mirrors filter changes to the URL', async () => {

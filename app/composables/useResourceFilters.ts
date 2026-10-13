@@ -109,7 +109,8 @@ export function useResourceFilters<T extends Item>(items: Ref<T[] | null | undef
 
   // Options come from the values present in the content. Each count is what
   // picking that value would show given the other filters; a selected value
-  // stays listed even when nothing has it, so it can be cleared
+  // stays listed even when nothing has it, so it can be cleared. A facet with
+  // a single value is still shown, so a short listing doesn't look broken
   const facetOptions = computed(() => facets.map((facet) => {
     const pool = (items.value ?? []).filter(item => matches(item, facet))
     const values = new Set([...(items.value ?? []).flatMap(item => valuesOf(item, facet)), ...(filters.value[facet] ?? [])])
@@ -121,7 +122,7 @@ export function useResourceFilters<T extends Item>(items: Ref<T[] | null | undef
         .map(value => ({ value, label: labelOf(facet, value), count: pool.filter(item => valuesOf(item, facet).includes(value)).length }))
         .sort((a, b) => a.label.localeCompare(b.label, 'en-GB')),
     }
-  }).filter(option => option.items.length > 1 || Boolean(filters.value[option.key]?.length)))
+  }).filter(option => option.items.length > 0))
 
   const filterCount = computed(() => Object.values(filters.value).reduce((total, selected) => total + (selected?.length ?? 0), 0)
     + (from.value ? 1 : 0) + (to.value ? 1 : 0))
