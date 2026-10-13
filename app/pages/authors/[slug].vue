@@ -24,12 +24,15 @@ useSeoMeta({
 
 useSchemaOrg([
   defineWebPage({ '@type': 'ProfilePage' }),
-  definePerson({
-    name: author.value.name,
-    description: author.value.description,
-    image: author.value.avatar?.src,
-    sameAs: author.value.links.map(link => link.url),
-  }),
+  // A team page is about the site's own organisation, already in the identity
+  ...author.value.team
+    ? []
+    : [definePerson({
+        name: author.value.name,
+        description: author.value.description,
+        image: author.value.avatar?.src,
+        sameAs: author.value.links.map(link => link.url),
+      })],
   defineBreadcrumb({
     itemListElement: [
       { name: 'Authors', item: '/authors' },
